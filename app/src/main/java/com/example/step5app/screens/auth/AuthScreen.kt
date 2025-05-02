@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,9 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.step5app.R
 
 @Composable
 fun AuthScreen() {
@@ -44,7 +48,7 @@ fun AuthScreen() {
     )
     val logoOffset by animateDpAsState(
         targetValue = if (isSignUp) (750).dp else (30).dp,
-        animationSpec = tween(durationMillis = 0)
+        animationSpec = tween(durationMillis = 700, easing = LinearOutSlowInEasing)
     )
 
     Box(
@@ -62,10 +66,16 @@ fun AuthScreen() {
         ) {
             Box(
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(100.dp)
                     .clip(CircleShape)
-                    .background(Color.LightGray)
-            )
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.logo), // Replace with your logo resource
+                    contentDescription = "App Logo",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit
+                )
+            }
         }
 
         // Auth Form (Login or Signup)

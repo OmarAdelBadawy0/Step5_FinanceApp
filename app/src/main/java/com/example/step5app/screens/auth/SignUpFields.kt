@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +49,7 @@ fun SignUpFields() {
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                label = { Text("First Name", color = MaterialTheme.colorScheme.onSurface) },
+                label = { Text(stringResource(R.string.first_name), color = MaterialTheme.colorScheme.onSurface) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -59,7 +60,7 @@ fun SignUpFields() {
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                label = { Text("Last Name", color = MaterialTheme.colorScheme.onSurface) },
+                label = { Text(stringResource(R.string.last_name), color = MaterialTheme.colorScheme.onSurface) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -74,7 +75,7 @@ fun SignUpFields() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text("Email", color = MaterialTheme.colorScheme.onSurface) },
+            label = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.mail),
@@ -95,7 +96,7 @@ fun SignUpFields() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text("Password", color = MaterialTheme.colorScheme.onSurface) },
+            label = { Text(stringResource(R.string.password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock),
@@ -124,7 +125,7 @@ fun SignUpFields() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text("Confirm Password", color = MaterialTheme.colorScheme.onSurface) },
+            label = { Text(stringResource(R.string.confirm_password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock),
@@ -166,7 +167,7 @@ fun SignUpFields() {
                     checkmarkColor = MaterialTheme.colorScheme.onSurfaceVariant // or Color.White if you want it hidden
                 )
             )
-            Text(text = "Accept all Terms & Conditions", fontSize = 14.sp, modifier = Modifier.padding(8.dp), color = MaterialTheme.colorScheme.onSurface)
+            Text(text = stringResource(R.string.terms_conditions), fontSize = 14.sp, modifier = Modifier.padding(8.dp), color = MaterialTheme.colorScheme.onSurface)
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -180,7 +181,7 @@ fun SignUpFields() {
             shape = RoundedCornerShape(0.dp)
 
         ) {
-            Text(text = "SIGN UP", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.sign_up), color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
         }
     }
 }

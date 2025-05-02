@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,7 @@ fun AuthScreen() {
             ) {
                 Image(
                     painter = painterResource(R.drawable.logo), // Replace with your logo resource
-                    contentDescription = "App Logo",
+                    contentDescription = stringResource(R.string.logo_description),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Fit
                 )
@@ -111,7 +112,7 @@ fun AuthScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = if (isSignUp) "GET STARTED WITH US!" else "WELCOME BACK!",
+                    text = if (isSignUp) stringResource(R.string.get_started_title) else stringResource(R.string.welcome_back_title),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -122,9 +123,9 @@ fun AuthScreen() {
 
                 Text(
                     text = if (isSignUp)
-                        "SIGN UP IF YOU STILL DON’T HAVE AN ACCOUNT"
+                        stringResource(R.string.signup_subtitle)
                     else
-                        "SIGN IN TO GET ACCESS TO DATA AND INFORMATION",
+                        stringResource(R.string.signin_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -141,7 +142,7 @@ fun AuthScreen() {
                     shape = RoundedCornerShape(0.dp)
                 ) {
                     Text(
-                        text = if (isSignUp) "ALREADY HAVE ACCOUNT? LOGIN NOW" else "DON'T HAVE ACCOUNT? REGISTER NOW",
+                        text = if (isSignUp) stringResource(R.string.switch_to_signin) else stringResource(R.string.switch_to_signup),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 }

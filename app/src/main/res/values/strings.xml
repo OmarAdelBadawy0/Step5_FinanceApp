@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Step5App</string>
+    <string name="logo_description">App Logo</string>
+    <string name="get_started_title">GET STARTED WITH US!</string>
+    <string name="welcome_back_title">WELCOME BACK!</string>
+    <string name="signup_subtitle">SIGN UP IF YOU STILL DON’T HAVE AN ACCOUNT</string>
+    <string name="signin_subtitle">SIGN IN TO GET ACCESS TO DATA AND INFORMATION</string>
+    <string name="switch_to_signin">ALREADY HAVE ACCOUNT? LOGIN NOW</string>
+    <string name="switch_to_signup">DON\'T HAVE ACCOUNT? REGISTER NOW</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="signin">SIGN IN</string>
+
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_conditions">Accept all Terms &amp; Conditions</string>
+    <string name="sign_up">SIGN UP</string>
+
+    <string name="mail_icon_desc">Email icon</string>
+    <string name="lock_icon_desc">Password icon</string>
+    <string name="eye_icon_desc">Show password</string>
 </resources>

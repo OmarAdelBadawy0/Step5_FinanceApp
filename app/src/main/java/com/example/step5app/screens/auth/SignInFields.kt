@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +45,7 @@ fun SignInFields() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text(text = "Email", color = MaterialTheme.colorScheme.onSurface) },
+            label = { Text(text = stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.mail),
@@ -66,7 +67,7 @@ fun SignInFields() {
         OutlinedTextField(
             value = "",
             onValueChange = {},
-            label = { Text("Password", color = MaterialTheme.colorScheme.onSurface) },
+            label = { Text(stringResource(R.string.password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock),
@@ -111,10 +112,10 @@ fun SignInFields() {
                         checkmarkColor = MaterialTheme.colorScheme.onSurfaceVariant // or Color.White if you want it hidden
                     )
                 )
-                Text(text = "Remember Me", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = stringResource(R.string.remember_me), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
             }
             TextButton(onClick = { /* TODO: Forgot password */ }, ) {
-                Text(text = "Forgot Password?", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.forgot_password), fontWeight = FontWeight.Bold)
             }
         }
 
@@ -129,7 +130,7 @@ fun SignInFields() {
             ),
             shape = RoundedCornerShape(0.dp)
         ) {
-            Text(text = "SIGN IN", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold )
+            Text(text = stringResource(R.string.signin), color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold )
         }
     }
 }

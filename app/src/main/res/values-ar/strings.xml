@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطبيق الخطوة الخامسة</string>
+    <string name="logo_description">شعار التطبيق</string>
+    <string name="get_started_title">!لنبدأ معنا</string>
+    <string name="welcome_back_title">!أهلاً بعودتك</string>
+    <string name="signup_subtitle">سجل إذا لم يكن لديك حساب بعد</string>
+    <string name="signin_subtitle">سجل الدخول للوصول إلى البيانات والمعلومات</string>
+    <string name="switch_to_signin">لديك حساب بالفعل؟ سجل الدخول الآن</string>
+    <string name="switch_to_signup">ليس لديك حساب؟ سجل الآن</string>
+
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="remember_me">تذكرني</string>
+    <string name="forgot_password">نسيت كلمة المرور؟</string>
+    <string name="signin">تسجيل الدخول</string>
+
+    <string name="first_name">الاسم الأول</string>
+    <string name="last_name">الاسم الأخير</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="terms_conditions">أوافق على الشروط والأحكام</string>
+    <string name="sign_up">تسجيل</string>
+
+    <string name="mail_icon_desc">أيقونة البريد</string>
+    <string name="lock_icon_desc">أيقونة القفل</string>
+    <string name="eye_icon_desc">إظهار كلمة المرور</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.example.step5app.screens.auth
+package com.example.step5app.presentation.auth.sign_up
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

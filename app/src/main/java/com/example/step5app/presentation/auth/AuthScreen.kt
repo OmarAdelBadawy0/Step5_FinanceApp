@@ -1,4 +1,4 @@
-package com.example.step5app.screens.auth
+package com.example.step5app.presentation.auth
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.step5app.R
+import com.example.step5app.presentation.auth.sign_in.SignInFields
+import com.example.step5app.presentation.auth.sign_up.SignUpFields
 
 @Composable
 fun AuthScreen() {

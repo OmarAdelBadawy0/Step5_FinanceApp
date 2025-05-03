@@ -1,6 +1,7 @@
 package com.example.step5app.screens.auth
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,18 +16,24 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +42,12 @@ import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
 fun SignInFields() {
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var rememberMe by rememberSaveable { mutableStateOf(false) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+
     Column(
         modifier = Modifier.fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
@@ -43,8 +56,8 @@ fun SignInFields() {
         verticalArrangement = Arrangement.SpaceAround
     ) {
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email,
+            onValueChange = {email = it},
             label = { Text(text = stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -65,8 +78,8 @@ fun SignInFields() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = password,
+            onValueChange = {password = it},
             label = { Text(stringResource(R.string.password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -76,14 +89,18 @@ fun SignInFields() {
                     tint = MaterialTheme.colorScheme.onSurface
                 ) },
             trailingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.eye),
-                    modifier = Modifier.size(20.dp),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface
-                ) },
+                IconButton( onClick = {passwordVisible = !passwordVisible}) {
+                    Icon(
+                        painter = painterResource(R.drawable.eye),
+                        modifier = Modifier
+                            .size(20.dp),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation =if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -103,8 +120,8 @@ fun SignInFields() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Checkbox(
-                    checked = false,
-                    onCheckedChange = {},
+                    checked = rememberMe,
+                    onCheckedChange = {rememberMe = it},
                     modifier = Modifier.size(24.dp),
                     colors = CheckboxDefaults.colors(
                         uncheckedColor = MaterialTheme.colorScheme.onSurface,

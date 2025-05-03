@@ -1,7 +1,6 @@
-package com.example.step5app.screens.auth
+package com.example.step5app.presentation.auth.sign_in
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,10 +22,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,16 +34,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
 fun SignInFields() {
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var rememberMe by rememberSaveable { mutableStateOf(false) }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
+    val viewModel: SignInViewModel = viewModel()
+    val uiState by viewModel.loginUiState.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -56,8 +52,8 @@ fun SignInFields() {
         verticalArrangement = Arrangement.SpaceAround
     ) {
         OutlinedTextField(
-            value = email,
-            onValueChange = {email = it},
+            value = uiState.email,
+            onValueChange = {viewModel.onEmailChange(it)},
             label = { Text(text = stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -78,8 +74,8 @@ fun SignInFields() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = password,
-            onValueChange = {password = it},
+            value = uiState.password,
+            onValueChange = {viewModel.onPasswordChange(it)},
             label = { Text(stringResource(R.string.password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -89,7 +85,7 @@ fun SignInFields() {
                     tint = MaterialTheme.colorScheme.onSurface
                 ) },
             trailingIcon = {
-                IconButton( onClick = {passwordVisible = !passwordVisible}) {
+                IconButton( onClick = viewModel::onPasswordVisibilityChange ) {
                     Icon(
                         painter = painterResource(R.drawable.eye),
                         modifier = Modifier
@@ -100,7 +96,7 @@ fun SignInFields() {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation =if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation =if (uiState.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -120,8 +116,8 @@ fun SignInFields() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Checkbox(
-                    checked = rememberMe,
-                    onCheckedChange = {rememberMe = it},
+                    checked = uiState.isRememberMeChecked,
+                    onCheckedChange = {viewModel.onRememberMeCheckedChange()},
                     modifier = Modifier.size(24.dp),
                     colors = CheckboxDefaults.colors(
                         uncheckedColor = MaterialTheme.colorScheme.onSurface,

@@ -1,5 +1,6 @@
 package com.example.step5app.presentation.auth.sign_up
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,12 +22,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,20 +38,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
 fun SignUpFields() {
-    var firstName by rememberSaveable { mutableStateOf("") }
-    var lastName by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var confirmPassword by rememberSaveable { mutableStateOf("") }
-    var termsAccepted by rememberSaveable { mutableStateOf(false) }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
+    val viewModel: SignUpViewModel = viewModel()
+    val uiState by viewModel.signUpUiState.collectAsState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -63,8 +62,8 @@ fun SignUpFields() {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedTextField(
-                value = firstName,
-                onValueChange = {firstName = it},
+                value = uiState.firstName,
+                onValueChange = {viewModel.updateFirstName(it)},
                 label = { Text(stringResource(R.string.first_name), color = MaterialTheme.colorScheme.onSurface) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -74,8 +73,8 @@ fun SignUpFields() {
                 )
             )
             OutlinedTextField(
-                value = lastName,
-                onValueChange = {lastName = it},
+                value = uiState.lastName,
+                onValueChange = {viewModel.updateLastName(it)},
                 label = { Text(stringResource(R.string.last_name), color = MaterialTheme.colorScheme.onSurface) },
                 modifier = Modifier.weight(1f),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -89,8 +88,8 @@ fun SignUpFields() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = {email = it},
+            value = uiState.email,
+            onValueChange = {viewModel.updateEmail(it)},
             label = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -110,8 +109,8 @@ fun SignUpFields() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = password,
-            onValueChange = {password = it},
+            value = uiState.password,
+            onValueChange = {viewModel.updatePassword(it)},
             label = { Text(stringResource(R.string.password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -121,7 +120,7 @@ fun SignUpFields() {
                     tint = MaterialTheme.colorScheme.onSurface
                 ) },
             trailingIcon = {
-                IconButton( onClick = {passwordVisible = !passwordVisible}) {
+                IconButton( onClick = {viewModel.updateIsPasswordVisible(!uiState.isPasswordVisible)}) {
                     Icon(
                         painter = painterResource(R.drawable.eye),
                         contentDescription = null,
@@ -131,7 +130,7 @@ fun SignUpFields() {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (uiState.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -142,8 +141,8 @@ fun SignUpFields() {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = {confirmPassword = it},
+            value = uiState.confirmPassword,
+            onValueChange = {viewModel.updateConfirmPassword(it)},
             label = { Text(stringResource(R.string.confirm_password), color = MaterialTheme.colorScheme.onSurface) },
             leadingIcon = {
                 Icon(
@@ -153,7 +152,7 @@ fun SignUpFields() {
                     tint = MaterialTheme.colorScheme.onSurface
                 ) },
             trailingIcon = {
-                IconButton( onClick = {confirmPasswordVisible = !confirmPasswordVisible}) {
+                IconButton( onClick = {viewModel.updateIsConfirmPasswordVisible(!uiState.isConfirmPasswordVisible)}) {
                     Icon(
                         painter = painterResource(R.drawable.eye),
                         contentDescription = null,
@@ -163,7 +162,7 @@ fun SignUpFields() {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (uiState.isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -179,7 +178,7 @@ fun SignUpFields() {
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = termsAccepted, onCheckedChange = {termsAccepted = it},
+            Checkbox(checked = uiState.isTermsChecked, onCheckedChange = {viewModel.updateIsTermsChecked(it)},
                 modifier = Modifier
                     .size(20.dp)
                     .padding(8.dp),
@@ -195,7 +194,11 @@ fun SignUpFields() {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { /* TODO: Handle Sign Up */ },
+            onClick = {
+                viewModel.signUp()
+                if (!uiState.isSuccessSignUp && uiState.errorMessage != null) {
+                    Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_SHORT).show() }
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary

@@ -23,4 +23,28 @@
     <string name="mail_icon_desc">Email icon</string>
     <string name="lock_icon_desc">Password icon</string>
     <string name="eye_icon_desc">Show password</string>
+    <string name="feed">FEED</string>
+    <string name="courses">COURSES</string>
+    <string name="network">NETWORK</string>
+    <string name="profile">PROFILE</string>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="last_week">Last Week</string>
+    <string name="this_month">This Month</string>
+    <string name="search">SEARCH</string>
+    <string name="clear_search">Clear search</string>
+    <string name="category1">CATEGORY1</string>
+    <string name="category2">CATEGORY2</string>
+    <string name="category3">CATEGORY3</string>
+    <string name="category4">CATEGORY4</string>
+    <string name="description_1">DESCRIPTION 1</string>
+    <string name="title_1"># TITLE 1</string>
+    <string name="may_6_2023" translatable="false">May 6, 2023</string>
+    <string name="title_2"># TITLE 2</string>
+    <string name="description_2">DESCRIPTION 2</string>
+    <string name="may_5_2023" translatable="false">May 5, 2023</string>
+    <string name="title_3"># TITLE 3</string>
+    <string name="description_3">DESCRIPTION 3 the disc and title will appeare in the defult language was posted with no translate</string>
+    <string name="may_4_2023" translatable="false">May 4, 2023</string>
+    <string name="filter">FILTER</string>
 </resources>

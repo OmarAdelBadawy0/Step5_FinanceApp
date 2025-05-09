@@ -24,4 +24,27 @@
     <string name="mail_icon_desc">أيقونة البريد</string>
     <string name="lock_icon_desc">أيقونة القفل</string>
     <string name="eye_icon_desc">إظهار كلمة المرور</string>
+
+    <string name="feed">التوصيات</string>
+    <string name="courses">الدورات</string>
+    <string name="network">الشبكة</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="today">اليوم</string>
+    <string name="this_week">هذا الأسبوع</string>
+    <string name="last_week">الأسبوع الماضي</string>
+    <string name="this_month">هذا الشهر</string>
+    <string name="search">بحث</string>
+    <string name="clear_search">مسح البحث</string>
+    <string name="category1">نوع الفئة 1</string>
+    <string name="category2">نوع الفئة 2</string>
+    <string name="category3">نوع الفئة 3</string>
+    <string name="category4">نوع الفئة 4</string>
+    <string name="description_1">الوصف 1</string>
+    <string name="title_1"># العنوان 1</string>
+    <string name="title_2"># العنوان 2</string>
+    <string name="description_2">الوصف 2</string>
+    <string name="title_3"># العنوان 3</string>
+    <string name="description_3">الوصف 3  سوف تظهر التوصيه عنوانها و الوصف الخاص بها باللغة الاصليه للنشر ولن يتم ترجمة هذه التوصيه ستظهر ب لغة النشر ...</string>
+    <string name="filter">التصفية</string>
+
 </resources>

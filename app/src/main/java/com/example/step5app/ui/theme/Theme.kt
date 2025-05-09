@@ -19,7 +19,9 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = White,
     onSurfaceVariant = Black,
     surfaceContainer = Dark_gray,    // fields on the surface
-    background = Light_black
+    background = Light_black,
+    secondaryContainer = Light2_black,
+    tertiary = Gold
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -31,7 +33,8 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Black,              // onMainCard
     onSurfaceVariant = Black,       // onSecondaryCard
     surfaceContainer = White,
-
+    secondaryContainer = White,     // bottom bar
+    tertiary = Gold,                // FilterChip
 
 )
 

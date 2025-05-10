@@ -2,13 +2,17 @@ package com.example.step5app.presentation.auth.sign_in
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.domain.repositories.AuthRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignInViewModel: ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _loginUiState = MutableStateFlow(LoginUiState())
     val loginUiState: StateFlow<LoginUiState> = _loginUiState
@@ -33,18 +37,18 @@ class SignInViewModel: ViewModel() {
         viewModelScope.launch {
             _loginUiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            // Simulate API call
-            delay(2000)
-            if (email == "test@example.com" && password == "password") {
-                _loginUiState.update { it.copy(isLoading = false, isSuccessLogin = true) }
-            } else {
-                _loginUiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Invalid email or password"
-                    )
+            authRepository.signIn(email, password)
+                .onSuccess {
+                    _loginUiState.update { it.copy(isLoading = false, isSuccessLogin = true) }
                 }
-            }
+                .onFailure { e ->
+                    _loginUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = e.message ?: "Login failed"
+                        )
+                    }
+                }
         }
     }
 }

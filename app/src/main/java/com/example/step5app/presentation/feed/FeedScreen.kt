@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 import com.example.step5app.domain.model.Post
@@ -33,12 +35,33 @@ import com.example.step5app.presentation.feed.FeedViewModel
 import com.example.step5app.presentation.topBar.TopBar
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(
-    viewModel: FeedViewModel = viewModel()
+    viewModel: FeedViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.feedUiState.collectAsState()
+
+    // Filter Options
+    val filterOptions = listOf(
+        stringResource(R.string.today),
+        stringResource(R.string.this_week),
+        stringResource(R.string.last_week),
+        stringResource(R.string.this_month)
+    )
+    val defaultFilter = stringResource(R.string.filter)
+
+    // Categories options
+    val categories = listOf(
+        stringResource(R.string.category1),
+        stringResource(R.string.category2),
+        stringResource(R.string.category3),
+        stringResource(R.string.category4)
+    )
+
+    // This ensures it's only called once (set the filter and categories)
+    LaunchedEffect(Unit) {
+        viewModel.setLocalizedStrings(filterOptions, categories, defaultFilter)
+    }
 
     Scaffold(
         topBar = { TopBar() },

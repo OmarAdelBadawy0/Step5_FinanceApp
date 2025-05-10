@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 
@@ -23,7 +24,7 @@ import com.example.step5app.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    viewModel: TopBarViewModel = viewModel()
+    viewModel: TopBarViewModel = hiltViewModel()
 ) {
     val searchText by viewModel.searchText
 

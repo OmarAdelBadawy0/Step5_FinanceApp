@@ -38,14 +38,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
-fun SignUpFields() {
-
-    val viewModel: SignUpViewModel = viewModel()
+fun SignUpFields(
+    viewModel: SignUpViewModel = hiltViewModel()
+) {
     val uiState by viewModel.signUpUiState.collectAsState()
     val context = LocalContext.current
 

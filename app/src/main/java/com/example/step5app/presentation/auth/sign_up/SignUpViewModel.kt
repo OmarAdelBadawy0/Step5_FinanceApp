@@ -2,12 +2,16 @@ package com.example.step5app.presentation.auth.sign_up
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.domain.repositories.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignUpViewModel: ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val _signUpUiState = MutableStateFlow(SignUpUiState())
     val signUpUiState: StateFlow<SignUpUiState> = _signUpUiState
 
@@ -47,16 +51,16 @@ class SignUpViewModel: ViewModel() {
         if (!validateForm()) return
 
         viewModelScope.launch {
-            _signUpUiState.update {it.copy(isLoading = true, errorMessage = null)}
+            _signUpUiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            try {
-                // TODO: Replace with your actual sign-up logic
-                // Example: authRepository.signUp(uiState.email, uiState.password)
-                // Simulate network delay
-                kotlinx.coroutines.delay(2000)
-
+            authRepository.signUp(
+                firstName = signUpUiState.value.firstName,
+                lastName = signUpUiState.value.lastName,
+                email = signUpUiState.value.email,
+                password = signUpUiState.value.password
+            ).onSuccess {
                 _signUpUiState.update { it.copy(isLoading = false, isSuccessSignUp = true) }
-            } catch (e: Exception) {
+            }.onFailure { e ->
                 _signUpUiState.update { it.copy(isLoading = false, errorMessage = e.message) }
             }
         }

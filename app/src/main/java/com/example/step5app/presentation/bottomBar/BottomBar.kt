@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 
@@ -22,7 +23,7 @@ import com.example.step5app.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomBar(
-    viewModel: BottomBarViewModel = viewModel()
+    viewModel: BottomBarViewModel = hiltViewModel()
 ) {
     val selectedTab = viewModel.selectedTab.intValue
     val tabs = listOf(

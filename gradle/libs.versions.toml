@@ -12,6 +12,7 @@ animationCoreLint = "1.8.0"
 viewmodel = "2.7.0"
 hilt = "2.48"
 hiltNavigationCompose = "1.1.0"
+retrofit = "2.9.0"
 
 
 [libraries]
@@ -34,7 +35,8 @@ viewmodel = {group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose",
 hilt-android = {group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
 hilt-navigation-compose = {group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-
+retrofit2 = {group = "com.squareup.retrofit2", name = "retrofit"}
+retrofit2-converter-gson = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -3,12 +3,14 @@ package com.example.step5app.presentation.auth.sign_up
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.domain.repositories.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
@@ -53,16 +55,32 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _signUpUiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            authRepository.signUp(
-                firstName = signUpUiState.value.firstName,
-                lastName = signUpUiState.value.lastName,
-                email = signUpUiState.value.email,
-                password = signUpUiState.value.password
-            ).onSuccess {
-                _signUpUiState.update { it.copy(isLoading = false, isSuccessSignUp = true) }
-            }.onFailure { e ->
-                _signUpUiState.update { it.copy(isLoading = false, errorMessage = e.message) }
-            }
+            runCatching {
+                authRepository.signUp(
+                    firstName = signUpUiState.value.firstName,
+                    lastName = signUpUiState.value.lastName,
+                    email = signUpUiState.value.email,
+                    password = signUpUiState.value.password
+                )
+            }.fold(
+                onSuccess = {
+                    _signUpUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccessSignUp = true,
+                            errorMessage = null
+                        )
+                    }
+                },
+                onFailure = { e ->
+                    _signUpUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = e.message ?: "Sign up failed. Please try again."
+                        )
+                    }
+                }
+            )
         }
     }
 

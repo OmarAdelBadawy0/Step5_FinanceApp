@@ -42,7 +42,7 @@ import com.example.step5app.presentation.auth.sign_in.SignInFields
 import com.example.step5app.presentation.auth.sign_up.SignUpFields
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(onSignInSuccess: () -> Unit) {
     var isSignUp by remember { mutableStateOf(false) }
     val cardOffset by animateDpAsState(
         targetValue = if (isSignUp) (-600).dp else 0.dp,
@@ -91,7 +91,10 @@ fun AuthScreen() {
                 if (signup) {
                     SignUpFields()
                 } else {
-                    SignInFields()
+                    SignInFields(
+                        onSignUp = { isSignUp = true },
+                        onSuccess = onSignInSuccess
+                    )
                 }
             }
         }

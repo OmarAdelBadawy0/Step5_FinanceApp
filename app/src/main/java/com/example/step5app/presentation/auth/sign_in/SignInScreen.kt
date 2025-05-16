@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,10 +42,16 @@ import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
 fun SignInFields(
-    viewModel: SignInViewModel = hiltViewModel()
+    viewModel: SignInViewModel = hiltViewModel(),
+    onSignUp: () -> Unit,
+    onSuccess: () -> Unit
 ) {
 
     val uiState by viewModel.loginUiState.collectAsState()
+
+    LaunchedEffect(uiState.isSuccessLogin) {
+        if (uiState.isSuccessLogin) onSuccess()
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -137,7 +144,7 @@ fun SignInFields(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { /* TODO: Handle Sign In */ },
+            onClick = { viewModel.loginUser() },
             modifier = Modifier.fillMaxWidth()
                 .padding(top = 10.dp),
             colors = ButtonDefaults.buttonColors(
@@ -155,6 +162,6 @@ fun SignInFields(
 @Composable
 fun SignInFieldsPreview() {
     Step5AppTheme() {
-        SignInFields()
+        SignInFields(onSignUp = {}, onSuccess = {})
     }
 }

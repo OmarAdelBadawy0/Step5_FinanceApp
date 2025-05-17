@@ -47,4 +47,23 @@
     <string name="description_3">DESCRIPTION 3 the disc and title will appeare in the defult language was posted with no translate</string>
     <string name="may_4_2023" translatable="false">May 4, 2023</string>
     <string name="filter">FILTER</string>
+    <string name="back">Back</string>
+    <string name="settings">SETTINGS</string>
+    <string name="theme">THEME</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="use_system_setting">Use System Setting</string>
+    <string name="language">LANGUAGE</string>
+    <string name="arabic">ARABIC</string>
+    <string name="english">ENGLISH</string>
+    <string name="contact_us">CONTACT US</string>
+    <string name="about_us">ABOUT US</string>
+    <string name="contact_us_email" translatable="false">company@example.com</string>
+    <string name="contact_us_number" translatable="false">+20 123 456 7890</string>
+    <string name="about_us_description">App focus on finance thing and recommendations to help you be an expert in finance</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="telegram">Telegram</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="app_version" translatable="false">V1.0.0</string>
 </resources>

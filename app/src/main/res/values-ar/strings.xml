@@ -46,5 +46,21 @@
     <string name="title_3"># العنوان 3</string>
     <string name="description_3">الوصف 3  سوف تظهر التوصيه عنوانها و الوصف الخاص بها باللغة الاصليه للنشر ولن يتم ترجمة هذه التوصيه ستظهر ب لغة النشر ...</string>
     <string name="filter">التصفية</string>
+    <string name="back">رجوع</string>
+    <string name="settings">الإعدادات</string>
+    <string name="theme">السمة</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="light_mode">الوضع الفاتح</string>
+    <string name="use_system_setting">استخدام إعدادات النظام</string>
+    <string name="language">اللغة</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الإنجليزية</string>
+    <string name="contact_us">تواصل معنا</string>
+    <string name="about_us">من نحن</string>
+    <string name="about_us_description">يركز التطبيق على الأمور المالية ويوفر توصيات لمساعدتك على أن تصبح خبيرًا في الشؤون المالية</string>
+    <string name="whatsapp">واتساب</string>
+    <string name="telegram">تيليجرام</string>
+    <string name="instagram">إنستغرام</string>
+    <string name="facebook">فيسبوك</string>
 
 </resources>

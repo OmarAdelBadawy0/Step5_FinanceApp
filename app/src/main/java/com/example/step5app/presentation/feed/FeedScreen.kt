@@ -37,7 +37,8 @@ import com.example.step5app.presentation.topBar.TopBar
 
 @Composable
 fun FeedScreen(
-    viewModel: FeedViewModel = hiltViewModel()
+    viewModel: FeedViewModel = hiltViewModel(),
+    onSettingsClick: () -> Unit
 ) {
     val uiState by viewModel.feedUiState.collectAsState()
 
@@ -64,7 +65,7 @@ fun FeedScreen(
     }
 
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { TopBar(onSettingsClick = onSettingsClick) },
         bottomBar = { BottomBar() }
     ) { paddingValues ->
         Column(
@@ -242,5 +243,6 @@ fun FeedScreen(
 @Preview(showBackground = true)
 @Composable
 fun FeedScreenPreview() {
-    FeedScreen()
+    FeedScreen(viewModel = viewModel(),
+        onSettingsClick = {})
 }

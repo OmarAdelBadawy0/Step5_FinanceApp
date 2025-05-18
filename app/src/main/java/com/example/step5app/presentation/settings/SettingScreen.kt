@@ -44,7 +44,8 @@ import com.example.step5app.presentation.settings.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
+    onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -61,7 +62,8 @@ fun SettingsScreen(
                 contentDescription = stringResource(R.string.back),
                 Modifier
                     .scale(1.6f)
-                    .padding(end = 16.dp),
+                    .padding(end = 16.dp)
+                    .clickable {onBackClick()},
                 tint = MaterialTheme.colorScheme.onSurface)
 
             Text(stringResource(R.string.settings), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)

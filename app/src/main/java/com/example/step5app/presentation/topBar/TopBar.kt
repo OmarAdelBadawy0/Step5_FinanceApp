@@ -24,7 +24,8 @@ import com.example.step5app.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    viewModel: TopBarViewModel = hiltViewModel()
+    viewModel: TopBarViewModel = hiltViewModel(),
+    onSettingsClick: () -> Unit = {}
 ) {
     val searchText by viewModel.searchText
 
@@ -93,7 +94,7 @@ fun TopBar(
                 )
             },
             actions = {
-                IconButton(onClick = { /* Open settings */ }) {
+                IconButton(onClick = onSettingsClick ) {
                     Icon(
                         painter = painterResource(R.drawable.gear),
                         contentDescription = "Settings",

@@ -1,3 +1,4 @@
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +41,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.step5app.MainActivity
 import com.example.step5app.R
 import com.example.step5app.presentation.settings.SettingsViewModel
 
@@ -48,6 +51,8 @@ fun SettingsScreen(
     onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -102,13 +107,21 @@ fun SettingsScreen(
             language = stringResource(R.string.arabic),
             countryCode = "SA",
             selected = uiState.language == "AR",
-            onClick = { viewModel.updateLanguage("AR") }
+            onClick = {
+                viewModel.updateLanguage("AR")
+                viewModel.setLanguage(context, "ar")
+                (context as? Activity)?.recreate()
+            }
         )
         LanguageToggleRow(
             language = stringResource(R.string.english),
             countryCode = "US",
             selected = uiState.language == "EN",
-            onClick = { viewModel.updateLanguage("EN") }
+            onClick = {
+                viewModel.updateLanguage("EN")
+                viewModel.setLanguage(context, "en")
+                (context as? Activity)?.recreate()
+            }
         )
         Spacer(modifier = Modifier.height(28.dp))
 

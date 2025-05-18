@@ -21,7 +21,9 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainer = Dark_gray,    // fields on the surface
     background = Light_black,
     secondaryContainer = Light2_black,
-    tertiary = Gold
+    tertiary = Gold,
+    onTertiaryContainer = Green,
+    tertiaryContainer = Transparent_Gray,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -35,7 +37,8 @@ private val LightColorScheme = lightColorScheme(
     surfaceContainer = White,
     secondaryContainer = White,     // bottom bar
     tertiary = Gold,                // FilterChip
-
+    onTertiaryContainer = Green,    // selected option
+    tertiaryContainer = Transparent_Gray,
 )
 
 @Composable

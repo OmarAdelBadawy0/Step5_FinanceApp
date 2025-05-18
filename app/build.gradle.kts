@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.retrofit2)
     implementation(libs.retrofit2.converter.gson)
+    implementation(libs.datastore.preferences)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

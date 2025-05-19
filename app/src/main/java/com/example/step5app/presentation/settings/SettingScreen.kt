@@ -1,4 +1,5 @@
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -83,19 +84,31 @@ fun SettingsScreen(
             text = stringResource(R.string.dark_mode),
             icon = R.drawable.moon,
             selected = uiState.themePreference == "Dark",
-            onClick = { viewModel.updateTheme("Dark") }
+            onClick = {
+                viewModel.updateTheme("Dark")
+                viewModel.setTheme("Dark")
+                viewModel.restartApp(context)
+            }
         )
         ThemeToggleRow(
             text = stringResource(R.string.light_mode),
             icon = R.drawable.sun,
             selected = uiState.themePreference == "Light",
-            onClick = { viewModel.updateTheme("Light") }
+            onClick = {
+                viewModel.updateTheme("Light")
+                viewModel.setTheme("Light")
+                viewModel.restartApp(context)
+            }
         )
         ThemeToggleRow(
             text = stringResource(R.string.use_system_setting),
             icon = R.drawable.phone,
             selected = uiState.themePreference == "System",
-            onClick = { viewModel.updateTheme("System") }
+            onClick = {
+                viewModel.updateTheme("System")
+                viewModel.setTheme("System")
+                viewModel.restartApp(context)
+            }
         )
 
         Spacer(modifier = Modifier.height(14.dp))

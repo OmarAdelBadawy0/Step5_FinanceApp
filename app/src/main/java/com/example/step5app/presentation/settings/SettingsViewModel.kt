@@ -1,8 +1,8 @@
 package com.example.step5app.presentation.settings
 
-// presentation/settings/SettingsViewModel.kt
 import android.app.LocaleManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
@@ -108,4 +108,21 @@ class SettingsViewModel @Inject constructor(
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language))
         }
     }
+
+    fun setTheme(theme: String){
+        when (theme.lowercase()) {
+            "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            "system" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+    }
+
+    fun restartApp(context: Context) {
+        val packageManager = context.packageManager
+        val intent = packageManager.getLaunchIntentForPackage(context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+//        Runtime.getRuntime().exit(0) // kills the current process
+    }
+
 }

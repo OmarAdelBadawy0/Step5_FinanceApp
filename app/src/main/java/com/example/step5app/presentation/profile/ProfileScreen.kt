@@ -1,6 +1,5 @@
-package com.example.step5app.presentation
+package com.example.step5app.presentation.profile
 
-import android.view.RoundedCorner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,33 +16,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -58,24 +49,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.step5app.R
 import com.example.step5app.presentation.bottomBar.BottomBar
-import com.example.step5app.presentation.topBar.TopBar
+import com.example.step5app.presentation.common.EmailField
+import com.example.step5app.presentation.common.NameFieldsRow
+import com.example.step5app.presentation.common.PasswordField
+import com.example.step5app.presentation.common.SectionTitle
 
 @Composable
 fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
     onNavigateToSubscription: () -> Unit,
     onBackClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         bottomBar = { BottomBar() }
@@ -145,14 +136,17 @@ fun ProfileScreen(
                         .weight(1f)
                         .wrapContentWidth(),
                     shape = RoundedCornerShape(0.dp),
-                    contentPadding = PaddingValues(horizontal = 28.dp) // Remove default button padding
+                    contentPadding = PaddingValues(horizontal = 28.dp), // Remove default button padding
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
                     Box(
                         modifier = Modifier.wrapContentWidth(),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "Logout",
+                            text = stringResource(R.string.logout),
                             modifier = Modifier.widthIn(min = 40.dp),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
@@ -167,7 +161,7 @@ fun ProfileScreen(
             Column(modifier = Modifier.fillMaxWidth()) {
                 // First TabRow (Notifications/Delete Account)
                 TabRow(
-                    selectedTabIndex = 0,
+                    selectedTabIndex = uiState.selectedTabIndex,
                     containerColor = Color.Transparent,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -176,15 +170,15 @@ fun ProfileScreen(
                     indicator = {} // Remove default indicator
                 ) {
                     Tab(
-                        selected = selectedTabIndex == 3,
+                        selected = uiState.selectedTabIndex == 3,
                         onClick = {
-                            selectedTabIndex = 3
+                            viewModel.updateSelectedTabIndex(3)
                         },
                         text = {
                             Text(
                                 "NOTIFICATIONS",
                                 color =
-                                    if (selectedTabIndex == 3) MaterialTheme.colorScheme.onPrimary
+                                    if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.onPrimary
                                     else MaterialTheme.colorScheme.tertiary,
                                 fontWeight = FontWeight.Bold
                             )
@@ -195,20 +189,20 @@ fun ProfileScreen(
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(37.dp)
                             .background(
-                                if (selectedTabIndex == 3) MaterialTheme.colorScheme.tertiary
+                                if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.tertiary
                                 else Color.Transparent
                             )
                             )
                     Tab(
-                        selected = selectedTabIndex == 4,
+                        selected = uiState.selectedTabIndex == 4,
                         onClick = {
-                            selectedTabIndex = 4
+                            viewModel.updateSelectedTabIndex(4)
                         },
                         text = {
                             Text(
                                 "DELETE ACCOUNT",
                                 color =
-                                    if (selectedTabIndex == 4) MaterialTheme.colorScheme.onPrimary
+                                    if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.onPrimary
                                     else MaterialTheme.colorScheme.tertiary,
                                 fontWeight = FontWeight.Bold
                             )
@@ -219,7 +213,7 @@ fun ProfileScreen(
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(37.dp)
                             .background(
-                                if (selectedTabIndex == 4) MaterialTheme.colorScheme.tertiary
+                                if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.tertiary
                                 else Color.Transparent
                             )
                     )
@@ -227,31 +221,33 @@ fun ProfileScreen(
 
                 // Second TabRow (Profile/My Courses/Subscription)
                 TabRow(
-                    selectedTabIndex = selectedTabIndex, // You need to manage this state
-                    modifier = Modifier.fillMaxWidth().height(34.dp),
+                    selectedTabIndex = uiState.selectedTabIndex, // You need to manage this state
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(34.dp),
                     containerColor = Color.Transparent,
                     divider = {}, // Remove default divider
                     indicator = {} // Remove default indicator
                 ) {
                     Tab(
-                        selected = selectedTabIndex == 0,
+                        selected = uiState.selectedTabIndex == 0,
                         onClick = {
-                            selectedTabIndex = 0
+                            viewModel.updateSelectedTabIndex(0)
                         },
                         modifier = Modifier
                             .padding(top = 6.dp)
                             .padding(horizontal = 4.dp)
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(38.dp)
-                            .background(if (selectedTabIndex == 0) MaterialTheme.colorScheme.tertiary else Color.Transparent),
+                            .background(if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
                             Text("PROFILE",
-                                color = if (selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
+                                color = if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
                     )
                     Tab(
-                        selected = selectedTabIndex == 1,
+                        selected = uiState.selectedTabIndex == 1,
                         onClick = {
-                            selectedTabIndex = 1
+                            viewModel.updateSelectedTabIndex(1)
                         },
                         modifier = Modifier
                             .padding(top = 6.dp)
@@ -259,27 +255,26 @@ fun ProfileScreen(
                             .fillMaxHeight()
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(38.dp)
-                            .background(if (selectedTabIndex == 1) MaterialTheme.colorScheme.tertiary else Color.Transparent),
+                            .background(if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
                             Text("MY COURSES",
-                                color = if (selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
+                                color = if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
                     )
                     Tab(
-                        selected = selectedTabIndex == 2,
+                        selected = uiState.selectedTabIndex == 2,
                         onClick = {
-                            selectedTabIndex = 2
-                            onNavigateToSubscription()
+                            viewModel.updateSelectedTabIndex(2)
                         },
                         modifier = Modifier
                             .padding(top = 6.dp)
                             .padding(horizontal = 4.dp)
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(38.dp)
-                            .background(if (selectedTabIndex == 2) MaterialTheme.colorScheme.tertiary else Color.Transparent),
+                            .background(if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
                             Text(
                                 "SUBSCRIPTION",
-                                color = if (selectedTabIndex == 2) MaterialTheme.colorScheme.onPrimary
+                                color = if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.onPrimary
                                         else MaterialTheme.colorScheme.tertiary,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold) }
@@ -290,105 +285,108 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Personal Details Section
-            Text("PERSONAL DETAILS", style = MaterialTheme.typography.titleLarge)
+            SectionTitle(stringResource(R.string.personal_details))
+
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = firstName,
-                onValueChange = { firstName = it },
-                label = { Text("First Name") },
-                modifier = Modifier.fillMaxWidth()
+
+            NameFieldsRow(
+                firstName = uiState.firstName,
+                onFirstNameChange = { viewModel.updateFirstName(it) },
+                lastName = uiState.lastName,
+                onLastNameChange = { viewModel.updateLastName(it) }
             )
 
-            OutlinedTextField(
-                value = lastName,
-                onValueChange = { lastName = it },
-                label = { Text("Last Name") },
-                modifier = Modifier.fillMaxWidth()
+            EmailField(
+                email =  uiState.email,
+                onEmailChange = { viewModel.updateEmail(it) }
             )
 
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth()
-            )
 
             OutlinedTextField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                label = { Text("Phone Number (Optional)") },
-                modifier = Modifier.fillMaxWidth()
+                value = uiState.phoneNumber,
+                onValueChange = { viewModel.updatePhoneNumber(it) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.phone_number_optional),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.phone),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                )
             )
 
             Button(
-                onClick = { /* Save changes */ },
+                onClick = { viewModel::saveProfileChanges },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(0.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                contentPadding = PaddingValues(vertical = 12.dp)
             ) {
-                Text("SAVE CHANGES")
+                Text(stringResource(R.string.save_changes), fontWeight = FontWeight.Bold)
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-            // Change Password Section
-            Text("CHANGE PASSWORD", style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(8.dp))
 
-            var oldPassword by remember { mutableStateOf("") }
-            var newPassword by remember { mutableStateOf("") }
-            var confirmPassword by remember { mutableStateOf("") }
+            SectionTitle(stringResource(R.string.change_password))
 
-            OutlinedTextField(
-                value = oldPassword,
-                onValueChange = { oldPassword = it },
-                label = { Text("Old Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
+
+            PasswordField(
+                value =  uiState.oldPassword,
+                onValueChange = { viewModel.updateOldPassword(it) },
+                onVisibilityToggle =  { viewModel::toggleOldPasswordVisibility },
+                isVisible =  uiState.isOldPasswordVisible,
+                label = stringResource(R.string.old_password)
             )
 
-            OutlinedTextField(
-                value = newPassword,
-                onValueChange = { newPassword = it },
-                label = { Text("New Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
+            PasswordField(
+                value = uiState.newPassword,
+                onValueChange = { viewModel.updateNewPassword(it) },
+                onVisibilityToggle =  { viewModel::toggleNewPasswordVisibility },
+                isVisible = uiState.isNewPasswordVisible,
+                label = stringResource(R.string.new_password)
             )
 
-            OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
-                label = { Text("Confirm New Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
+            PasswordField(
+                value = uiState.confirmPassword,
+                onValueChange = { viewModel.updateConfirmPassword(it) },
+                onVisibilityToggle =  { viewModel::toggleConfirmPasswordVisibility },
+                isVisible = uiState.isConfirmPasswordVisible,
+                label = stringResource(R.string.confirm_new_password)
             )
 
             Button(
-                onClick = { /* Change password */ },
+                onClick = { viewModel::changePassword },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(vertical = 16.dp),
+                shape = RoundedCornerShape(0.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                contentPadding = PaddingValues(vertical = 12.dp)
             ) {
-                Text("CHANGE PASSWORD")
+                Text(stringResource(R.string.change_password), fontWeight = FontWeight.Bold)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
 
-            // Danger Zone
-            Text(
-                "DANGER ZONE",
-                style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.error)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = { /* Delete account */ },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("DELETE ACCOUNT")
-            }
         }
     }
 }

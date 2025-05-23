@@ -62,5 +62,14 @@
     <string name="telegram">تيليجرام</string>
     <string name="instagram">إنستغرام</string>
     <string name="facebook">فيسبوك</string>
+    <string name="phone_number_optional">رقم الهاتف (اختياري)</string>
+    <string name="personal_details">المعلومات الشخصية</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="old_password">كلمة المرور القديمة</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="confirm_new_password">تأكيد كلمة المرور الجديدة</string>
+
 
 </resources>

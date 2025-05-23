@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.step5app.R
 import com.example.step5app.domain.model.Post
 import com.example.step5app.presentation.bottomBar.BottomBar
@@ -38,7 +39,8 @@ import com.example.step5app.presentation.topBar.TopBar
 @Composable
 fun FeedScreen(
     viewModel: FeedViewModel = hiltViewModel(),
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    navController: NavController
 ) {
     val uiState by viewModel.feedUiState.collectAsState()
 
@@ -66,7 +68,7 @@ fun FeedScreen(
 
     Scaffold(
         topBar = { TopBar(onSettingsClick = onSettingsClick) },
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -240,9 +242,12 @@ fun FeedScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun FeedScreenPreview() {
-    FeedScreen(viewModel = viewModel(),
-        onSettingsClick = {})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun FeedScreenPreview() {
+//    FeedScreen(
+//        viewModel = viewModel(),
+//        onSettingsClick = {},
+//        navController = NavController(LocalContext.current)
+//    )
+//}

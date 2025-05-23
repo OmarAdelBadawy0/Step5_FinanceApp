@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.step5app.R
 import com.example.step5app.presentation.bottomBar.BottomBar
 import com.example.step5app.presentation.common.EmailField
@@ -62,14 +63,14 @@ import com.example.step5app.presentation.common.SectionTitle
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    onNavigateToSubscription: () -> Unit,
     onBackClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    navController: NavController
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
 
         Row(

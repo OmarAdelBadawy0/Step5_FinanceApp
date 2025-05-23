@@ -1,5 +1,6 @@
 package com.example.step5app.presentation.bottomBar
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -17,13 +18,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.step5app.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomBar(
-    viewModel: BottomBarViewModel = hiltViewModel()
+    viewModel: BottomBarViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val selectedTab = viewModel.selectedTab.intValue
     val tabs = listOf(
@@ -40,7 +43,11 @@ fun BottomBar(
         tabs.forEachIndexed { index, title ->
             NavigationBarItem(
                 selected = selectedTab == index,
-                onClick = { viewModel.selectTab(index) },
+                onClick = {
+                    viewModel.selectTab(index)
+                    Log.d("BottomBar", "Selected tab: $index")
+                    navController.navigate(title.lowercase())
+                          },
                 icon = {
                     when (index) {
                         0 -> Icon(

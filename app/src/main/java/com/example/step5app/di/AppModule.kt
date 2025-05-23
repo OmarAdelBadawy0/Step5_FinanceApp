@@ -3,6 +3,7 @@ package com.example.step5app.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.step5app.presentation.bottomBar.BottomBarViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +25,11 @@ object AppModule {
     @Singleton
     fun provideApplicationContext(application: Application): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    @Singleton
+    fun provideBottomBarViewModel(): BottomBarViewModel {
+        return BottomBarViewModel()
     }
 }

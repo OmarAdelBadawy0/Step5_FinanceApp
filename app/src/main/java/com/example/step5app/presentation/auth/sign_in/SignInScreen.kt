@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
+import com.example.step5app.presentation.common.EmailField
 import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
@@ -60,24 +61,10 @@ fun SignInFields(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround
     ) {
-        OutlinedTextField(
-            value = uiState.email,
-            onValueChange = {viewModel.onEmailChange(it)},
-            label = { Text(text = stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.mail),
-                    modifier = Modifier.size(20.dp),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-            )
+
+        EmailField(
+            email = uiState.email,
+            onEmailChange = { viewModel.onEmailChange(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -144,7 +131,8 @@ fun SignInFields(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { viewModel.loginUser() },
+            onClick = {
+                viewModel.loginUser() },
             modifier = Modifier.fillMaxWidth()
                 .padding(top = 10.dp),
             colors = ButtonDefaults.buttonColors(

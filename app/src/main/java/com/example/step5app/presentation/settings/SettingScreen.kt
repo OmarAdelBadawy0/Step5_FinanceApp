@@ -44,6 +44,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.step5app.MainActivity
 import com.example.step5app.R
+import com.example.step5app.presentation.common.ContactRow
+import com.example.step5app.presentation.common.LanguageToggleRow
+import com.example.step5app.presentation.common.SectionTitle
+import com.example.step5app.presentation.common.ThemeToggleRow
 import com.example.step5app.presentation.settings.SettingsViewModel
 
 @Composable
@@ -201,107 +205,8 @@ fun SettingsScreen(
     }
 }
 
-@Composable
-fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.padding(vertical = 4.dp),
-        fontSize = 18.sp
-    )
-    HorizontalDivider(
-        modifier = Modifier.width(title.length.dp * 13),
-        thickness = 3.dp,
-        color = MaterialTheme.colorScheme.tertiary
-    )
-}
 
-@Composable
-fun ThemeToggleRow(text: String, icon: Int, selected: Boolean, onClick: () -> Unit) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 2.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painterResource(icon),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.scale(1.2f)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier
-            .weight(1f)
-            .padding(start = 5.dp), fontSize = 14.sp)
-        Switch(
-            checked = selected,
-            onCheckedChange = { onClick() },
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colorScheme.secondaryContainer,
-                uncheckedThumbColor = MaterialTheme.colorScheme.surfaceVariant,
-                checkedTrackColor = MaterialTheme.colorScheme.onTertiaryContainer, // Bright green
-                uncheckedTrackColor = MaterialTheme.colorScheme.tertiaryContainer,
-                checkedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer, // To give a visible border
-                uncheckedBorderColor = Color.Transparent,
-            ),
-            modifier = Modifier.scale(0.8f) // Optional: Slightly shrink switch to match the compact look
-        )
-    }
-}
 
-@Composable
-fun LanguageToggleRow(language: String, countryCode: String, selected: Boolean, onClick: () -> Unit) {
-    val flag = when (countryCode) {
-        "US" -> "\uD83C\uDDFA\uD83C\uDDF8" // 🇺🇸
-        "SA" -> "\uD83C\uDDF8\uD83C\uDDE6" // 🇸🇦
-        else -> ""
-    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 26.dp)
-            .border(
-                width = 1.dp,
-                color = if (selected) MaterialTheme.colorScheme.onTertiaryContainer else Color.Transparent
-            )
-            .background(if (selected) MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surface)
-            .clickable { onClick() }
-            .padding(8.dp)
 
-    ) {
-        Text(
-            text = "$flag $language",
-            color = if (selected) MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
 
-@Composable
-fun ContactRow(icon: Int, text: String) {
-    Row(
-        verticalAlignment =
-            Alignment.CenterVertically,
-        modifier = Modifier.padding(top = 22.dp, )) {
-        Icon(
-            painterResource(icon),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .scale(1.2f)
-                .padding(end = 8.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            Text(
-                text = text,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = TextStyle.Default.copy(textDirection = TextDirection.Ltr),
-                fontSize = 16.sp
-            )
-        }
-    }
-}

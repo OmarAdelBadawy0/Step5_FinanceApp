@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
+import com.example.step5app.presentation.common.EmailField
+import com.example.step5app.presentation.common.NameFieldsRow
 import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
@@ -58,53 +60,19 @@ fun SignUpFields(
             .padding(20.dp, 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            OutlinedTextField(
-                value = uiState.firstName,
-                onValueChange = {viewModel.updateFirstName(it)},
-                label = { Text(stringResource(R.string.first_name), color = MaterialTheme.colorScheme.onSurface) },
-                modifier = Modifier.weight(1f),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                )
-            )
-            OutlinedTextField(
-                value = uiState.lastName,
-                onValueChange = {viewModel.updateLastName(it)},
-                label = { Text(stringResource(R.string.last_name), color = MaterialTheme.colorScheme.onSurface) },
-                modifier = Modifier.weight(1f),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                )
-            )
-        }
+
+        NameFieldsRow(
+            firstName = uiState.firstName,
+            onFirstNameChange = { viewModel.updateFirstName(it) },
+            lastName = uiState.lastName,
+            onLastNameChange = { viewModel.updateLastName(it) }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = uiState.email,
-            onValueChange = {viewModel.updateEmail(it)},
-            label = { Text(stringResource(R.string.email), color = MaterialTheme.colorScheme.onSurface) },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.mail),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurface
-                ) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-            )
+        EmailField(
+            email = uiState.email,
+            onEmailChange = { viewModel.updateEmail(it) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))

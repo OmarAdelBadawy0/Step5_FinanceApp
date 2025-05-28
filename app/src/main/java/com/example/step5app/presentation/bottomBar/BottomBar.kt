@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.step5app.R
+import com.example.step5app.presentation.navigation.Screen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,8 +46,14 @@ fun BottomBar(
                 selected = selectedTab == index,
                 onClick = {
                     viewModel.selectTab(index)
-                    Log.d("BottomBar", "Selected tab: $index")
-                    navController.navigate(title.lowercase())
+
+                    when (index) {
+                        0 -> navController.navigate(Screen.Feed.route)
+                        1 -> navController.navigate(Screen.Courses.route)
+                        2 -> navController.navigate(Screen.Network.route)
+                        3 -> navController.navigate(Screen.Profile.route)
+                        else -> navController.navigate(Screen.Feed.route)
+                    }
                           },
                 icon = {
                     when (index) {

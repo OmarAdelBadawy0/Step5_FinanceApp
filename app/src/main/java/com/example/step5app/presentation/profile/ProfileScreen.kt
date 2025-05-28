@@ -16,14 +16,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -59,6 +65,8 @@ import com.example.step5app.presentation.common.EmailField
 import com.example.step5app.presentation.common.NameFieldsRow
 import com.example.step5app.presentation.common.PasswordField
 import com.example.step5app.presentation.common.SectionTitle
+import com.example.step5app.presentation.myCourses.MyCoursesScreen
+import com.example.step5app.presentation.navigation.Screen
 
 @Composable
 fun ProfileScreen(
@@ -73,35 +81,6 @@ fun ProfileScreen(
         bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
 
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 34.dp, start = 16.dp, end = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-
-            ) {
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(50.dp)
-                    .clickable(onClick = onBackClick)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = stringResource(R.string.logo_description),
-                    contentScale = ContentScale.Crop
-                )
-            }
-            IconButton(onClick = { onSettingsClick }) {
-                Icon(
-                    painterResource(R.drawable.gear),
-                    contentDescription = "Notifications",
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.scale(1.6f)
-                )
-            }
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,8 +88,36 @@ fun ProfileScreen(
                 .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    ,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(50.dp)
+                        .clickable(onClick = onBackClick)
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.logo),
+                        contentDescription = stringResource(R.string.logo_description),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                IconButton(onClick =  onSettingsClick ) {
+                    Icon(
+                        painterResource(R.drawable.gear),
+                        contentDescription = "Setting",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.scale(1.6f),
+                    )
+                }
+            }
 
-            Spacer(modifier = Modifier.height(54.dp))
+            Spacer(modifier = Modifier.height(45.dp))
 
 
             Row(
@@ -285,109 +292,211 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Personal Details Section
-            SectionTitle(stringResource(R.string.personal_details))
+            if (uiState.selectedTabIndex == 0) {
+                PersonalDetails(
+                    viewModel = viewModel,
+                    uiState = uiState
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-
-            NameFieldsRow(
-                firstName = uiState.firstName,
-                onFirstNameChange = { viewModel.updateFirstName(it) },
-                lastName = uiState.lastName,
-                onLastNameChange = { viewModel.updateLastName(it) }
-            )
-
-            EmailField(
-                email =  uiState.email,
-                onEmailChange = { viewModel.updateEmail(it) }
-            )
-
-
-            OutlinedTextField(
-                value = uiState.phoneNumber,
-                onValueChange = { viewModel.updatePhoneNumber(it) },
-                label = {
-                    Text(
-                        text = stringResource(R.string.phone_number_optional),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.phone),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 )
-            )
-
-            Button(
-                onClick = { viewModel::saveProfileChanges },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                shape = RoundedCornerShape(0.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                contentPadding = PaddingValues(vertical = 12.dp)
-            ) {
-                Text(stringResource(R.string.save_changes), fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(30.dp))
+                ChangePassword(
+                    viewModel = viewModel,
+                    uiState = uiState
+                )
+            }
+            else if (uiState.selectedTabIndex == 1) {
+                MyCoursesScreen()
+            }
+            else if (uiState.selectedTabIndex == 2) {
+                PricingCard()
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+        }
+    }
 
 
-            SectionTitle(stringResource(R.string.change_password))
+}
+
+@Composable
+fun PersonalDetails(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    uiState: ProfileUiState = viewModel.uiState.collectAsState().value
+) {
+    // Personal Details Section
+    SectionTitle(stringResource(R.string.personal_details))
+
+    Spacer(modifier = Modifier.height(8.dp))
 
 
-            PasswordField(
-                value =  uiState.oldPassword,
-                onValueChange = { viewModel.updateOldPassword(it) },
-                onVisibilityToggle =  { viewModel::toggleOldPasswordVisibility },
-                isVisible =  uiState.isOldPasswordVisible,
-                label = stringResource(R.string.old_password)
+    NameFieldsRow(
+        firstName = uiState.firstName,
+        onFirstNameChange = { viewModel.updateFirstName(it) },
+        lastName = uiState.lastName,
+        onLastNameChange = { viewModel.updateLastName(it) }
+    )
+
+    EmailField(
+        email =  uiState.email,
+        onEmailChange = { viewModel.updateEmail(it) }
+    )
+
+
+    OutlinedTextField(
+        value = uiState.phoneNumber,
+        onValueChange = { viewModel.updatePhoneNumber(it) },
+        label = {
+            Text(
+                text = stringResource(R.string.phone_number_optional),
+                color = MaterialTheme.colorScheme.onSurface
             )
-
-            PasswordField(
-                value = uiState.newPassword,
-                onValueChange = { viewModel.updateNewPassword(it) },
-                onVisibilityToggle =  { viewModel::toggleNewPasswordVisibility },
-                isVisible = uiState.isNewPasswordVisible,
-                label = stringResource(R.string.new_password)
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(R.drawable.phone),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+        )
+    )
 
-            PasswordField(
-                value = uiState.confirmPassword,
-                onValueChange = { viewModel.updateConfirmPassword(it) },
-                onVisibilityToggle =  { viewModel::toggleConfirmPasswordVisibility },
-                isVisible = uiState.isConfirmPasswordVisible,
-                label = stringResource(R.string.confirm_new_password)
-            )
+    Button(
+        onClick = { viewModel::saveProfileChanges },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        shape = RoundedCornerShape(0.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ),
+        contentPadding = PaddingValues(vertical = 12.dp)
+    ) {
+        Text(stringResource(R.string.save_changes), fontWeight = FontWeight.Bold)
+    }
+}
 
-            Button(
-                onClick = { viewModel::changePassword },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                shape = RoundedCornerShape(0.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                contentPadding = PaddingValues(vertical = 12.dp)
-            ) {
-                Text(stringResource(R.string.change_password), fontWeight = FontWeight.Bold)
+
+@Composable
+fun ChangePassword(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    uiState: ProfileUiState = viewModel.uiState.collectAsState().value
+) {
+    SectionTitle(stringResource(R.string.change_password))
+
+
+    PasswordField(
+        value =  uiState.oldPassword,
+        onValueChange = { viewModel.updateOldPassword(it) },
+        onVisibilityToggle =  { viewModel::toggleOldPasswordVisibility },
+        isVisible =  uiState.isOldPasswordVisible,
+        label = stringResource(R.string.old_password)
+    )
+
+    PasswordField(
+        value = uiState.newPassword,
+        onValueChange = { viewModel.updateNewPassword(it) },
+        onVisibilityToggle =  { viewModel::toggleNewPasswordVisibility },
+        isVisible = uiState.isNewPasswordVisible,
+        label = stringResource(R.string.new_password)
+    )
+
+    PasswordField(
+        value = uiState.confirmPassword,
+        onValueChange = { viewModel.updateConfirmPassword(it) },
+        onVisibilityToggle =  { viewModel::toggleConfirmPasswordVisibility },
+        isVisible = uiState.isConfirmPasswordVisible,
+        label = stringResource(R.string.confirm_new_password)
+    )
+
+    Button(
+        onClick = { viewModel::changePassword },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        shape = RoundedCornerShape(0.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ),
+        contentPadding = PaddingValues(vertical = 12.dp)
+    ) {
+        Text(stringResource(R.string.change_password), fontWeight = FontWeight.Bold)
+    }
+}
+
+
+
+@Composable
+fun PricingCard() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF1E1E1E)), // Background similar to image
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            modifier = Modifier
+                .width(250.dp)
+                .wrapContentHeight(),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A)),
+            shape = RoundedCornerShape(8.dp),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                // Header Box
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFB38F45)) // Gold color
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("PLAN NAME", fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("PER MONTH", fontSize = 12.sp, color = Color.White)
+                        Spacer(Modifier.height(8.dp))
+                        Text("XX LE", fontWeight = FontWeight.Bold, color = Color.White)
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
+
+                // Features
+                val features = listOf("Feature", "Feature", "Feature")
+                features.forEach {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = Color(0xFF00FF00), // Green
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(text = it, color = Color.White)
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
+
+                // Subscribe Button
+                Button(
+                    onClick = { /* handle click */ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4C518A)), // Indigo-like
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                ) {
+                    Text("SUBSCRIBE", fontWeight = FontWeight.Bold, color = Color.White)
+                }
             }
-
-
         }
     }
 }

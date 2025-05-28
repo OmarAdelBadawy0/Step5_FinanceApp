@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.step5app.presentation.auth.AuthScreen
 import com.example.step5app.presentation.feed.FeedViewModel
+import com.example.step5app.presentation.myCourses.MyCoursesScreen
 import com.example.step5app.presentation.profile.ProfileScreen
 import com.example.step5app.presentation.profile.ProfileViewModel
 import com.example.step5app.presentation.settings.SettingsViewModel
@@ -30,7 +31,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         }
 
         composable(Screen.Courses.route) {
-            // Add your Courses screen implementation
+            MyCoursesScreen()
         }
 
         composable(Screen.Network.route) {

@@ -65,8 +65,10 @@ import com.example.step5app.presentation.common.EmailField
 import com.example.step5app.presentation.common.NameFieldsRow
 import com.example.step5app.presentation.common.PasswordField
 import com.example.step5app.presentation.common.SectionTitle
+import com.example.step5app.presentation.deleteAccount.DeleteAccountSection
 import com.example.step5app.presentation.myCourses.MyCoursesScreen
 import com.example.step5app.presentation.navigation.Screen
+import com.example.step5app.presentation.subscription.SubscriptionPlan
 
 @Composable
 fun ProfileScreen(
@@ -110,7 +112,7 @@ fun ProfileScreen(
                 IconButton(onClick =  onSettingsClick ) {
                     Icon(
                         painterResource(R.drawable.gear),
-                        contentDescription = "Setting",
+                        contentDescription = stringResource(R.string.settings),
                         tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.scale(1.6f),
                     )
@@ -132,7 +134,7 @@ fun ProfileScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Person",
+                        text = stringResource(R.string.person),
                         fontSize = 34.sp
                     )
                 }
@@ -184,7 +186,7 @@ fun ProfileScreen(
                         },
                         text = {
                             Text(
-                                "NOTIFICATIONS",
+                                stringResource(R.string.notifications),
                                 color =
                                     if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.onPrimary
                                     else MaterialTheme.colorScheme.tertiary,
@@ -208,7 +210,7 @@ fun ProfileScreen(
                         },
                         text = {
                             Text(
-                                "DELETE ACCOUNT",
+                                stringResource(R.string.delete_account),
                                 color =
                                     if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.onPrimary
                                     else MaterialTheme.colorScheme.tertiary,
@@ -249,7 +251,7 @@ fun ProfileScreen(
                             .height(38.dp)
                             .background(if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
-                            Text("PROFILE",
+                            Text(stringResource(R.string.profile),
                                 color = if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
                     )
                     Tab(
@@ -265,7 +267,8 @@ fun ProfileScreen(
                             .height(38.dp)
                             .background(if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
-                            Text("MY COURSES",
+                            Text(
+                                stringResource(R.string.my_courses),
                                 color = if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
                     )
                     Tab(
@@ -281,7 +284,7 @@ fun ProfileScreen(
                             .background(if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
                             Text(
-                                "SUBSCRIPTION",
+                                stringResource(R.string.subscription),
                                 color = if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.onPrimary
                                         else MaterialTheme.colorScheme.tertiary,
                                 fontSize = 12.sp,
@@ -308,7 +311,12 @@ fun ProfileScreen(
                 MyCoursesScreen()
             }
             else if (uiState.selectedTabIndex == 2) {
-                PricingCard()
+                SubscriptionPlan()
+            }else if (uiState.selectedTabIndex == 4) {
+                DeleteAccountSection(
+                    onDeleteClick = { /*TODO*/ },
+                    onSendCodeClick = { /*TODO*/ },
+                )
             }
 
         }
@@ -431,72 +439,4 @@ fun ChangePassword(
 
 
 
-@Composable
-fun PricingCard() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF1E1E1E)), // Background similar to image
-        contentAlignment = Alignment.Center
-    ) {
-        Card(
-            modifier = Modifier
-                .width(250.dp)
-                .wrapContentHeight(),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A)),
-            shape = RoundedCornerShape(8.dp),
-            elevation = CardDefaults.cardElevation(8.dp)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-                // Header Box
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFFB38F45)) // Gold color
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("PLAN NAME", fontWeight = FontWeight.Bold, color = Color.White)
-                        Text("PER MONTH", fontSize = 12.sp, color = Color.White)
-                        Spacer(Modifier.height(8.dp))
-                        Text("XX LE", fontWeight = FontWeight.Bold, color = Color.White)
-                    }
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                // Features
-                val features = listOf("Feature", "Feature", "Feature")
-                features.forEach {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
-                            contentDescription = null,
-                            tint = Color(0xFF00FF00), // Green
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Text(text = it, color = Color.White)
-                    }
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                // Subscribe Button
-                Button(
-                    onClick = { /* handle click */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4C518A)), // Indigo-like
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                ) {
-                    Text("SUBSCRIBE", fontWeight = FontWeight.Bold, color = Color.White)
-                }
-            }
-        }
-    }
-}

@@ -19,14 +19,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.step5app.R
 
 @Composable
 fun MyCoursesScreen() {
     var visibleText by remember { mutableStateOf("") }
-    val fullText = "COMING SOON"
+    val fullText = stringResource(R.string.coming_soon)
 
     // Start typing animation
     LaunchedEffect(Unit) {

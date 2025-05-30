@@ -74,4 +74,20 @@
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
+    <string name="subscribe">SUBSCRIBE</string>
+    <string name="setting">Setting</string>
+    <string name="person">Person</string>
+    <string name="notifications">NOTIFICATIONS</string>
+    <string name="delete_account">DELETE ACCOUNT</string>
+    <string name="my_courses">MY COURSES</string>
+    <string name="subscription">SUBSCRIPTION</string>
+    <string name="my_plan">MY PLAN</string>
+    <string name="you_don_t_have_any_subscription_yet">You Don\'t Have Any Subscription yet</string>
+    <string name="subscription_plans">SUBSCRIPTION PLANS</string>
+    <string name="plan_name">PLAN NAME</string>
+    <string name="per_month">PER MONTH</string>
+    <string name="feature">Feature</string>
+    <string name="xx_le">XX LE</string>
+    <string name="coming_soon">COMING SOON</string>
+    <string name="le">%1$s LE</string>
 </resources>

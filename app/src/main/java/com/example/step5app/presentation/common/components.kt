@@ -84,19 +84,21 @@ fun ContactRow(icon: Int, text: String) {
 
 
 @Composable
-fun ThemeToggleRow(text: String, icon: Int, selected: Boolean, onClick: () -> Unit) {
+fun ToggleRow(text: String, icon: Int?, selected: Boolean, onClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painterResource(icon),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.scale(1.2f)
-        )
+        if (icon != null){
+            Icon(
+                painterResource(icon),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.scale(1.2f)
+            )
+        }
         Spacer(modifier = Modifier.width(8.dp))
         Text(text, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier
             .weight(1f)

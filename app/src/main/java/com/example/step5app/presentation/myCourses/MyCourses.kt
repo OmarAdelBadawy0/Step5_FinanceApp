@@ -54,7 +54,7 @@ fun MyCoursesScreen() {
         ) {
             Text(
                 text = visibleText,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(10.dp),
                 fontWeight = FontWeight.Bold
             )

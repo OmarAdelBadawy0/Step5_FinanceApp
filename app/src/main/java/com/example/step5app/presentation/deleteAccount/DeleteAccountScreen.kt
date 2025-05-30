@@ -114,7 +114,7 @@ fun DeleteAccountSection(
                 modifier = Modifier.weight(0.75f),
                 shape = RoundedCornerShape(0.dp)
             ) {
-                Text(stringResource(R.string.send_code), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.send_code), fontWeight = FontWeight.Bold)
             }
         }
     }

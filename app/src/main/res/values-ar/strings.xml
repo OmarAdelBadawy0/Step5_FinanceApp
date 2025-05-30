@@ -86,6 +86,16 @@
     <string name="xx_le">XX ج.م</string>
     <string name="coming_soon">قادم قريبًا</string>
     <string name="le">%1$s ج.م</string>
+    <string name="warning">"تحذير: "</string>
+    <string name="if_you_delete_your_account_you_will_be_unsubscribed_from_all_of_your_courses_and_will_lose_access_to_your_account_and_data_associated_with_your_account">
+    "إذا قمت بحذف حسابك، فسيتم إلغاء اشتراكك من جميع الدورات وستفقد الوصول إلى حسابك وجميع البيانات المرتبطة به."
+    </string>
+    <string name="forever">إلى الأبد.</string>
+    <string name="if_you_sure_to_delete_your_account_please_enter_the_6_digit_code_we_sent_to_test1_email_com_to_delete_your_account">
+    إذا كنت متأكدًا من رغبتك في حذف حسابك، يرجى إدخال الرمز المكون من 6 أرقام الذي أرسلناه إلى test1@email.com لحذف حسابك.
+    </string>
+    <string name="_6_digit_code">رمز مكون من 6 أرقام</string>
+    <string name="send_code">إرسال الرمز</string>
 
 
 </resources>

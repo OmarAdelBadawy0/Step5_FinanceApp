@@ -90,4 +90,10 @@
     <string name="xx_le">XX LE</string>
     <string name="coming_soon">COMING SOON</string>
     <string name="le">%1$s LE</string>
+    <string name="warning">"Warning: "</string>
+    <string name="if_you_delete_your_account_you_will_be_unsubscribed_from_all_of_your_courses_and_will_lose_access_to_your_account_and_data_associated_with_your_account">"If you delete your account, you will be unsubscribed from all of your courses and will lose access to your account and data associated with your account "</string>
+    <string name="forever">forever.</string>
+    <string name="if_you_sure_to_delete_your_account_please_enter_the_6_digit_code_we_sent_to_test1_email_com_to_delete_your_account">If you sure to delete your account, Please enter the 6-digit code we sent to test1@email.com to delete your account.</string>
+    <string name="_6_digit_code">6-DIGIT CODE</string>
+    <string name="send_code">SEND CODE</string>
 </resources>

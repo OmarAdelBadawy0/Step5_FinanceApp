@@ -70,6 +70,22 @@
     <string name="old_password">كلمة المرور القديمة</string>
     <string name="new_password">كلمة المرور الجديدة</string>
     <string name="confirm_new_password">تأكيد كلمة المرور الجديدة</string>
+    <string name="subscribe">اشترك</string>
+    <string name="setting">الإعدادات</string>
+    <string name="person">الشخص</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="delete_account">حذف الحساب</string>
+    <string name="my_courses">دوراتي</string>
+    <string name="subscription">الاشتراك</string>
+    <string name="my_plan">خطتي</string>
+    <string name="you_don_t_have_any_subscription_yet">ليس لديك أي اشتراك حتى الآن</string>
+    <string name="subscription_plans">خطط الاشتراك</string>
+    <string name="plan_name">اسم الخطة</string>
+    <string name="per_month">شهريًا</string>
+    <string name="feature">ميزة</string>
+    <string name="xx_le">XX ج.م</string>
+    <string name="coming_soon">قادم قريبًا</string>
+    <string name="le">%1$s ج.م</string>
 
 
 </resources>

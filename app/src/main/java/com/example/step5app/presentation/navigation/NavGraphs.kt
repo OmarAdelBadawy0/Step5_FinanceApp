@@ -10,6 +10,7 @@ import androidx.navigation.navigation
 import com.example.step5app.presentation.auth.AuthScreen
 import com.example.step5app.presentation.courses.CoursesScreen
 import com.example.step5app.presentation.feed.FeedViewModel
+import com.example.step5app.presentation.network.ConnectionsScreen
 import com.example.step5app.presentation.profile.ProfileScreen
 import com.example.step5app.presentation.profile.ProfileViewModel
 import com.example.step5app.presentation.settings.SettingsViewModel
@@ -33,7 +34,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         }
 
         composable(Screen.Network.route) {
-            // Add your Network screen implementation
+            ConnectionsScreen(navController, onSettingsClick = { navController.navigate(Screen.Settings.route) })
         }
 
         composable(Screen.Profile.route) {

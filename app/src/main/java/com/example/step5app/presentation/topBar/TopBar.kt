@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.step5app.R
 
 
@@ -25,7 +24,8 @@ import com.example.step5app.R
 @Composable
 fun TopBar(
     viewModel: TopBarViewModel = hiltViewModel(),
-    onSettingsClick: () -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    withSearch: Boolean = false
 ) {
     val searchText by viewModel.searchText
 
@@ -57,41 +57,43 @@ fun TopBar(
                 }
             },
             title = {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .minimumInteractiveComponentSize()
-                        .padding(start = 8.dp, top = 8.dp)
-                        .fillMaxHeight(),
-                    value = searchText,
-                    onValueChange = viewModel::updateSearchText,
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.search),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 14.sp,
-                        )
-                    },
-                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
-                    trailingIcon = {
-                        if (searchText.isNotEmpty()) {
-                            IconButton(onClick = viewModel::clearSearch) {
-                                Icon(
-                                    painter = painterResource(R.drawable.x),
-                                    contentDescription = stringResource(R.string.clear_search),
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.size(24.dp)
-                                )
+                if (withSearch) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .minimumInteractiveComponentSize()
+                            .padding(start = 8.dp, top = 8.dp)
+                            .fillMaxHeight(),
+                        value = searchText,
+                        onValueChange = viewModel::updateSearchText,
+                        placeholder = {
+                            Text(
+                                text = stringResource(R.string.search),
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = 14.sp,
+                            )
+                        },
+                        textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+                        trailingIcon = {
+                            if (searchText.isNotEmpty()) {
+                                IconButton(onClick = viewModel::clearSearch) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.x),
+                                        contentDescription = stringResource(R.string.clear_search),
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                }
                             }
-                        }
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    singleLine = true,
-                )
+                        },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        singleLine = true,
+                    )
+                }
             },
             actions = {
                 IconButton(onClick = onSettingsClick ) {

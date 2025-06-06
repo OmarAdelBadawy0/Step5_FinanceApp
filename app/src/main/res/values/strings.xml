@@ -96,4 +96,14 @@
     <string name="if_you_sure_to_delete_your_account_please_enter_the_6_digit_code_we_sent_to_test1_email_com_to_delete_your_account">If you sure to delete your account, Please enter the 6-digit code we sent to test1@email.com to delete your account.</string>
     <string name="_6_digit_code">6-DIGIT CODE</string>
     <string name="send_code">SEND CODE</string>
+    <string name="person_name">PERSON NAME</string>
+    <string name="profit">PROFIT</string>
+    <string name="my_connections">MY CONNECTIONS</string>
+    <string name="no_of_plans">NO OF PLANS</string>
+    <string name="connections">CONNECTIONS</string>
+    <string name="persons">(%1$s PERSONS)</string>
+    <string name="rubbish_delete_icon">rubbish delete icon</string>
+    <string name="add_icon">add icon</string>
+    <string name="person_icon">person icon</string>
+    <string name="add_connection">ADD CONNECTION</string>
 </resources>

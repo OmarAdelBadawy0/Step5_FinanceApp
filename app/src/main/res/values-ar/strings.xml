@@ -96,6 +96,16 @@
     </string>
     <string name="_6_digit_code">رمز مكون من 6 أرقام</string>
     <string name="send_code">إرسال الرمز</string>
+    <string name="person_name">اسم الشخص</string>
+    <string name="profit">الربح</string>
+    <string name="my_connections">اتصالاتي</string>
+    <string name="no_of_plans">عدد الخطط</string>
+    <string name="connections">الاتصالات</string>
+    <string name="persons">(%1$s أشخاص)</string>
+    <string name="rubbish_delete_icon">أيقونة حذف</string>
+    <string name="add_icon">أيقونة إضافة</string>
+    <string name="person_icon">أيقونة شخص</string>
+    <string name="add_connection">إضافة اتصال</string>
 
 
 </resources>

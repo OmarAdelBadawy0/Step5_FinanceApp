@@ -1,9 +1,6 @@
 package com.example.step5app.presentation.feed
 
 import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.domain.model.Post
@@ -84,6 +81,8 @@ class FeedViewModel @Inject constructor(
 
     private fun generateSamplePosts(): List<Post> {
         return listOf(
+            Post("# TITLE 4", "DESCRIPTION 4", "May 3, 2023"),
+            Post("# TITLE 5", "DESCRIPTION 5", "May 2, 2023"),
             Post("# TITLE 1", "DESCRIPTION 1", "May 6, 2023"),
             Post("# TITLE 2", "DESCRIPTION 2", "May 5, 2023"),
             Post("# TITLE 3", "DESCRIPTION 3", "May 4, 2023")

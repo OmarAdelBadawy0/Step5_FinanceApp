@@ -204,7 +204,7 @@ fun ConnectionCard(
                 Column(modifier = Modifier.weight(1f)) {
                     LabeledItem(label = stringResource(R.string.profit), value = profit.toString())
                     Spacer(modifier = Modifier.height(8.dp))
-                    LabeledItem(label = stringResource(R.string.no_of_plans), value = plans.toString())
+                    LabeledItem(label = stringResource(R.string.no_of_plans_sold), value = plans.toString())
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
@@ -233,7 +233,7 @@ fun LabeledItem(label: String, value: String) {
         Text(label, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface)
         HorizontalDivider(
             modifier = Modifier
-                .width(((label.length.toFloat() * 9f - 3 * kotlin.math.sqrt(label.length.toFloat())).dp))
+                .width(((label.length.toFloat() * 8f - 3 * kotlin.math.sqrt(label.length.toFloat())).dp))
                 .height(2.dp),
             color = MaterialTheme.colorScheme.tertiary,
             thickness = 2.dp

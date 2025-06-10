@@ -99,13 +99,14 @@
     <string name="person_name">اسم الشخص</string>
     <string name="profit">الربح</string>
     <string name="my_connections">اتصالاتي</string>
-    <string name="no_of_plans">عدد الخطط</string>
+    <string name="no_of_plans_sold">عدد الخطط المباعة</string>
     <string name="connections">الاتصالات</string>
     <string name="persons">(%1$s أشخاص)</string>
     <string name="rubbish_delete_icon">أيقونة حذف</string>
     <string name="add_icon">أيقونة إضافة</string>
     <string name="person_icon">أيقونة شخص</string>
     <string name="add_connection">إضافة اتصال</string>
+    <string name="scroll_to_top">انتقل الى الاعلى</string>
 
 
 </resources>

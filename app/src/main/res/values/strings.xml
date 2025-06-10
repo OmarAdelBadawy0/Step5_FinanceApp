@@ -99,11 +99,12 @@
     <string name="person_name">PERSON NAME</string>
     <string name="profit">PROFIT</string>
     <string name="my_connections">MY CONNECTIONS</string>
-    <string name="no_of_plans">NO OF PLANS</string>
+    <string name="no_of_plans_sold">NO OF PLANS SOLD</string>
     <string name="connections">CONNECTIONS</string>
     <string name="persons">(%1$s PERSONS)</string>
     <string name="rubbish_delete_icon">rubbish delete icon</string>
     <string name="add_icon">add icon</string>
     <string name="person_icon">person icon</string>
     <string name="add_connection">ADD CONNECTION</string>
+    <string name="scroll_to_top">Scroll to top</string>
 </resources>

@@ -5,15 +5,14 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,7 +27,7 @@ import com.example.step5app.R
 import com.example.step5app.presentation.bottomBar.BottomBar
 import com.example.step5app.presentation.feed.FeedViewModel
 import com.example.step5app.presentation.topBar.TopBar
-
+import kotlinx.coroutines.launch
 
 @Composable
 fun FeedScreen(
@@ -60,9 +59,36 @@ fun FeedScreen(
         viewModel.setLocalizedStrings(filterOptions, categories, defaultFilter)
     }
 
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val showScrollToTop by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 1 }
+    }
+
     Scaffold(
         topBar = { TopBar(onSettingsClick = onSettingsClick, withSearch = true) },
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = { BottomBar(navController = navController) },
+        floatingActionButton = {
+            if (showScrollToTop) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(0)
+                        }
+                    },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(28.dp)
+                ) {
+                    Icon(
+                        painterResource(R.drawable.arrow_up_short),
+                        contentDescription = stringResource(R.string.scroll_to_top),
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.scale(2.2f)
+                    )
+                }
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -173,8 +199,7 @@ fun FeedScreen(
                         }
                     }
 
-                    // List of Items
-                    LazyColumn {
+                    LazyColumn(state = listState) {
                         items(uiState.posts.reversed()) { item ->
                             Card(
                                 modifier = Modifier
@@ -235,13 +260,3 @@ fun FeedScreen(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun FeedScreenPreview() {
-//    FeedScreen(
-//        viewModel = viewModel(),
-//        onSettingsClick = {},
-//        navController = NavController(LocalContext.current)
-//    )
-//}

@@ -39,7 +39,7 @@ fun TopBar(
         CenterAlignedTopAppBar(
             modifier = Modifier
                 .minimumInteractiveComponentSize()
-                .padding(horizontal = 10.dp, vertical = 20.dp),
+                .padding(start = 10.dp, end = 10.dp, top = 5.dp, bottom = 15.dp),
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = Color.Transparent
             ),
@@ -61,8 +61,8 @@ fun TopBar(
                     OutlinedTextField(
                         modifier = Modifier
                             .minimumInteractiveComponentSize()
-                            .padding(start = 8.dp, top = 8.dp)
-                            .fillMaxHeight(),
+                            .padding(start = 8.dp, top = 8.dp, bottom = 3.dp)
+                            .heightIn(min = 56.dp),
                         value = searchText,
                         onValueChange = viewModel::updateSearchText,
                         placeholder = {
@@ -72,7 +72,10 @@ fun TopBar(
                                 fontSize = 14.sp,
                             )
                         },
-                        textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+                        textStyle = LocalTextStyle.current.copy(
+                            fontSize = 18.sp,
+                            lineHeight = 1.sp
+                        ),
                         trailingIcon = {
                             if (searchText.isNotEmpty()) {
                                 IconButton(onClick = viewModel::clearSearch) {

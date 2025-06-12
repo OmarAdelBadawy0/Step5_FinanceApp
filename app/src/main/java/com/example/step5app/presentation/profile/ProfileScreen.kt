@@ -33,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -112,6 +113,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(45.dp))
 
 
+            // Person name and logout button
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -158,7 +160,8 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(36.dp))
 
 
-            Column(modifier = Modifier.fillMaxWidth()) {
+            // sections grid and tabs
+            Column(modifier = Modifier.minimumInteractiveComponentSize()) {
                 // First TabRow (Notifications/Delete Account)
                 TabRow(
                     selectedTabIndex = uiState.selectedTabIndex,
@@ -394,7 +397,7 @@ fun ChangePassword(
     PasswordField(
         value =  uiState.oldPassword,
         onValueChange = { viewModel.updateOldPassword(it) },
-        onVisibilityToggle =  { viewModel::toggleOldPasswordVisibility },
+        onVisibilityToggle =  viewModel::toggleOldPasswordVisibility,
         isVisible =  uiState.isOldPasswordVisible,
         label = stringResource(R.string.old_password)
     )
@@ -402,7 +405,7 @@ fun ChangePassword(
     PasswordField(
         value = uiState.newPassword,
         onValueChange = { viewModel.updateNewPassword(it) },
-        onVisibilityToggle =  { viewModel::toggleNewPasswordVisibility },
+        onVisibilityToggle =  viewModel::toggleNewPasswordVisibility,
         isVisible = uiState.isNewPasswordVisible,
         label = stringResource(R.string.new_password)
     )
@@ -410,7 +413,7 @@ fun ChangePassword(
     PasswordField(
         value = uiState.confirmPassword,
         onValueChange = { viewModel.updateConfirmPassword(it) },
-        onVisibilityToggle =  { viewModel::toggleConfirmPasswordVisibility },
+        onVisibilityToggle =  viewModel::toggleConfirmPasswordVisibility,
         isVisible = uiState.isConfirmPasswordVisible,
         label = stringResource(R.string.confirm_new_password)
     )

@@ -185,7 +185,7 @@ fun FeedScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .height(40.dp)
+                                    .height(35.dp)
                                     .minimumInteractiveComponentSize()
                                     .padding(end = 8.dp),
                                 shape = RoundedCornerShape(0.dp),

@@ -183,7 +183,8 @@ fun ProfileScreen(
                                 color =
                                     if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.onPrimary
                                     else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp
                             )
                         },
                         modifier = Modifier
@@ -207,12 +208,13 @@ fun ProfileScreen(
                                 color =
                                     if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.onPrimary
                                     else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp
                             )
                         },
                         modifier = Modifier
                             .padding(top = 8.dp)
-                            .padding(start = 10.dp, end = 30.dp)
+                            .padding(start = 9.dp, end = 28.dp)
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(37.dp)
                             .background(
@@ -245,7 +247,9 @@ fun ProfileScreen(
                             .background(if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.tertiary else Color.Transparent),
                         text = {
                             Text(stringResource(R.string.profile),
-                                color = if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
+                                color = if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary,
+                                fontWeight = FontWeight.Bold,
+                            ) }
                     )
                     Tab(
                         selected = uiState.selectedTabIndex == 1,
@@ -254,7 +258,7 @@ fun ProfileScreen(
                         },
                         modifier = Modifier
                             .padding(top = 6.dp)
-                            .padding(horizontal = 4.dp)
+                            .padding(horizontal = 3.dp)
                             .fillMaxHeight()
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(38.dp)
@@ -262,7 +266,11 @@ fun ProfileScreen(
                         text = {
                             Text(
                                 stringResource(R.string.my_courses),
-                                color = if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold) }
+                                color = if (
+                                    uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp
+                            ) }
                     )
                     Tab(
                         selected = uiState.selectedTabIndex == 2,
@@ -275,13 +283,14 @@ fun ProfileScreen(
                             .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
                             .height(38.dp)
                             .background(if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.tertiary else Color.Transparent),
-                        text = {
+                        content = {
                             Text(
                                 stringResource(R.string.subscription),
                                 color = if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.onPrimary
                                         else MaterialTheme.colorScheme.tertiary,
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold) }
+                            ) }
                     )
                 }
             }

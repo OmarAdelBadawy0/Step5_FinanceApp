@@ -214,7 +214,10 @@ fun ConnectionCard(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 12.sp)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.persons, connections.size), color = Color.Gray, fontSize = 12.sp)
+                        Text(
+                            stringResource(R.string.persons, connections.size),
+                            color = Color.Gray,
+                            fontSize = 10.sp,)
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     connections.forEachIndexed { index, person ->

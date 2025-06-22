@@ -94,7 +94,7 @@ fun SignInFields(
                 Text(text = stringResource(R.string.remember_me), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
             }
             TextButton(onClick = { /* TODO: Forgot password */ }, ) {
-                Text(text = stringResource(R.string.forgot_password), fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.forgot_password), fontWeight = FontWeight.Bold, fontSize = 11.sp)
             }
         }
 

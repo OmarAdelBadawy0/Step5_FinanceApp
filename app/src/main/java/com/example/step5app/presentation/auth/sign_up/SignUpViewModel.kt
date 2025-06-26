@@ -49,8 +49,17 @@ class SignUpViewModel @Inject constructor(
         _signUpUiState.update { it.copy(isTermsChecked = newTermsChecked) }
     }
 
+    fun updateOtpCode(newOtpCode: String) {
+        _signUpUiState.update { it.copy(otpCode = newOtpCode) }
+    }
+
+    fun updateShowOtpDialog(newShowOtpDialog: Boolean) {
+        _signUpUiState.update { it.copy(showOtpDialog = newShowOtpDialog) }
+    }
+
+
     fun signUp() {
-        if (!validateForm()) return
+        if (validateForm()) return
 
         viewModelScope.launch {
             _signUpUiState.update { it.copy(isLoading = true, errorMessage = null) }

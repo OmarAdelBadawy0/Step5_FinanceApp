@@ -11,12 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,7 +118,10 @@ fun SignUpFields(
             onClick = {
                 viewModel.signUp()
                 if (!uiState.isSuccessSignUp && uiState.errorMessage != null) {
-                    Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_SHORT).show() }
+                    Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_SHORT).show()
+                }else{
+                    viewModel.updateShowOtpDialog(true)
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -123,6 +132,47 @@ fun SignUpFields(
         ) {
             Text(text = stringResource(R.string.sign_up), color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
         }
+    }
+
+    if (uiState.showOtpDialog) {
+        AlertDialog(
+            onDismissRequest = {  },
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            title = { Text("Verify Your Email") },
+            text = {
+                Column {
+                    Text("Enter the OTP sent to your email", color = MaterialTheme.colorScheme.onSurface)
+                    OutlinedTextField(
+                        value = uiState.otpCode,
+                        onValueChange = { viewModel.updateOtpCode(it) },
+                        label = { Text("OTP") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                            focusedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                            cursorColor = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { viewModel.updateShowOtpDialog(false) }
+                ) {
+                    Text("Verify")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { viewModel.updateShowOtpDialog(false) }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 

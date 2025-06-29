@@ -1,10 +1,13 @@
 package com.example.step5app.presentation.auth.sign_up
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.R
 import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -13,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val _signUpUiState = MutableStateFlow(SignUpUiState())
     val signUpUiState: StateFlow<SignUpUiState> = _signUpUiState
@@ -75,15 +79,16 @@ class SignUpViewModel @Inject constructor(
                     _signUpUiState.update {
                         Log.d("SignUpViewModel", "signUp result: $result.")
                         if (result.toString().contains("HTTP 409 Conflict")){
-                            it.copy(
+                            val copy = it.copy(
                                 isLoading = false,
-                                errorMessage = "Email already exists or Awaiting OTP confirmation",
+                                errorMessage = context.getString(R.string.email_already_exists_or_awaiting_otp_confirmation),
                                 showOtpDialog = true
                             )
+                            copy
                         }else{
                             it.copy(
                                 isLoading = false,
-                                errorMessage = "OTP Sent to Your Email",
+                                errorMessage = context.getString(R.string.otp_sent_to_your_email),
                                 showOtpDialog = true
                             )
                         }
@@ -93,7 +98,7 @@ class SignUpViewModel @Inject constructor(
                 onFailure = { e ->
                     _signUpUiState.update {
                         it.copy(
-                            errorMessage = e.message  ?: "Sign up failed. Please try again.",
+                            errorMessage = e.message  ?: context.getString(R.string.sign_up_failed_please_try_again),
                             isLoading = false
                         )
                     }
@@ -104,7 +109,7 @@ class SignUpViewModel @Inject constructor(
 
     fun confirmOtp(email: String, code: String) {
         viewModelScope.launch {
-            _signUpUiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _signUpUiState.update { it.copy(isLoading = true, errorMessage = null, isSuccessSignUp = false) }
 
             val result = authRepository.confirmOtp(email, code)
             result.fold(
@@ -112,7 +117,9 @@ class SignUpViewModel @Inject constructor(
                     _signUpUiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "OTP confirmed successfully"
+                            isSuccessSignUp = true,
+                            showOtpDialog = false,
+                            errorMessage = context.getString(R.string.otp_confirmed_successfully)
                         )
                     }
                 },
@@ -120,7 +127,18 @@ class SignUpViewModel @Inject constructor(
                     _signUpUiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "OTP confirmation failed"
+                            isSuccessSignUp = false,
+                            errorMessage =
+                            if (error.message?.contains("401") == true){
+                                context.getString(R.string.incorrect_otp_code)
+                            }else if (error.message?.contains("404") == true){
+                                context.getString(R.string.expired_verification_code)
+                            }else if (error.message?.contains("400") == true){
+                                context.getString(R.string.invalid_otp_format_must_be_6_digit_number)
+                            } else{
+                                error.message ?: context.getString(R.string.otp_confirmation_failed)
+
+                            }
                         )
                     }
                 }
@@ -134,41 +152,41 @@ class SignUpViewModel @Inject constructor(
             Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$")
         return when {
             signUpUiState.value.firstName.isBlank() -> {
-                _signUpUiState.update { it.copy(errorMessage = "Please enter your name") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.please_enter_your_name)) }
                 false
             }
             signUpUiState.value.lastName.isBlank() -> {
-                _signUpUiState.update { it.copy(errorMessage = "Please enter your last name") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.please_enter_your_last_name)) }
                 false
             }
             signUpUiState.value.email.isBlank() -> {
-                _signUpUiState.update { it.copy(errorMessage = "Please enter your email") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.please_enter_your_email)) }
                 false
             }
             !signUpUiState.value.email.contains("@") -> {
-                _signUpUiState.update { it.copy(errorMessage = "Please enter a valid email") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.please_enter_a_valid_email)) }
                 false
             }
             signUpUiState.value.password.isBlank() -> {
-                _signUpUiState.update { it.copy(errorMessage = "Please enter your password") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.please_enter_your_password)) }
                 false
             }
             signUpUiState.value.password.length < 8 -> {
-                _signUpUiState.update { it.copy(errorMessage = "Password must be at least 8 characters") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.password_must_be_at_least_8_characters)) }
                 false
             }
             !signUpUiState.value.password.matches(passwordPattern) -> {
                 _signUpUiState.update {
-                    it.copy(errorMessage = "Password must contain uppercase, lowercase, number, and symbol")
+                    it.copy(errorMessage = context.getString(R.string.password_must_contain_uppercase_lowercase_number_and_symbol))
                 }
                 false
             }
             signUpUiState.value.password != signUpUiState.value.confirmPassword -> {
-                _signUpUiState.update { it.copy(errorMessage = "Passwords do not match") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.passwords_do_not_match)) }
                 false
             }
             !signUpUiState.value.isTermsChecked -> {
-                _signUpUiState.update { it.copy(errorMessage = "Please accept the terms and conditions") }
+                _signUpUiState.update { it.copy(errorMessage = context.getString(R.string.please_accept_the_terms_and_conditions)) }
                 false
             }
             else -> true

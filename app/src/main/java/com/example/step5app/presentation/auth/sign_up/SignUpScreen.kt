@@ -58,7 +58,7 @@ fun SignUpFields(
 
     Column(
         modifier = Modifier
-            .padding(top =  130.dp)
+            .padding(top = 130.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
             .padding(20.dp, 50.dp),
@@ -141,14 +141,18 @@ fun SignUpFields(
         AlertDialog(
             onDismissRequest = {  },
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            title = { Text("Verify Your Email") },
+            title = { Text(stringResource(R.string.verify_your_email)) },
             text = {
                 Column {
-                    Text("Enter the OTP sent to your email", color = MaterialTheme.colorScheme.onSurface)
+                    Text(stringResource(R.string.enter_the_otp_sent_to_your_email), color = MaterialTheme.colorScheme.onSurface)
                     OutlinedTextField(
                         value = uiState.otpCode,
-                        onValueChange = { viewModel.updateOtpCode(it) },
-                        label = { Text("OTP") },
+                        onValueChange = { input ->
+                            if (input.length <= 6 && input.all { it.isDigit() }) {
+                                viewModel.updateOtpCode(input)
+                            }
+                        },
+                        label = { Text(stringResource(R.string.otp)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -165,18 +169,16 @@ fun SignUpFields(
                 Button(
                     onClick = {
                         viewModel.confirmOtp(uiState.email, uiState.otpCode)
-                        viewModel.updateShowOtpDialog(false)
-
                     }
                 ) {
-                    Text("Verify")
+                    Text(stringResource(R.string.verify))
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { viewModel.updateShowOtpDialog(false) }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

@@ -107,6 +107,27 @@
     <string name="person_icon">أيقونة شخص</string>
     <string name="add_connection">إضافة اتصال</string>
     <string name="scroll_to_top">انتقل الى الاعلى</string>
+    <string name="email_already_exists_or_awaiting_otp_confirmation">البريد الإلكتروني موجود بالفعل أو في انتظار تأكيد رمز التحقق</string>
+    <string name="otp_sent_to_your_email">تم إرسال رمز التحقق إلى بريدك الإلكتروني</string>
+    <string name="sign_up_failed_please_try_again">فشل في التسجيل. الرجاء المحاولة مرة أخرى.</string>
+    <string name="otp_confirmed_successfully">تم تأكيد رمز التحقق بنجاح</string>
+    <string name="otp_confirmation_failed">فشل تأكيد رمز التحقق</string>
+    <string name="please_enter_your_name">يرجى إدخال الاسم</string>
+    <string name="please_enter_your_last_name">يرجى إدخال اسم العائلة</string>
+    <string name="please_enter_your_email">يرجى إدخال البريد الإلكتروني</string>
+    <string name="please_enter_a_valid_email">يرجى إدخال بريد إلكتروني صالح</string>
+    <string name="please_enter_your_password">يرجى إدخال كلمة المرور</string>
+    <string name="password_must_be_at_least_8_characters">يجب أن تكون كلمة المرور 8 أحرف على الأقل</string>
+    <string name="password_must_contain_uppercase_lowercase_number_and_symbol">يجب أن تحتوي كلمة المرور على حرف كبير، حرف صغير، رقم ورمز</string>
+    <string name="passwords_do_not_match">كلمتان المرور غير متطابقتين</string>
+    <string name="please_accept_the_terms_and_conditions">يرجى قبول الشروط والأحكام</string>
+    <string name="incorrect_otp_code">رمز التحقق غير صحيح</string>
+    <string name="expired_verification_code">رمز التحقق منتهي الصلاحية</string>
+    <string name="invalid_otp_format_must_be_6_digit_number">تنسيق رمز التحقق غير صالح. يجب أن يكون رقماً انجليزي مكوناً من 6 أرقام</string>
+    <string name="verify">تحقق</string>
+    <string name="cancel">إلغاء</string>
+    <string name="verify_your_email">التحقق من البريد الألكتروني</string>
+    <string name="enter_the_otp_sent_to_your_email">ادخل رمز OTP المرسل الى بريدك الالكتروني</string>
 
 
 </resources>

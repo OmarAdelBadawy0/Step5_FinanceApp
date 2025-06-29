@@ -107,4 +107,26 @@
     <string name="person_icon">person icon</string>
     <string name="add_connection">ADD CONNECTION</string>
     <string name="scroll_to_top">Scroll to top</string>
+    <string name="email_already_exists_or_awaiting_otp_confirmation">Email already exists or Awaiting OTP confirmation</string>
+    <string name="otp_sent_to_your_email">OTP Sent to Your Email</string>
+    <string name="sign_up_failed_please_try_again">Sign up failed. Please try again.</string>
+    <string name="otp_confirmed_successfully">OTP confirmed successfully</string>
+    <string name="otp_confirmation_failed">OTP confirmation failed</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="please_enter_your_last_name">Please enter your last name</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="please_enter_a_valid_email">Please enter a valid email</string>
+    <string name="please_enter_your_password">Please enter your password</string>
+    <string name="password_must_be_at_least_8_characters">Password must be at least 8 characters</string>
+    <string name="password_must_contain_uppercase_lowercase_number_and_symbol">Password must contain uppercase, lowercase, number, and symbol</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="please_accept_the_terms_and_conditions">Please accept the terms and conditions</string>
+    <string name="incorrect_otp_code">incorrect OTP code</string>
+    <string name="expired_verification_code">expired verification code</string>
+    <string name="invalid_otp_format_must_be_6_digit_number">invalid OTP Format must be 6-digit EN number</string>
+    <string name="verify">Verify</string>
+    <string name="cancel">Cancel</string>
+    <string name="otp" translatable="false">OTP</string>
+    <string name="verify_your_email">Verify Your Email</string>
+    <string name="enter_the_otp_sent_to_your_email">Enter the OTP sent to your email</string>
 </resources>

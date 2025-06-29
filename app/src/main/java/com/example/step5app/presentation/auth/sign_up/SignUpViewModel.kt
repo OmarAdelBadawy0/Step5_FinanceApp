@@ -1,5 +1,6 @@
 package com.example.step5app.presentation.auth.sign_up
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.domain.repositories.AuthRepository
@@ -57,13 +58,11 @@ class SignUpViewModel @Inject constructor(
         _signUpUiState.update { it.copy(showOtpDialog = newShowOtpDialog) }
     }
 
-
     fun signUp() {
-        if (validateForm()) return
+        if (!validateForm()) return
 
         viewModelScope.launch {
-            _signUpUiState.update { it.copy(isLoading = true, errorMessage = null) }
-
+            _signUpUiState.update { it.copy(isLoading = true, errorMessage = null, isSuccessSignUp = false, showOtpDialog = false) }
             runCatching {
                 authRepository.signUp(
                     firstName = signUpUiState.value.firstName,
@@ -72,20 +71,30 @@ class SignUpViewModel @Inject constructor(
                     password = signUpUiState.value.password
                 )
             }.fold(
-                onSuccess = {
+                onSuccess = { result ->
                     _signUpUiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isSuccessSignUp = true,
-                            errorMessage = null
-                        )
+                        Log.d("SignUpViewModel", "signUp result: $result.")
+                        if (result.toString().contains("HTTP 409 Conflict")){
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = "Email already exists or Awaiting OTP confirmation",
+                                showOtpDialog = true
+                            )
+                        }else{
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = "OTP Sent to Your Email",
+                                showOtpDialog = true
+                            )
+                        }
+
                     }
                 },
                 onFailure = { e ->
                     _signUpUiState.update {
                         it.copy(
-                            isLoading = false,
-                            errorMessage = e.message ?: "Sign up failed. Please try again."
+                            errorMessage = e.message  ?: "Sign up failed. Please try again.",
+                            isLoading = false
                         )
                     }
                 }
@@ -93,7 +102,36 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    fun confirmOtp(email: String, code: String) {
+        viewModelScope.launch {
+            _signUpUiState.update { it.copy(isLoading = true, errorMessage = null) }
+
+            val result = authRepository.confirmOtp(email, code)
+            result.fold(
+                onSuccess = { response ->
+                    _signUpUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "OTP confirmed successfully"
+                        )
+                    }
+                },
+                onFailure = { error ->
+                    _signUpUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = error.message ?: "OTP confirmation failed"
+                        )
+                    }
+                }
+            )
+        }
+    }
+
+
     private fun validateForm(): Boolean {
+        val passwordPattern =
+            Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$")
         return when {
             signUpUiState.value.firstName.isBlank() -> {
                 _signUpUiState.update { it.copy(errorMessage = "Please enter your name") }
@@ -115,8 +153,14 @@ class SignUpViewModel @Inject constructor(
                 _signUpUiState.update { it.copy(errorMessage = "Please enter your password") }
                 false
             }
-            signUpUiState.value.password.length < 6 -> {
-                _signUpUiState.update { it.copy(errorMessage = "Password must be at least 6 characters") }
+            signUpUiState.value.password.length < 8 -> {
+                _signUpUiState.update { it.copy(errorMessage = "Password must be at least 8 characters") }
+                false
+            }
+            !signUpUiState.value.password.matches(passwordPattern) -> {
+                _signUpUiState.update {
+                    it.copy(errorMessage = "Password must contain uppercase, lowercase, number, and symbol")
+                }
                 false
             }
             signUpUiState.value.password != signUpUiState.value.confirmPassword -> {

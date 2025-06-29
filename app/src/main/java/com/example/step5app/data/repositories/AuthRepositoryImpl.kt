@@ -1,16 +1,16 @@
 package com.example.step5app.data.repositories
 
-import android.content.SharedPreferences
-import com.example.step5app.data.model.SignInRequest
+import com.example.step5app.data.local.UserPreferences
 import com.example.step5app.data.model.SignUpRequest
 import com.example.step5app.data.remote.AuthService
 import com.example.step5app.domain.repositories.AuthRepository
 import javax.inject.Inject
-import androidx.core.content.edit
+import com.example.step5app.data.model.ConfirmOtpRequest
+import com.example.step5app.data.model.ConfirmOtpResponse
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,  // Your API service
-    private val preferences: SharedPreferences // For local storage
+    private val userPreferences: UserPreferences,
 ) : AuthRepository {
 
     override suspend fun signIn(email: String, password: String): Result<Unit> {
@@ -34,18 +34,40 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Result<Unit> {
-        return Result.success(Unit)
-//        return try {
-//            val response = authService.signUp(SignUpRequest(firstName, lastName, email, password))
-//            if (response.success) {
-//                Result.success(Unit)
-//            } else {
-//                Result.failure(Exception(response.error ?: "Sign-up failed"))
-//            }
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
+        return try {
+            val response = authService.signUp(
+                SignUpRequest(firstName, lastName, email, password), "en"
+            )
+            if (response.success) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.message?.joinToString(", ") ?: "Sign-up failed"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
+
+    override suspend fun confirmOtp(
+        email: String,
+        verificationCode: String
+    ): Result<ConfirmOtpResponse> {
+        return try {
+            val response = authService.confirmOtp(
+                ConfirmOtpRequest(email, verificationCode),
+                language = "en"
+            )
+
+            // Save the access token to DataStore
+            userPreferences.clearAccessToken()
+            userPreferences.saveAccessToken(response.data?.accessToken ?: "")
+
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
     override suspend fun signOut() {
         TODO("Not yet implemented")

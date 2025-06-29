@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -47,6 +48,13 @@ fun SignUpFields(
 ) {
     val uiState by viewModel.signUpUiState.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearError() // optional: clear after showing
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -117,11 +125,6 @@ fun SignUpFields(
         Button(
             onClick = {
                 viewModel.signUp()
-                if (!uiState.isSuccessSignUp && uiState.errorMessage != null) {
-                    Toast.makeText(context, uiState.errorMessage, Toast.LENGTH_SHORT).show()
-                }else{
-                    viewModel.updateShowOtpDialog(true)
-                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -160,7 +163,11 @@ fun SignUpFields(
             },
             confirmButton = {
                 Button(
-                    onClick = { viewModel.updateShowOtpDialog(false) }
+                    onClick = {
+                        viewModel.confirmOtp(uiState.email, uiState.otpCode)
+                        viewModel.updateShowOtpDialog(false)
+
+                    }
                 ) {
                     Text("Verify")
                 }

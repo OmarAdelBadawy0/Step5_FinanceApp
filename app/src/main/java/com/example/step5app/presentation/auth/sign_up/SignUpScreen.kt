@@ -44,7 +44,8 @@ import com.example.step5app.ui.theme.Step5AppTheme
 
 @Composable
 fun SignUpFields(
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    onSignUpSuccess: () -> Unit
 ) {
     val uiState by viewModel.signUpUiState.collectAsState()
     val context = LocalContext.current
@@ -54,6 +55,10 @@ fun SignUpFields(
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.clearError() // optional: clear after showing
         }
+    }
+
+    LaunchedEffect(uiState.isSuccessSignUp){
+        if (uiState.isSuccessSignUp) onSignUpSuccess()
     }
 
     Column(
@@ -191,6 +196,6 @@ fun SignUpFields(
 @Composable
 fun SignUpFieldsPreview() {
     Step5AppTheme() {
-        SignUpFields()
+        SignUpFields( onSignUpSuccess = {})
     }
 }

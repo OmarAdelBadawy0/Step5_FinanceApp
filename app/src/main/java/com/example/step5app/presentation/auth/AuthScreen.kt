@@ -94,7 +94,7 @@ fun AuthScreen(onSignInSuccess: () -> Unit) {
         ) {
             AnimatedContent(targetState = isSignUp, label = "AuthSwitch") { signup ->
                 if (signup) {
-                    SignUpFields()
+                    SignUpFields( onSignUpSuccess = onSignInSuccess)
                 } else {
                     SignInFields(
                         onSignUp = { isSignUp = true },

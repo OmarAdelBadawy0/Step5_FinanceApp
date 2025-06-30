@@ -67,12 +67,7 @@ fun NavGraphBuilder.authGraph(
     ) {
         composable(Screen.Auth.route) {
             AuthScreen(
-                onSignInSuccess = {
-                   navController.navigate(Screen.MainApp.route){
-                       popUpTo(Screen.Auth.route){inclusive = true}
-                       launchSingleTop = true
-                   }
-                }
+                onSignInSuccess = onAuthComplete
             )
         }
     }

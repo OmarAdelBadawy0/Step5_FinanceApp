@@ -132,7 +132,7 @@ fun ProfileScreen(
                 }
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { viewModel.logout() },
                     modifier = Modifier
                         .padding(start = 10.dp)
                         .weight(1f)

@@ -2,13 +2,19 @@ package com.example.step5app.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.data.local.UserPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val userPreferences: UserPreferences
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
@@ -54,6 +60,12 @@ class ProfileViewModel : ViewModel() {
 
     fun updateSelectedTabIndex(index: Int) {
         _uiState.update { it.copy(selectedTabIndex = index) }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            userPreferences.clearAccessToken()
+        }
     }
 
     fun saveProfileChanges() {

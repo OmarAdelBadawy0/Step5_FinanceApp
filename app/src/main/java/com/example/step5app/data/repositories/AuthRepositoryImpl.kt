@@ -9,7 +9,7 @@ import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authService: AuthService,  // Your API service
+    private val authService: AuthService,  // API service
     private val userPreferences: UserPreferences,
 ) : AuthRepository {
 

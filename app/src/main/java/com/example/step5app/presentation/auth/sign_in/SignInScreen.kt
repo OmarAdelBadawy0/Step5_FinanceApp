@@ -1,5 +1,6 @@
 package com.example.step5app.presentation.auth.sign_in
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,9 +44,17 @@ fun SignInFields(
 ) {
 
     val uiState by viewModel.loginUiState.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(uiState.isSuccessLogin) {
         if (uiState.isSuccessLogin) onSuccess()
+    }
+
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearError()
+        }
     }
 
     Column(

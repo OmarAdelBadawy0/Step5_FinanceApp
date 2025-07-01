@@ -7,25 +7,21 @@ import com.example.step5app.domain.repositories.AuthRepository
 import javax.inject.Inject
 import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
+import com.example.step5app.data.model.SignInRequest
+import com.example.step5app.data.model.SignInResponse
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,  // API service
     private val userPreferences: UserPreferences,
 ) : AuthRepository {
 
-    override suspend fun signIn(email: String, password: String): Result<Unit> {
-        return Result.success(Unit)
-//        return try {
-//            val response = authService.signIn(SignInRequest(email, password))
-//            if (response.success && !response.token.isNullOrEmpty()) {
-//                preferences.edit() { putString("auth_token", response.token) }
-//                Result.success(Unit)
-//            } else {
-//                Result.failure(Exception(response.error ?: "Sign-in failed"))
-//            }
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
+    override suspend fun signIn(email: String, password: String): Result<SignInResponse> {
+        return try {
+            val response = authService.login(SignInRequest(email, password), "en")
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun signUp(

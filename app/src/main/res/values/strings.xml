@@ -129,4 +129,9 @@
     <string name="otp" translatable="false">OTP</string>
     <string name="verify_your_email">Verify Your Email</string>
     <string name="enter_the_otp_sent_to_your_email">Enter the OTP sent to your email</string>
+    <string name="email_and_password_are_required">Email and password are required</string>
+    <string name="login_failed_missing_token">Login failed: Missing token</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="user_not_found_or_email_not_confirmed">User not found or email not confirmed</string>
+    <string name="login_failed">Login failed: %1$s</string>
 </resources>

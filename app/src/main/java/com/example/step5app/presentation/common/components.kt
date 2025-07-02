@@ -204,7 +204,8 @@ fun NameFieldsRow(
 fun EmailField(
     email: String,
     onEmailChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         value = email,
@@ -232,7 +233,8 @@ fun EmailField(
         singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
-        )
+        ),
+        enabled = enabled
     )
 }
 

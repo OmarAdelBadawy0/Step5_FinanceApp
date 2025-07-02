@@ -4,7 +4,7 @@ data class ProfileUiState(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
-    val phoneNumber: String = "",
+    val phoneNumber: String? = "",
     val oldPassword: String = "",
     val newPassword: String = "",
     val confirmPassword: String = "",

@@ -1,9 +1,13 @@
 package com.example.step5app.presentation.profile
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.R
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val authRepository: AuthRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -131,6 +137,51 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun loadProfile() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+
+            try {
+                val token = userPreferences.getAccessTokenOnce()
+                if (token.isNullOrBlank()) {
+                    _uiState.update {
+                        it.copy(isLoading = false, errorMessage = context.getString(R.string.unauthorized))
+                    }
+                    return@launch
+                }
+
+                val result = authRepository.getProfile(token)
+                result.fold(
+                    onSuccess = { response ->
+                        val data = response.data
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                firstName = data.firstName,
+                                lastName = data.lastName,
+                                email = data.email,
+                                phoneNumber = data.phoneNumber ?: it.phoneNumber
+                            )
+                        }
+                    },
+                    onFailure = { e ->
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = e.message ?: context.getString(R.string.failed_to_load_profile)
+                            )
+                        }
+                    }
+                )
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(isLoading = false, errorMessage = e.message)
+                }
+            }
+        }
+    }
+
 
     fun clearError() {
         _uiState.update { it.copy(errorMessage = null) }

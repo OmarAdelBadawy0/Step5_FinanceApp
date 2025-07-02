@@ -1,6 +1,7 @@
 package com.example.step5app.domain.repositories
 
 import com.example.step5app.data.model.ConfirmOtpResponse
+import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInResponse
 
 interface AuthRepository {
@@ -15,4 +16,6 @@ interface AuthRepository {
 
     suspend fun signOut()
     fun isUserLoggedIn(): Boolean
+
+    suspend fun getProfile(token: String): Result<ProfileResponse>
 }

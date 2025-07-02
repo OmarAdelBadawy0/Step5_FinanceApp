@@ -7,6 +7,7 @@ import com.example.step5app.domain.repositories.AuthRepository
 import javax.inject.Inject
 import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
+import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInRequest
 import com.example.step5app.data.model.SignInResponse
 
@@ -58,6 +59,16 @@ class AuthRepositoryImpl @Inject constructor(
             userPreferences.clearAccessToken()
             userPreferences.saveAccessToken(response.data?.accessToken ?: "")
 
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getProfile(token: String): Result<ProfileResponse> {
+        return try {
+            val bearer = "Bearer $token"
+            val response = authService.getProfile(bearer)
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)

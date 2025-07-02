@@ -3,10 +3,12 @@ package com.example.step5app.data.remote
 import com.example.step5app.data.model.AuthResponse
 import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
+import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInRequest
 import com.example.step5app.data.model.SignInResponse
 import com.example.step5app.data.model.SignUpRequest
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -28,4 +30,10 @@ interface AuthService {
         @Body request: ConfirmOtpRequest,
         @Header("Accept-Language") language: String = "en"
     ): ConfirmOtpResponse
+
+    @GET("/auth/profile")
+    suspend fun getProfile(
+        @Header("Authorization") token: String,
+        @Header("Accept-Language") language: String = "en"
+    ): ProfileResponse
 }

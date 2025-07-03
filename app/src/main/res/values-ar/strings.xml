@@ -133,6 +133,7 @@
     <string name="incorrect_password">كلمة المرور غير صحيحة</string>
     <string name="user_not_found_or_email_not_confirmed">المستخدم غير موجود أو لم يتم تأكيد البريد الإلكتروني</string>
     <string name="login_failed">فشل تسجيل الدخول: %1$s</string>
+    <string name="failed_to_load_profile">فشل في تحميل الملف الشخصي</string>
 
 
 </resources>

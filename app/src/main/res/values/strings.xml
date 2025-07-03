@@ -134,4 +134,6 @@
     <string name="incorrect_password">Incorrect password</string>
     <string name="user_not_found_or_email_not_confirmed">User not found or email not confirmed</string>
     <string name="login_failed">Login failed: %1$s</string>
+    <string name="unauthorized" translatable="false">Unauthorized</string>
+    <string name="failed_to_load_profile">Failed to load profile</string>
 </resources>

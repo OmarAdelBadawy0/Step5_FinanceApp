@@ -1,5 +1,6 @@
 package com.example.step5app.presentation.subscription
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,19 +31,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.step5app.R
-import com.example.step5app.domain.model.Subscription
 import com.example.step5app.presentation.common.SectionTitle
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.step5app.domain.model.Plan
 
 
 @Composable
-fun SubscriptionPlan() {
+fun SubscriptionPlan(
+    viewModel: SubscriptionViewModel = hiltViewModel()
+) {
+    val plans = viewModel.plans.collectAsState()
+    val error = viewModel.error.collectAsState()
+    val context = LocalContext.current
 
-    val subscriptions: List<Subscription> = listOf(
-        Subscription("Basic", 50.0, "PER MONTH", listOf("Feature A", "Feature B", "Feature C"), false),
-        Subscription("Premium", 100.0, "PER MONTH", listOf("Feature X", "Feature Y", "Feature Z"), true),
-        Subscription("Pro", 150.0, "PER MONTH", listOf("All Features", "Priority Support", "More"), false)
-    )
+    LaunchedEffect(error) {
+        error.value?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     SectionTitle(stringResource(R.string.my_plan))
     Text(
@@ -56,15 +66,16 @@ fun SubscriptionPlan() {
     SectionTitle(stringResource(R.string.subscription_plans))
     Spacer(modifier = Modifier.height(25.dp))
 
-
     LazyRow(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(subscriptions) { subscription ->
-            SubscriptionCard(subscription)
+        items(plans.value) { plan ->
+            SubscriptionCard(plan, stringResource(R.string.per_month), plan.price)
+            Spacer(modifier = Modifier.width(16.dp))
+            SubscriptionCard(plan, stringResource(R.string.per_year), plan.price * 12 * (1 - plan.annualDiscount/100))
         }
     }
 }
@@ -72,7 +83,7 @@ fun SubscriptionPlan() {
 
 
 @Composable
-fun SubscriptionCard(subscription: Subscription) {
+fun SubscriptionCard(plan: Plan, duration : String, price: Double) {
     Card(
         modifier = Modifier
             .width(250.dp)
@@ -93,17 +104,17 @@ fun SubscriptionCard(subscription: Subscription) {
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        subscription.name,
+                        plan.name,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary,
                         fontSize = 22.sp)
                     Text(
-                        subscription.duration,
+                        text = duration,
                         fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onPrimary)
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        stringResource(R.string.le, subscription.price),
+                        stringResource(R.string.le, price),
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary)
                 }
@@ -111,8 +122,9 @@ fun SubscriptionCard(subscription: Subscription) {
 
             Spacer(Modifier.height(16.dp))
 
+            var features = plan.description.split(",")  // Split the description into features
             // Features
-            subscription.features.forEach {
+            features.forEach {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -123,7 +135,7 @@ fun SubscriptionCard(subscription: Subscription) {
                         tint = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                     Spacer(Modifier.width(8.dp))
-                    Text(text = it, color = MaterialTheme.colorScheme.onSurface)
+                    Text(text = it.trim().uppercase(), color = MaterialTheme.colorScheme.onSurface)
                 }
             }
 

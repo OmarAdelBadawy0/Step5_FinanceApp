@@ -1,6 +1,7 @@
 package com.example.step5app.di
 
 import com.example.step5app.data.remote.AuthService
+import com.example.step5app.data.remote.PlanService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +28,11 @@ object NetworkModule {
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun providePlanService(retrofit: Retrofit): PlanService {
+        return retrofit.create(PlanService::class.java)
+    }
+
 }

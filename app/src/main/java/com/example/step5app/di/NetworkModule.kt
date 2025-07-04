@@ -1,6 +1,7 @@
 package com.example.step5app.di
 
 import com.example.step5app.data.remote.AuthService
+import com.example.step5app.data.remote.FeedService
 import com.example.step5app.data.remote.PlanService
 import dagger.Module
 import dagger.Provides
@@ -33,6 +34,12 @@ object NetworkModule {
     @Singleton
     fun providePlanService(retrofit: Retrofit): PlanService {
         return retrofit.create(PlanService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFeedService(retrofit: Retrofit): FeedService {
+        return retrofit.create(FeedService::class.java)
     }
 
 }

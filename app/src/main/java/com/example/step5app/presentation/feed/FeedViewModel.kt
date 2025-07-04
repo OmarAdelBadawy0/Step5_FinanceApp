@@ -1,11 +1,11 @@
 package com.example.step5app.presentation.feed
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.repositories.FeedRepository
 import com.example.step5app.domain.model.Post
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,13 +15,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val feedRepository: FeedRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
     private val _feedUiState = MutableStateFlow(FeedUiState())
     val feedUiState: StateFlow<FeedUiState> = _feedUiState.asStateFlow()
 
     init {
         loadPosts()
+        loadCategories()
     }
 
     private fun loadPosts() {
@@ -51,6 +53,22 @@ class FeedViewModel @Inject constructor(
                         errorMessage = "Failed to load posts: ${e.localizedMessage}"
                     )
                 }
+            }
+        }
+    }
+
+    private fun loadCategories() {
+        viewModelScope.launch {
+            try {
+                val token = userPreferences.getAccessTokenOnce() ?: ""
+                val categories = feedRepository.fetchCategories(token).map { it.name }
+                _feedUiState.update { currentState ->
+                    currentState.copy(
+                        categories = categories
+                    )
+                }
+            } catch (e: Exception) {
+                _feedUiState.update { it.copy(errorMessage = "Failed to load categories" + e.localizedMessage) }
             }
         }
     }

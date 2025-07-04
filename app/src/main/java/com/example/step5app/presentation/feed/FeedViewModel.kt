@@ -107,11 +107,10 @@ class FeedViewModel @Inject constructor(
         )
     }
 
-    fun setLocalizedStrings(filterOptions: List<String>, categories: List<String>, defaultFilter: String) {
+    fun setLocalizedStrings(filterOptions: List<String>, defaultFilter: String) {
         _feedUiState.update { currentState ->
             currentState.copy(
                 filterOptions = filterOptions,
-                categories = categories,
                 selectedFilter = defaultFilter
             )
         }

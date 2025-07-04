@@ -46,17 +46,9 @@ fun FeedScreen(
     )
     val defaultFilter = stringResource(R.string.filter)
 
-    // Categories options
-    val categories = listOf(
-        stringResource(R.string.category1),
-        stringResource(R.string.category2),
-        stringResource(R.string.category3),
-        stringResource(R.string.category4)
-    )
-
     // This ensures it's only called once (set the filter and categories)
     LaunchedEffect(Unit) {
-        viewModel.setLocalizedStrings(filterOptions, categories, defaultFilter)
+        viewModel.setLocalizedStrings(filterOptions, defaultFilter)
     }
 
     val listState = rememberLazyListState()

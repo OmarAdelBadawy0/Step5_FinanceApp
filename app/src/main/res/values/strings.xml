@@ -136,4 +136,5 @@
     <string name="login_failed">Login failed: %1$s</string>
     <string name="unauthorized" translatable="false">Unauthorized</string>
     <string name="failed_to_load_profile">Failed to load profile</string>
+    <string name="per_year">Per year</string>
 </resources>

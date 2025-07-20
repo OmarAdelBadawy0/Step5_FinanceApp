@@ -164,14 +164,14 @@ fun FeedScreen(
                     ) {
                         uiState.categories.forEach { category ->
                             FilterChip(
-                                selected = category == uiState.selectedCategory,
-                                onClick = { viewModel.selectCategory(category) },
+                                selected = category.name == uiState.selectedCategory,
+                                onClick = { viewModel.selectCategory(category.name) },
                                 label = {
                                     Text(
-                                        text = category,
+                                        text = category.name,
                                         textAlign = TextAlign.Center,
                                         fontSize = 14.sp,
-                                        color = if (category == uiState.selectedCategory) MaterialTheme.colorScheme.onPrimary
+                                        color = if (category.name == uiState.selectedCategory) MaterialTheme.colorScheme.onPrimary
                                         else MaterialTheme.colorScheme.tertiary,
                                         modifier = Modifier.padding(0.dp)
                                     )
@@ -185,7 +185,7 @@ fun FeedScreen(
                                     selectedContainerColor = MaterialTheme.colorScheme.tertiary,
                                     containerColor = Color.Transparent
                                 ),
-                                border = if (category == uiState.selectedCategory) BorderStroke(1.dp, Color.Transparent)
+                                border = if (category.name == uiState.selectedCategory) BorderStroke(1.dp, Color.Transparent)
                                 else BorderStroke((1.5).dp, MaterialTheme.colorScheme.tertiary)
                             )
                         }

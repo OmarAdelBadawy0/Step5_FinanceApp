@@ -58,7 +58,7 @@ class FeedViewModel @Inject constructor(
     private fun loadCategories() {
         viewModelScope.launch {
             try {
-                val categories = feedRepository.fetchCategories().map { it.name }
+                val categories = feedRepository.fetchCategories()
                 _feedUiState.update { currentState ->
                     currentState.copy(
                         categories = categories

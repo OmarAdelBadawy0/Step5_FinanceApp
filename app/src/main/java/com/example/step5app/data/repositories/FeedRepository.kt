@@ -1,6 +1,7 @@
 package com.example.step5app.data.repositories
 
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.model.PostResponse
 import com.example.step5app.data.remote.FeedService
 import com.example.step5app.domain.model.Category
 import java.util.Locale
@@ -15,5 +16,15 @@ class FeedRepository @Inject constructor(
         val token = userPreferences.getAccessTokenOnce() ?: ""
 
         return feedServiceApi.getCategories(language = locale ,token = "Bearer $token").data
+    }
+
+    suspend fun fetchPosts(
+        categoryId: Int? = null,
+        search: String? = null,
+        page: Int = 1,
+        limit: Int = 5,
+        language: String = "en"
+    ): PostResponse {
+        return feedServiceApi.getPosts(categoryId, search, page, limit, language)
     }
 }

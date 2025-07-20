@@ -28,6 +28,8 @@ import com.example.step5app.presentation.bottomBar.BottomBar
 import com.example.step5app.presentation.feed.FeedViewModel
 import com.example.step5app.presentation.topBar.TopBar
 import kotlinx.coroutines.launch
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun FeedScreen(
@@ -56,6 +58,16 @@ fun FeedScreen(
 
     val showScrollToTop by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 1 }
+    }
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisibleIndex ->
+                val totalItems = listState.layoutInfo.totalItemsCount
+                if (lastVisibleIndex == totalItems - 1) {
+                    viewModel.loadMorePosts()
+                }
+            }
     }
 
     Scaffold(
@@ -192,7 +204,7 @@ fun FeedScreen(
                     }
 
                     LazyColumn(state = listState) {
-                        items(uiState.posts.reversed()) { item ->
+                        items(uiState.posts) { item ->
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -237,9 +249,12 @@ fun FeedScreen(
                                             .padding(end = 12.dp, bottom = 4.dp),
                                         contentAlignment = Alignment.BottomEnd
                                     ) {
+                                        // Parse the date and format it
+                                        val parsedDate = OffsetDateTime.parse(item.updatedAt)
+                                        val formatter = DateTimeFormatter.ofPattern("HH:mm. dd.MM.yy")
                                         Text(
-                                            text = item.date,
-                                            fontSize = 14.sp,
+                                            text = parsedDate.format(formatter),
+                                            fontSize = 12.sp,
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
                                     }

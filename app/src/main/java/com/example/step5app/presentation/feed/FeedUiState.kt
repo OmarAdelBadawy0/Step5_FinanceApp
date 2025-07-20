@@ -10,5 +10,8 @@ data class FeedUiState(
     val isFilterDropdownExpanded: Boolean = false,
     val errorMessage: String? = null,
     val filterOptions: List<String> = emptyList(),
-    val categories: List<Category> = emptyList()
+    val categories: List<Category> = emptyList(),
+    val currentPage: Int = 1,
+    val isLoadingMorePosts: Boolean = false,
+    val hasMorePosts: Boolean = true
 )

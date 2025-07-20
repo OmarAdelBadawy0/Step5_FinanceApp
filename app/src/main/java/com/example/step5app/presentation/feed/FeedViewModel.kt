@@ -3,7 +3,6 @@ package com.example.step5app.presentation.feed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.data.repositories.FeedRepository
-import com.example.step5app.domain.model.Post
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,37 +19,67 @@ class FeedViewModel @Inject constructor(
     val feedUiState: StateFlow<FeedUiState> = _feedUiState.asStateFlow()
 
     init {
-        loadPosts()
+        loadMorePosts()
         loadCategories()
     }
 
-    private fun loadPosts() {
+//    private fun loadPosts() {
+//        viewModelScope.launch {
+//            _feedUiState.update { currentState ->
+//                currentState.copy(
+//                    isLoading = true,
+//                    posts = emptyList(),
+//                    errorMessage = null
+//                )
+//            }
+//
+//            try {
+//                // Simulate network/database call
+//                _feedUiState.update { currentState ->
+//                    currentState.copy(
+//                        posts = feedRepository.fetchPosts().data,
+//                        isLoading = false,
+//                        currentPage = 2
+//                    )
+//                }
+//            } catch (e: Exception) {
+//                _feedUiState.update { currentState ->
+//                    currentState.copy(
+//                        isLoading = false,
+//                        errorMessage = "Failed to load posts: ${e.localizedMessage}"
+//                    )
+//                }
+//            }
+//        }
+//    }
+
+    internal fun loadMorePosts() {
+        if (feedUiState.value.isLoadingMorePosts || !feedUiState.value.hasMorePosts) return
+        _feedUiState.update { currentState ->
+            currentState.copy(isLoadingMorePosts = true)
+        }
+
         viewModelScope.launch {
-            _feedUiState.update { currentState ->
-                currentState.copy(
-                    isLoading = true,
-                    posts = emptyList(),
-                    errorMessage = null
-                )
-            }
-
             try {
-                // Simulate network/database call
-                kotlinx.coroutines.delay(500)
-
+                val result = feedRepository.fetchPosts(page = feedUiState.value.currentPage)
                 _feedUiState.update { currentState ->
                     currentState.copy(
-                        isLoading = false,
-                        posts = generateSamplePosts()
+                        posts = currentState.posts + result.data,
+                        isLoading = false
+                    )
+                }
+                _feedUiState.update { currentState ->
+                    currentState.copy(
+                        currentPage = result.pagination.currentPage + 1,
+                        hasMorePosts = result.pagination.currentPage < result.pagination.totalPages
                     )
                 }
             } catch (e: Exception) {
                 _feedUiState.update { currentState ->
-                    currentState.copy(
-                        isLoading = false,
-                        errorMessage = "Failed to load posts: ${e.localizedMessage}"
-                    )
+                    currentState.copy(errorMessage = e.message)
                 }
+            } finally {
+                _feedUiState.update { currentState -> currentState.copy(isLoadingMorePosts = false) }
             }
         }
     }
@@ -94,15 +123,15 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    private fun generateSamplePosts(): List<Post> {
-        return listOf(
-            Post("# TITLE 4", "DESCRIPTION 4", "May 3, 2023"),
-            Post("# TITLE 5", "DESCRIPTION 5", "May 2, 2023"),
-            Post("# TITLE 1", "DESCRIPTION 1", "May 6, 2023"),
-            Post("# TITLE 2", "DESCRIPTION 2", "May 5, 2023"),
-            Post("# TITLE 3", "DESCRIPTION 3", "May 4, 2023")
-        )
-    }
+//    private fun generateSamplePosts(): List<Post> {
+//        return listOf(
+//            Post("# TITLE 4", "DESCRIPTION 4", "May 3, 2023"),
+//            Post("# TITLE 5", "DESCRIPTION 5", "May 2, 2023"),
+//            Post("# TITLE 1", "DESCRIPTION 1", "May 6, 2023"),
+//            Post("# TITLE 2", "DESCRIPTION 2", "May 5, 2023"),
+//            Post("# TITLE 3", "DESCRIPTION 3", "May 4, 2023")
+//        )
+//    }
 
     fun setLocalizedStrings(filterOptions: List<String>, defaultFilter: String) {
         _feedUiState.update { currentState ->

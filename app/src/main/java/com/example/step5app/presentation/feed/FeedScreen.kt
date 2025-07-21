@@ -56,16 +56,19 @@ fun FeedScreen(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
+    // handle the scroll to top button
     val showScrollToTop by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 1 }
     }
 
+
+    // handle the pagination when the user scrolls to the end of the list -1
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleIndex ->
                 val totalItems = listState.layoutInfo.totalItemsCount
                 if (lastVisibleIndex == totalItems - 1) {
-                    viewModel.loadMorePosts()
+                    viewModel.loadPosts()
                 }
             }
     }
@@ -258,6 +261,18 @@ fun FeedScreen(
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
+                                }
+                            }
+                        }
+                        if (uiState.hasMorePosts) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
                                 }
                             }
                         }

@@ -19,41 +19,12 @@ class FeedViewModel @Inject constructor(
     val feedUiState: StateFlow<FeedUiState> = _feedUiState.asStateFlow()
 
     init {
-        loadMorePosts()
+        loadPosts()
         loadCategories()
     }
 
-//    private fun loadPosts() {
-//        viewModelScope.launch {
-//            _feedUiState.update { currentState ->
-//                currentState.copy(
-//                    isLoading = true,
-//                    posts = emptyList(),
-//                    errorMessage = null
-//                )
-//            }
-//
-//            try {
-//                // Simulate network/database call
-//                _feedUiState.update { currentState ->
-//                    currentState.copy(
-//                        posts = feedRepository.fetchPosts().data,
-//                        isLoading = false,
-//                        currentPage = 2
-//                    )
-//                }
-//            } catch (e: Exception) {
-//                _feedUiState.update { currentState ->
-//                    currentState.copy(
-//                        isLoading = false,
-//                        errorMessage = "Failed to load posts: ${e.localizedMessage}"
-//                    )
-//                }
-//            }
-//        }
-//    }
 
-    internal fun loadMorePosts() {
+    internal fun loadPosts() {
         if (feedUiState.value.isLoadingMorePosts || !feedUiState.value.hasMorePosts) return
         _feedUiState.update { currentState ->
             currentState.copy(isLoadingMorePosts = true)
@@ -61,6 +32,7 @@ class FeedViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
+                // get the posts and append them to the current posts list
                 val result = feedRepository.fetchPosts(page = feedUiState.value.currentPage)
                 _feedUiState.update { currentState ->
                     currentState.copy(
@@ -68,6 +40,8 @@ class FeedViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+
+                // Update the current page and check if there are more pages
                 _feedUiState.update { currentState ->
                     currentState.copy(
                         currentPage = result.pagination.currentPage + 1,

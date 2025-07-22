@@ -1,8 +1,10 @@
 package com.example.step5app.presentation.feed
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.data.repositories.FeedRepository
+import com.example.step5app.domain.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +26,7 @@ class FeedViewModel @Inject constructor(
     }
 
 
-    internal fun loadPosts() {
+    internal fun loadPosts(categoryId: Int? = null, search: String? = null) {
         if (feedUiState.value.isLoadingMorePosts || !feedUiState.value.hasMorePosts) return
         _feedUiState.update { currentState ->
             currentState.copy(isLoadingMorePosts = true)
@@ -33,7 +35,12 @@ class FeedViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 // get the posts and append them to the current posts list
-                val result = feedRepository.fetchPosts(page = feedUiState.value.currentPage)
+                val result = feedRepository.fetchPosts(
+                    page = feedUiState.value.currentPage,
+                    categoryId = categoryId,
+                    search = search
+                )
+
                 _feedUiState.update { currentState ->
                     currentState.copy(
                         posts = currentState.posts + result.data,
@@ -73,12 +80,33 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun selectCategory(category: String) {
+    fun selectCategory(category: Category) {
+
+        // If the category is already selected, clear the selection and load all posts
+        if (category.name == _feedUiState.value.selectedCategory) {
+            Log.d("FeedViewModel", "Category already selected: ${category.name}  .. ${feedUiState.value.selectedCategory}")
+            _feedUiState.update { currentState ->
+                currentState.copy(
+                    selectedCategory = "",
+                    posts = emptyList(),
+                    currentPage = 1,
+                    hasMorePosts = true
+                )
+            }
+            loadPosts()
+            return
+        }
+
+        // if select new category, clear the posts and load the new category posts
         _feedUiState.update { currentState ->
             currentState.copy(
-                selectedCategory = if (currentState.selectedCategory == category) "" else category
+                selectedCategory = category.name,
+                posts = emptyList(),
+                currentPage = 1,
+                hasMorePosts = true
             )
         }
+        loadPosts(categoryId = category.id)
     }
 
     fun selectFilter(option: String) {

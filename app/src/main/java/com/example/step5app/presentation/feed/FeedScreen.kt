@@ -180,7 +180,7 @@ fun FeedScreen(
                         uiState.categories.forEach { category ->
                             FilterChip(
                                 selected = category.name == uiState.selectedCategory,
-                                onClick = { viewModel.selectCategory(category.name) },
+                                onClick = { viewModel.selectCategory(category) },
                                 label = {
                                     Text(
                                         text = category.name,

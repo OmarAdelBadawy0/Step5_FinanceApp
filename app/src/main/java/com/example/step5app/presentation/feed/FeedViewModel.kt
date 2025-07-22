@@ -1,6 +1,5 @@
 package com.example.step5app.presentation.feed
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.data.repositories.FeedRepository
@@ -84,7 +83,6 @@ class FeedViewModel @Inject constructor(
 
         // If the category is already selected, clear the selection and load all posts
         if (category.name == _feedUiState.value.selectedCategory) {
-            Log.d("FeedViewModel", "Category already selected: ${category.name}  .. ${feedUiState.value.selectedCategory}")
             _feedUiState.update { currentState ->
                 currentState.copy(
                     selectedCategory = "",

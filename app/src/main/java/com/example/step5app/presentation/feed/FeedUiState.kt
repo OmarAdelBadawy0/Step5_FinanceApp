@@ -5,7 +5,7 @@ import com.example.step5app.domain.model.Post
 data class FeedUiState(
     val isLoading: Boolean = false,
     val posts: List<Post> = emptyList(),
-    val selectedCategory: String = "",
+    val selectedCategory: Category? = null,
     val selectedFilter: String = "",
     val isFilterDropdownExpanded: Boolean = false,
     val errorMessage: String? = null,

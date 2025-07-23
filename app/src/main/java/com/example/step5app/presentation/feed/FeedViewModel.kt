@@ -25,7 +25,7 @@ class FeedViewModel @Inject constructor(
     }
 
 
-    internal fun loadPosts(categoryId: Int? = null, search: String? = null) {
+    internal fun loadPosts(search: String? = null) {
         if (feedUiState.value.isLoadingMorePosts || !feedUiState.value.hasMorePosts) return
         _feedUiState.update { currentState ->
             currentState.copy(isLoadingMorePosts = true)
@@ -36,7 +36,7 @@ class FeedViewModel @Inject constructor(
                 // get the posts and append them to the current posts list
                 val result = feedRepository.fetchPosts(
                     page = feedUiState.value.currentPage,
-                    categoryId = categoryId,
+                    categoryId = feedUiState.value.selectedCategory?.id,
                     search = search
                 )
 
@@ -82,10 +82,10 @@ class FeedViewModel @Inject constructor(
     fun selectCategory(category: Category) {
 
         // If the category is already selected, clear the selection and load all posts
-        if (category.name == _feedUiState.value.selectedCategory) {
+        if (category == _feedUiState.value.selectedCategory) {
             _feedUiState.update { currentState ->
                 currentState.copy(
-                    selectedCategory = "",
+                    selectedCategory = null,
                     posts = emptyList(),
                     currentPage = 1,
                     hasMorePosts = true
@@ -98,13 +98,13 @@ class FeedViewModel @Inject constructor(
         // if select new category, clear the posts and load the new category posts
         _feedUiState.update { currentState ->
             currentState.copy(
-                selectedCategory = category.name,
+                selectedCategory = category,
                 posts = emptyList(),
                 currentPage = 1,
                 hasMorePosts = true
             )
         }
-        loadPosts(categoryId = category.id)
+        loadPosts()
     }
 
     fun selectFilter(option: String) {

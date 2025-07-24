@@ -6,6 +6,7 @@ data class FeedUiState(
     val isLoading: Boolean = false,
     val posts: List<Post> = emptyList(),
     val selectedCategory: Category? = null,
+    val searchedQuery: String? = null,
     val selectedFilter: String = "",
     val isFilterDropdownExpanded: Boolean = false,
     val errorMessage: String? = null,

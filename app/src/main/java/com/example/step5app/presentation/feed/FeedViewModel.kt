@@ -25,7 +25,7 @@ class FeedViewModel @Inject constructor(
     }
 
 
-    internal fun loadPosts(search: String? = null) {
+    internal fun loadPosts() {
         if (feedUiState.value.isLoadingMorePosts || !feedUiState.value.hasMorePosts) return
         _feedUiState.update { currentState ->
             currentState.copy(isLoadingMorePosts = true)
@@ -37,7 +37,7 @@ class FeedViewModel @Inject constructor(
                 val result = feedRepository.fetchPosts(
                     page = feedUiState.value.currentPage,
                     categoryId = feedUiState.value.selectedCategory?.id,
-                    search = search
+                    search = feedUiState.value.searchedQuery
                 )
 
                 _feedUiState.update { currentState ->
@@ -86,6 +86,7 @@ class FeedViewModel @Inject constructor(
             _feedUiState.update { currentState ->
                 currentState.copy(
                     selectedCategory = null,
+                    searchedQuery = null,
                     posts = emptyList(),
                     currentPage = 1,
                     hasMorePosts = true
@@ -99,6 +100,7 @@ class FeedViewModel @Inject constructor(
         _feedUiState.update { currentState ->
             currentState.copy(
                 selectedCategory = category,
+                searchedQuery = null,
                 posts = emptyList(),
                 currentPage = 1,
                 hasMorePosts = true
@@ -123,15 +125,19 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-//    private fun generateSamplePosts(): List<Post> {
-//        return listOf(
-//            Post("# TITLE 4", "DESCRIPTION 4", "May 3, 2023"),
-//            Post("# TITLE 5", "DESCRIPTION 5", "May 2, 2023"),
-//            Post("# TITLE 1", "DESCRIPTION 1", "May 6, 2023"),
-//            Post("# TITLE 2", "DESCRIPTION 2", "May 5, 2023"),
-//            Post("# TITLE 3", "DESCRIPTION 3", "May 4, 2023")
-//        )
-//    }
+    fun searchPosts(query: String){
+        _feedUiState.update { currentState ->
+            currentState.copy(
+                searchedQuery = query,
+                posts = emptyList(),
+                currentPage = 1,
+                hasMorePosts = true
+            )
+        }
+        loadPosts()
+    }
+
+
 
     fun setLocalizedStrings(filterOptions: List<String>, defaultFilter: String) {
         _feedUiState.update { currentState ->

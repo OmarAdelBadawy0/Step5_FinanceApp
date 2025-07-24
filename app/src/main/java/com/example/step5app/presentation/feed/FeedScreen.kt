@@ -74,7 +74,11 @@ fun FeedScreen(
     }
 
     Scaffold(
-        topBar = { TopBar(onSettingsClick = onSettingsClick, withSearch = true) },
+        topBar = { TopBar(
+            onSettingsClick = onSettingsClick,
+            withSearch = true,
+            onConfirmClick = { viewModel.searchPosts(it) }
+        ) },
         bottomBar = { BottomBar(navController = navController) },
         floatingActionButton = {
             if (showScrollToTop) {

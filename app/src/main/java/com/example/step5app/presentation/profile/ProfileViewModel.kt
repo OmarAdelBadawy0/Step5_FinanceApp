@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.R
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.model.UpdateProfileRequest
 import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val authRepository: AuthRepository,
-    @ApplicationContext private val context: Context
+    @ApplicationContext internal val context: Context
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -77,18 +78,50 @@ class ProfileViewModel @Inject constructor(
     fun saveProfileChanges() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
+            val currentState = uiState.value
             try {
-                // TODO: Add your API call or database operation here
-                // Simulate network/database operation
-                kotlinx.coroutines.delay(1000)
-
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isProfileUpdated = true,
-                        errorMessage = null
-                    )
+                val token = userPreferences.getAccessTokenOnce()
+                if (token.isNullOrBlank()) {
+                    _uiState.update {
+                        it.copy(isLoading = false, errorMessage = "Unauthorized")
+                    }
+                    return@launch
                 }
+
+                val request = UpdateProfileRequest(
+                    firstName = currentState.firstName,
+                    lastName = currentState.lastName,
+                    phoneNumber = currentState.phoneNumber ?: ""
+                )
+
+                val result = authRepository.updateProfile(
+                    request = request,
+                    token = token
+                )
+
+                result.fold(
+                    onSuccess = { response ->
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                isProfileUpdated = true,
+                                errorMessage = context.getString(R.string.profile_updated_successfully),
+                                firstName = response.data.firstName,
+                                lastName = response.data.lastName,
+                                email = response.data.email,
+                                phoneNumber = response.data.phoneNumber ?: it.phoneNumber,
+                            )
+                        }
+                    },
+                    onFailure = { e ->
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = context.getString(R.string.phone_number_should_start_with_2_and_not_empty)
+                            )
+                        }
+                    }
+                )
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(

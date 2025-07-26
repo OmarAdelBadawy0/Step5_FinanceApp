@@ -1,5 +1,6 @@
 package com.example.step5app.presentation.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -73,6 +74,13 @@ fun ProfileScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadProfile()
+    }
+
+    LaunchedEffect(uiState.errorMessage) {
+        if (uiState.errorMessage != null) {
+            Toast.makeText( viewModel.context, uiState.errorMessage, Toast.LENGTH_LONG).show()
+            viewModel.clearError()
+        }
     }
 
     Scaffold(
@@ -386,7 +394,7 @@ fun PersonalDetails(
     )
 
     Button(
-        onClick = { viewModel::saveProfileChanges },
+        onClick = { viewModel.saveProfileChanges() },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp),

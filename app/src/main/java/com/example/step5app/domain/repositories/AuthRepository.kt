@@ -3,6 +3,7 @@ package com.example.step5app.domain.repositories
 import com.example.step5app.data.model.ConfirmOtpResponse
 import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInResponse
+import com.example.step5app.data.model.UpdateProfileRequest
 
 interface AuthRepository {
     suspend fun signIn(email: String, password: String):  Result<SignInResponse>
@@ -18,4 +19,7 @@ interface AuthRepository {
     fun isUserLoggedIn(): Boolean
 
     suspend fun getProfile(token: String): Result<ProfileResponse>
+
+    suspend fun updateProfile(request: UpdateProfileRequest, token: String): Result<ProfileResponse>
+
 }

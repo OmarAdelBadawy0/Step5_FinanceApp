@@ -10,6 +10,7 @@ import com.example.step5app.data.model.ConfirmOtpResponse
 import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInRequest
 import com.example.step5app.data.model.SignInResponse
+import com.example.step5app.data.model.UpdateProfileRequest
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,  // API service
@@ -70,6 +71,20 @@ class AuthRepositoryImpl @Inject constructor(
             val bearer = "Bearer $token"
             val response = authService.getProfile(bearer)
             Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateProfile(request: UpdateProfileRequest, token: String): Result<ProfileResponse> {
+        return try {
+            val bearer = "Bearer $token"
+            val response = authService.updateProfile(token = bearer, body = request)
+            if (response.isSuccessful) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception(response.errorBody()?.string() ?: "Unknown error"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

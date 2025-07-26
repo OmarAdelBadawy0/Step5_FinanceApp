@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.datastore.preferences)
     implementation(libs.androidx.appcompat)
+    implementation(libs.coil.compose)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

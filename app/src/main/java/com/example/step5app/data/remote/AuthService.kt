@@ -7,9 +7,12 @@ import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInRequest
 import com.example.step5app.data.model.SignInResponse
 import com.example.step5app.data.model.SignUpRequest
+import com.example.step5app.data.model.UpdateProfileRequest
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface AuthService {
@@ -36,4 +39,14 @@ interface AuthService {
         @Header("Authorization") token: String,
         @Header("Accept-Language") language: String = "en"
     ): ProfileResponse
+
+
+    @PATCH("auth/profile")
+    suspend fun updateProfile(
+        @Header("Authorization") token: String,
+        @Header("Accept-Language") language: String = "en",
+        @Body body: UpdateProfileRequest
+    ): Response<ProfileResponse>
+
+
 }

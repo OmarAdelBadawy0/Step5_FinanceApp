@@ -137,4 +137,6 @@
     <string name="unauthorized" translatable="false">Unauthorized</string>
     <string name="failed_to_load_profile">Failed to load profile</string>
     <string name="per_year">Per year</string>
+    <string name="phone_number_should_start_with_2_and_not_empty">Phone number should start with +2 and not empty</string>
+    <string name="profile_updated_successfully">Profile updated successfully</string>
 </resources>

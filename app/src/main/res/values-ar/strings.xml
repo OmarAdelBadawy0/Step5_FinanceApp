@@ -135,6 +135,8 @@
     <string name="login_failed">فشل تسجيل الدخول: %1$s</string>
     <string name="failed_to_load_profile">فشل في تحميل الملف الشخصي</string>
     <string name="per_year">سنوي</string>
+    <string name="phone_number_should_start_with_2_and_not_empty">يجب أن يبدأ رقم الهاتف بـ +2 وألا يكون فارغًا</string>
+    <string name="profile_updated_successfully">تم تحديث الملف الشخصي بنجاح</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.step5app.data.repositories
 
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.model.ChangePasswordRequest
 import com.example.step5app.data.model.SignUpRequest
 import com.example.step5app.data.remote.AuthService
 import com.example.step5app.domain.repositories.AuthRepository
@@ -82,6 +83,19 @@ class AuthRepositoryImpl @Inject constructor(
             val response = authService.updateProfile(token = bearer, body = request)
             if (response.isSuccessful) {
                 Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception(response.errorBody()?.string() ?: "Unknown error"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun changePassword(request: ChangePasswordRequest): Result<Unit> {
+        return try {
+            val response = authService.changePassword(body = request)
+            if (response.isSuccessful) {
+                Result.success(Unit)
             } else {
                 Result.failure(Exception(response.errorBody()?.string() ?: "Unknown error"))
             }

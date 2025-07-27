@@ -1,5 +1,6 @@
 package com.example.step5app.domain.repositories
 
+import com.example.step5app.data.model.ChangePasswordRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
 import com.example.step5app.data.model.ProfileResponse
 import com.example.step5app.data.model.SignInResponse
@@ -21,5 +22,7 @@ interface AuthRepository {
     suspend fun getProfile(token: String): Result<ProfileResponse>
 
     suspend fun updateProfile(request: UpdateProfileRequest, token: String): Result<ProfileResponse>
+
+    suspend fun changePassword(request: ChangePasswordRequest): Result<Unit>
 
 }

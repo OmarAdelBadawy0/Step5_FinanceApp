@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.R
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.model.ChangePasswordRequest
 import com.example.step5app.data.model.UpdateProfileRequest
 import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.text.Regex
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -135,31 +137,51 @@ class ProfileViewModel @Inject constructor(
 
     fun changePassword() {
         viewModelScope.launch {
+            val currentState = uiState.value
             _uiState.update { it.copy(isLoading = true) }
             try {
-                // Validate passwords
-                if (_uiState.value.newPassword != _uiState.value.confirmPassword) {
-                    throw IllegalArgumentException("Passwords don't match")
+                // Validate password
+                if (!validatePassword(currentState.newPassword, currentState.confirmPassword)) {
+                    return@launch
                 }
 
-                if (_uiState.value.newPassword.length < 6) {
-                    throw IllegalArgumentException("Password must be at least 6 characters")
-                }
+                val request = ChangePasswordRequest(
+                    email = currentState.email,
+                    oldPassword = currentState.oldPassword,
+                    newPassword = currentState.newPassword
+                )
+                val result = authRepository.changePassword(request)
 
-                // TODO: Add your password change API call here
-                // Simulate network/database operation
-                kotlinx.coroutines.delay(1000)
+                result.fold(
+                    onSuccess = {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                isPasswordChanged = true,
+                                oldPassword = "",
+                                newPassword = "",
+                                confirmPassword = "",
+                                errorMessage = context.getString(R.string.password_changed_successfully)
+                            )
+                        }
+                    },
+                    onFailure = { e ->
+                        var errorMsg: String? = null
+                        if (e.message?.contains("401") == true) {
+                            errorMsg = context.getString(R.string.the_old_password_is_incorrect)
+                        }else if (e.message?.contains("404") == true) {
+                            errorMsg = context.getString(R.string.user_not_found)
+                        }
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = errorMsg ?: e.message ?: context.getString(R.string.failed_to_change_password)
+                            )
+                        }
+                    }
+                )
 
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isPasswordChanged = true,
-                        oldPassword = "",
-                        newPassword = "",
-                        confirmPassword = "",
-                        errorMessage = null
-                    )
-                }
+
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
@@ -228,4 +250,35 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
+
+    fun validatePassword(password: String, confirmPassword: String): Boolean {
+        val passwordPattern =
+            Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$")
+
+
+        return when {
+            password.isBlank() -> {
+                _uiState.update { it.copy(errorMessage = context.getString(R.string.please_enter_your_password)) }
+                false
+            }
+            password.length < 8 -> {
+                _uiState.update { it.copy(errorMessage = context.getString(R.string.password_must_be_at_least_8_characters)) }
+                false
+            }
+            !password.matches(passwordPattern) -> {
+                _uiState.update {
+                    it.copy(errorMessage = context.getString(R.string.password_must_contain_uppercase_lowercase_number_and_symbol))
+                }
+                false
+            }
+            password != confirmPassword -> {
+                _uiState.update { it.copy(errorMessage = context.getString(R.string.passwords_do_not_match)) }
+                false
+            }
+            else -> true
+        }
+
+    }
+
+
 }

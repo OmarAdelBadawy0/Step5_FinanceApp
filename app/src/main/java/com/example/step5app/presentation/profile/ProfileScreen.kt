@@ -442,7 +442,7 @@ fun ChangePassword(
     )
 
     Button(
-        onClick = { viewModel::changePassword },
+        onClick = { viewModel.changePassword() },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),

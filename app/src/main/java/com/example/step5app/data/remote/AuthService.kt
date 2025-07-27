@@ -1,6 +1,7 @@
 package com.example.step5app.data.remote
 
 import com.example.step5app.data.model.AuthResponse
+import com.example.step5app.data.model.ChangePasswordRequest
 import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
 import com.example.step5app.data.model.ProfileResponse
@@ -47,6 +48,12 @@ interface AuthService {
         @Header("Accept-Language") language: String = "en",
         @Body body: UpdateProfileRequest
     ): Response<ProfileResponse>
+
+    @PATCH("auth/change-password")
+    suspend fun changePassword(
+        @Header("Accept-Language") language: String = "en",
+        @Body body: ChangePasswordRequest
+    ): Response<Unit>
 
 
 }

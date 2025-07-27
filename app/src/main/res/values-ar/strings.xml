@@ -137,6 +137,9 @@
     <string name="per_year">سنوي</string>
     <string name="phone_number_should_start_with_2_and_not_empty">يجب أن يبدأ رقم الهاتف بـ +2 وألا يكون فارغًا</string>
     <string name="profile_updated_successfully">تم تحديث الملف الشخصي بنجاح</string>
-
+    <string name="password_changed_successfully">تم تغيير كلمة المرور بنجاح</string>
+    <string name="failed_to_change_password">فشل في تغيير كلمة المرور</string>
+    <string name="the_old_password_is_incorrect">كلمة المرور القديمة غير صحيحة</string>
+    <string name="user_not_found">المستخدم غير موجود</string>
 
 </resources>

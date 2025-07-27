@@ -139,4 +139,8 @@
     <string name="per_year">Per year</string>
     <string name="phone_number_should_start_with_2_and_not_empty">Phone number should start with +2 and not empty</string>
     <string name="profile_updated_successfully">Profile updated successfully</string>
+    <string name="password_changed_successfully">Password changed successfully</string>
+    <string name="failed_to_change_password">Failed to change password</string>
+    <string name="the_old_password_is_incorrect">The old password is incorrect</string>
+    <string name="user_not_found">User not found</string>
 </resources>

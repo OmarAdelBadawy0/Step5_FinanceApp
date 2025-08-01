@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.step5app.R
@@ -83,260 +85,273 @@ fun ProfileScreen(
         }
     }
 
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
-    ) { paddingValues ->
+    Box(modifier = Modifier.fillMaxSize()) {
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Row(
+        Scaffold(
+            bottomBar = { BottomBar(navController = navController) }
+        ) { paddingValues ->
+
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    ,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
-                Box(
+                Row(
                     modifier = Modifier
-                        .clip(CircleShape)
-                        .size(50.dp)
-                        .clickable(onClick = onBackClick)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = stringResource(R.string.logo_description),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                IconButton(onClick =  onSettingsClick ) {
-                    Icon(
-                        painterResource(R.drawable.gear),
-                        contentDescription = stringResource(R.string.settings),
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.scale(1.6f),
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(45.dp))
-
-
-            // Person name and logout button
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-                ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.person),
-                        fontSize = 34.sp
-                    )
-                }
-
-                Button(
-                    onClick = { viewModel.logout() },
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                        .weight(1f)
-                        .wrapContentWidth(),
-                    shape = RoundedCornerShape(0.dp),
-                    contentPadding = PaddingValues(horizontal = 28.dp), // Remove default button padding
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
                 ) {
                     Box(
-                        modifier = Modifier.wrapContentWidth(),
-                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(50.dp)
+                            .clickable(onClick = onBackClick)
                     ) {
-                        Text(
-                            text = stringResource(R.string.logout),
-                            modifier = Modifier.widthIn(min = 40.dp),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
+                        Image(
+                            painter = painterResource(R.drawable.logo),
+                            contentDescription = stringResource(R.string.logo_description),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(
+                            painterResource(R.drawable.gear),
+                            contentDescription = stringResource(R.string.settings),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.scale(1.6f),
                         )
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(36.dp))
+                Spacer(modifier = Modifier.height(45.dp))
 
 
-            // sections grid and tabs
-            Column(modifier = Modifier.minimumInteractiveComponentSize()) {
-                // First TabRow (Notifications/Delete Account)
-                TabRow(
-                    selectedTabIndex = uiState.selectedTabIndex,
-                    containerColor = Color.Transparent,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(36.dp),
-                    divider = {}, // Remove default divider
-                    indicator = {} // Remove default indicator
+                // Person name and logout button
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Tab(
-                        selected = uiState.selectedTabIndex == 3,
-                        onClick = {
-                            viewModel.updateSelectedTabIndex(3)
-                        },
-                        text = {
-                            Text(
-                                stringResource(R.string.notifications),
-                                color =
-                                    if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.onPrimary
-                                    else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp
-                            )
-                        },
+                    Box(
                         modifier = Modifier
-                            .padding(top = 8.dp)
-                            .padding(start = 30.dp, end = 10.dp)
-                            .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
-                            .height(37.dp)
-                            .background(
-                                if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.tertiary
-                                else Color.Transparent
-                            )
-                            )
-                    Tab(
-                        selected = uiState.selectedTabIndex == 4,
-                        onClick = {
-                            viewModel.updateSelectedTabIndex(4)
-                        },
-                        text = {
-                            Text(
-                                stringResource(R.string.delete_account),
-                                color =
-                                    if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.onPrimary
-                                    else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp
-                            )
-                        },
+                            .fillMaxWidth()
+                            .weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.person),
+                            fontSize = 34.sp
+                        )
+                    }
+
+                    Button(
+                        onClick = { viewModel.logout() },
                         modifier = Modifier
-                            .padding(top = 8.dp)
-                            .padding(start = 9.dp, end = 28.dp)
-                            .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
-                            .height(37.dp)
-                            .background(
-                                if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.tertiary
-                                else Color.Transparent
+                            .padding(start = 10.dp)
+                            .weight(1f)
+                            .wrapContentWidth(),
+                        shape = RoundedCornerShape(0.dp),
+                        contentPadding = PaddingValues(horizontal = 28.dp), // Remove default button padding
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Box(
+                            modifier = Modifier.wrapContentWidth(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = stringResource(R.string.logout),
+                                modifier = Modifier.widthIn(min = 40.dp),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
                             )
-                    )
+                        }
+                    }
                 }
 
-                // Second TabRow (Profile/My Courses/Subscription)
-                TabRow(
-                    selectedTabIndex = uiState.selectedTabIndex, // You need to manage this state
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(34.dp),
-                    containerColor = Color.Transparent,
-                    divider = {}, // Remove default divider
-                    indicator = {} // Remove default indicator
-                ) {
-                    Tab(
-                        selected = uiState.selectedTabIndex == 0,
-                        onClick = {
-                            viewModel.updateSelectedTabIndex(0)
-                        },
+                Spacer(modifier = Modifier.height(36.dp))
+
+
+                // sections grid and tabs
+                Column(modifier = Modifier.minimumInteractiveComponentSize()) {
+                    // First TabRow (Notifications/Delete Account)
+                    TabRow(
+                        selectedTabIndex = uiState.selectedTabIndex,
+                        containerColor = Color.Transparent,
                         modifier = Modifier
-                            .padding(top = 6.dp)
-                            .padding(horizontal = 4.dp)
-                            .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
-                            .height(38.dp)
-                            .background(if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.tertiary else Color.Transparent),
-                        text = {
-                            Text(stringResource(R.string.profile),
-                                color = if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold,
-                            ) }
-                    )
-                    Tab(
-                        selected = uiState.selectedTabIndex == 1,
-                        onClick = {
-                            viewModel.updateSelectedTabIndex(1)
-                        },
-                        modifier = Modifier
-                            .padding(top = 6.dp)
-                            .padding(horizontal = 3.dp)
-                            .fillMaxHeight()
-                            .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
-                            .height(38.dp)
-                            .background(if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.tertiary else Color.Transparent),
-                        text = {
-                            Text(
-                                stringResource(R.string.my_courses),
-                                color = if (
-                                    uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp
-                            ) }
-                    )
-                    Tab(
-                        selected = uiState.selectedTabIndex == 2,
-                        onClick = {
-                            viewModel.updateSelectedTabIndex(2)
-                        },
-                        modifier = Modifier
-                            .padding(top = 6.dp)
-                            .padding(horizontal = 4.dp)
-                            .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
-                            .height(38.dp)
-                            .background(if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.tertiary else Color.Transparent),
-                        content = {
-                            Text(
-                                stringResource(R.string.subscription),
-                                color = if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.onPrimary
+                            .fillMaxWidth()
+                            .height(36.dp),
+                        divider = {}, // Remove default divider
+                        indicator = {} // Remove default indicator
+                    ) {
+                        Tab(
+                            selected = uiState.selectedTabIndex == 3,
+                            onClick = {
+                                viewModel.updateSelectedTabIndex(3)
+                            },
+                            text = {
+                                Text(
+                                    stringResource(R.string.notifications),
+                                    color =
+                                        if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.onPrimary
                                         else MaterialTheme.colorScheme.tertiary,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp,
-                            ) }
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .padding(start = 30.dp, end = 10.dp)
+                                .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
+                                .height(37.dp)
+                                .background(
+                                    if (uiState.selectedTabIndex == 3) MaterialTheme.colorScheme.tertiary
+                                    else Color.Transparent
+                                )
+                        )
+                        Tab(
+                            selected = uiState.selectedTabIndex == 4,
+                            onClick = {
+                                viewModel.updateSelectedTabIndex(4)
+                            },
+                            text = {
+                                Text(
+                                    stringResource(R.string.delete_account),
+                                    color =
+                                        if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.onPrimary
+                                        else MaterialTheme.colorScheme.tertiary,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .padding(start = 9.dp, end = 28.dp)
+                                .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
+                                .height(37.dp)
+                                .background(
+                                    if (uiState.selectedTabIndex == 4) MaterialTheme.colorScheme.tertiary
+                                    else Color.Transparent
+                                )
+                        )
+                    }
+
+                    // Second TabRow (Profile/My Courses/Subscription)
+                    TabRow(
+                        selectedTabIndex = uiState.selectedTabIndex, // You need to manage this state
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(34.dp),
+                        containerColor = Color.Transparent,
+                        divider = {}, // Remove default divider
+                        indicator = {} // Remove default indicator
+                    ) {
+                        Tab(
+                            selected = uiState.selectedTabIndex == 0,
+                            onClick = {
+                                viewModel.updateSelectedTabIndex(0)
+                            },
+                            modifier = Modifier
+                                .padding(top = 6.dp)
+                                .padding(horizontal = 4.dp)
+                                .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
+                                .height(38.dp)
+                                .background(if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.tertiary else Color.Transparent),
+                            text = {
+                                Text(
+                                    stringResource(R.string.profile),
+                                    color = if (uiState.selectedTabIndex == 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
+                        )
+                        Tab(
+                            selected = uiState.selectedTabIndex == 1,
+                            onClick = {
+                                viewModel.updateSelectedTabIndex(1)
+                            },
+                            modifier = Modifier
+                                .padding(top = 6.dp)
+                                .padding(horizontal = 3.dp)
+                                .fillMaxHeight()
+                                .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
+                                .height(38.dp)
+                                .background(if (uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.tertiary else Color.Transparent),
+                            text = {
+                                Text(
+                                    stringResource(R.string.my_courses),
+                                    color = if (
+                                        uiState.selectedTabIndex == 1) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.tertiary,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
+                        )
+                        Tab(
+                            selected = uiState.selectedTabIndex == 2,
+                            onClick = {
+                                viewModel.updateSelectedTabIndex(2)
+                            },
+                            modifier = Modifier
+                                .padding(top = 6.dp)
+                                .padding(horizontal = 4.dp)
+                                .border(1.5.dp, MaterialTheme.colorScheme.tertiary)
+                                .height(38.dp)
+                                .background(if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.tertiary else Color.Transparent),
+                            content = {
+                                Text(
+                                    stringResource(R.string.subscription),
+                                    color = if (uiState.selectedTabIndex == 2) MaterialTheme.colorScheme.onPrimary
+                                    else MaterialTheme.colorScheme.tertiary,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp,
+                                )
+                            }
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if (uiState.selectedTabIndex == 0) {
+                    PersonalDetails(
+                        viewModel = viewModel,
+                        uiState = uiState
+
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                    ChangePassword(
+                        viewModel = viewModel,
+                        uiState = uiState
+                    )
+                } else if (uiState.selectedTabIndex == 1) {
+                    MyCoursesScreen()
+                } else if (uiState.selectedTabIndex == 2) {
+                    SubscriptionPlan()
+                } else if (uiState.selectedTabIndex == 3) {
+                    NotificationScreen()
+                } else if (uiState.selectedTabIndex == 4) {
+                    DeleteAccountSection(
+                        onDeleteClick = { /*TODO*/ },
+                        onSendCodeClick = { /*TODO*/ },
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (uiState.selectedTabIndex == 0) {
-                PersonalDetails(
-                    viewModel = viewModel,
-                    uiState = uiState
-
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                ChangePassword(
-                    viewModel = viewModel,
-                    uiState = uiState
-                )
+        }
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .zIndex(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
-            else if (uiState.selectedTabIndex == 1) {
-                MyCoursesScreen()
-            }
-            else if (uiState.selectedTabIndex == 2) {
-                SubscriptionPlan()
-            }else if (uiState.selectedTabIndex == 3) {
-                NotificationScreen()
-            }
-            else if (uiState.selectedTabIndex == 4) {
-                DeleteAccountSection(
-                    onDeleteClick = { /*TODO*/ },
-                    onSendCodeClick = { /*TODO*/ },
-                )
-            }
-
         }
     }
 

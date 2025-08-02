@@ -1,14 +1,17 @@
 package com.example.step5app.data.remote
 
 import com.example.step5app.data.model.AuthResponse
+import com.example.step5app.data.model.ChangeForgetPasswordRequest
 import com.example.step5app.data.model.ChangePasswordRequest
 import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
 import com.example.step5app.data.model.ProfileResponse
+import com.example.step5app.data.model.RequestForgetPasswordRequest
 import com.example.step5app.data.model.SignInRequest
 import com.example.step5app.data.model.SignInResponse
 import com.example.step5app.data.model.SignUpRequest
 import com.example.step5app.data.model.UpdateProfileRequest
+import com.example.step5app.data.model.VerifyForgetPasswordRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -55,5 +58,21 @@ interface AuthService {
         @Body body: ChangePasswordRequest
     ): Response<Unit>
 
+    @POST("/auth/request-forget-password")
+    suspend fun requestForgetPassword(
+        @Body request: RequestForgetPasswordRequest,
+        @Header("Accept-Language") language: String = "en"
+    ): Response<Unit>
 
+    @POST("/auth/verify-forget-password")
+    suspend fun verifyForgetPassword(
+        @Body request: VerifyForgetPasswordRequest,
+        @Header("Accept-Language") language: String = "en"
+    ): Response<Unit>
+
+    @PATCH("/auth/change-forget-password")
+    suspend fun changeForgetPassword(
+        @Body request: ChangeForgetPasswordRequest,
+        @Header("Accept-Language") language: String = "en"
+    ): Response<Unit>
 }

@@ -141,5 +141,12 @@
     <string name="failed_to_change_password">فشل في تغيير كلمة المرور</string>
     <string name="the_old_password_is_incorrect">كلمة المرور القديمة غير صحيحة</string>
     <string name="user_not_found">المستخدم غير موجود</string>
+    <string name="write_your_email_to_reset_the_password">اكتب بريدك الإلكتروني لإعادة تعيين كلمة المرور</string>
+    <string name="reset_password">إعادة تعيين كلمة المرور</string>
+    <string name="write_your_new_password">اكتب كلمة المرور الجديدة</string>
+    <string name="invalid_otp">رمز التحقق غير صالح</string>
+    <string name="unexpected_error_happened">حدث خطأ غير متوقع</string>
+    <string name="password_reset_request_expired">انتهت صلاحية طلب إعادة تعيين كلمة المرور!</string>
+
 
 </resources>

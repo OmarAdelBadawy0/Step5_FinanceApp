@@ -143,4 +143,10 @@
     <string name="failed_to_change_password">Failed to change password</string>
     <string name="the_old_password_is_incorrect">The old password is incorrect</string>
     <string name="user_not_found">User not found</string>
+    <string name="write_your_email_to_reset_the_password">Write your email to reset the password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="write_your_new_password">Write your new password</string>
+    <string name="invalid_otp">Invalid OTP</string>
+    <string name="unexpected_error_happened">unexpected error happened</string>
+    <string name="password_reset_request_expired">Password reset request expired!</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.step5app.data.repositories
 
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.model.ChangeForgetPasswordRequest
 import com.example.step5app.data.model.ChangePasswordRequest
 import com.example.step5app.data.model.SignUpRequest
 import com.example.step5app.data.remote.AuthService
@@ -9,9 +10,11 @@ import javax.inject.Inject
 import com.example.step5app.data.model.ConfirmOtpRequest
 import com.example.step5app.data.model.ConfirmOtpResponse
 import com.example.step5app.data.model.ProfileResponse
+import com.example.step5app.data.model.RequestForgetPasswordRequest
 import com.example.step5app.data.model.SignInRequest
 import com.example.step5app.data.model.SignInResponse
 import com.example.step5app.data.model.UpdateProfileRequest
+import com.example.step5app.data.model.VerifyForgetPasswordRequest
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,  // API service
@@ -103,6 +106,52 @@ class AuthRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun requestForgetPassword(request: RequestForgetPasswordRequest): Result<Unit> {
+        return try {
+            val response = authService.requestForgetPassword(request)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorBody = response.errorBody()?.string()
+//                val errorMessage = errorBody?.let { JSONObject(it).optString("message") }
+                Result.failure(Exception(errorBody ?: "Failed to request password reset"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun verifyForgetPassword(request: VerifyForgetPasswordRequest): Result<Unit> {
+        return try {
+            val response = authService.verifyForgetPassword(request)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorBody = response.errorBody()?.string()
+//                val errorMessage = errorBody?.let { JSONObject(it).optString("message") }
+                Result.failure(Exception(errorBody ?: "Failed to verify code"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun changeForgetPassword(request: ChangeForgetPasswordRequest): Result<Unit> {
+        return try {
+            val response = authService.changeForgetPassword(request)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorBody = response.errorBody()?.string()
+//                val errorMessage = errorBody?.let { JSONObject(it).optString("message") }
+                Result.failure(Exception(errorBody ?: "Failed to change password"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 
     override suspend fun signOut() {

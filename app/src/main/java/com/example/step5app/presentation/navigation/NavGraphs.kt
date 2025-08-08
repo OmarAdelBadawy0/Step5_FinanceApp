@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.step5app.presentation.auth.AuthScreen
+import com.example.step5app.presentation.auth.forgot_password.ForgotPasswordScreen
 import com.example.step5app.presentation.courses.CoursesScreen
 import com.example.step5app.presentation.feed.FeedViewModel
 import com.example.step5app.presentation.network.ConnectionsScreen
@@ -67,8 +68,14 @@ fun NavGraphBuilder.authGraph(
     ) {
         composable(Screen.Auth.route) {
             AuthScreen(
-                onSignInSuccess = onAuthComplete
+                onSignInSuccess = onAuthComplete,
+                onForgotPassword = { navController.navigate(Screen.ForgotPassword.route) },
             )
         }
+
+        composable(Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(onForgotPasswordSuccess = { navController.navigate(Screen.Auth.route) })
+        }
+
     }
 }

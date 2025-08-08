@@ -43,7 +43,10 @@ import com.example.step5app.presentation.auth.sign_in.SignInFields
 import com.example.step5app.presentation.auth.sign_up.SignUpFields
 
 @Composable
-fun AuthScreen(onSignInSuccess: () -> Unit) {
+fun AuthScreen(
+    onSignInSuccess: () -> Unit,
+    onForgotPassword: () -> Unit
+) {
     var isSignUp by remember { mutableStateOf(false) }
 
     val screenHeight = LocalWindowInfo.current.containerSize.height.dp
@@ -98,7 +101,8 @@ fun AuthScreen(onSignInSuccess: () -> Unit) {
                 } else {
                     SignInFields(
                         onSignUp = { isSignUp = true },
-                        onSuccess = onSignInSuccess
+                        onSuccess = onSignInSuccess,
+                        onForgotPassword = onForgotPassword
                     )
                 }
             }

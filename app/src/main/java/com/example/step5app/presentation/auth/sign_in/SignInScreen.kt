@@ -40,7 +40,8 @@ import com.example.step5app.ui.theme.Step5AppTheme
 fun SignInFields(
     viewModel: SignInViewModel = hiltViewModel(),
     onSignUp: () -> Unit,
-    onSuccess: () -> Unit
+    onSuccess: () -> Unit,
+    onForgotPassword: () -> Unit,
 ) {
 
     val uiState by viewModel.loginUiState.collectAsState()
@@ -103,7 +104,7 @@ fun SignInFields(
                 )
                 Text(text = stringResource(R.string.remember_me), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
             }
-            TextButton(onClick = { /* TODO: Forgot password */ }, ) {
+            TextButton(onClick = { onForgotPassword() }, ) {
                 Text(text = stringResource(R.string.forgot_password), fontWeight = FontWeight.Bold, fontSize = 11.sp)
             }
         }
@@ -130,6 +131,6 @@ fun SignInFields(
 @Composable
 fun SignInFieldsPreview() {
     Step5AppTheme() {
-        SignInFields(onSignUp = {}, onSuccess = {})
+        SignInFields(onSignUp = {}, onSuccess = {}, onForgotPassword = {})
     }
 }

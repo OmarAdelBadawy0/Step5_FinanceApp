@@ -11,6 +11,9 @@ class FeedRepository @Inject constructor(
     private val feedServiceApi: FeedService,
     private val userPreferences: UserPreferences
 ) {
+
+    private val BASE_URL_IMAGES = "https://dev.step5th.com/files/images/"
+
     suspend fun fetchCategories(): List<Category> {
         val locale = Locale.getDefault().language // "ar" or "en"
         val token = userPreferences.getAccessTokenOnce() ?: ""
@@ -27,4 +30,6 @@ class FeedRepository @Inject constructor(
     ): PostResponse {
         return feedServiceApi.getPosts(categoryId, search, page, limit, language)
     }
+
+    fun getBaseImagesUrl(): String = BASE_URL_IMAGES
 }

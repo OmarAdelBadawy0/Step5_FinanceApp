@@ -147,4 +147,8 @@ class FeedViewModel @Inject constructor(
             )
         }
     }
+
+    fun getImageUrl(imageId: Int): String{
+        return feedRepository.getBaseImagesUrl() + imageId
+    }
 }

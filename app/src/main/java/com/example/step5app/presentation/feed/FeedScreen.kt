@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.step5app.R
 import com.example.step5app.presentation.bottomBar.BottomBar
 import com.example.step5app.presentation.feed.FeedViewModel
@@ -223,12 +225,15 @@ fun FeedScreen(
                                 Column(
                                     Modifier.background(MaterialTheme.colorScheme.surface)
                                 ) {
-                                    // Placeholder for Image
-                                    Box(
+                                    AsyncImage(
+                                        model = viewModel.getImageUrl(item.id),
+                                        contentDescription = item.title,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .height(150.dp)
-                                            .background(Color.Gray)
+                                            .height(150.dp),
+                                        contentScale = ContentScale.Crop,
+                                        placeholder = painterResource(R.drawable.logo), // optional
+                                        error = painterResource(R.drawable.logo) // optional
                                     )
                                     Column(
                                         modifier = Modifier

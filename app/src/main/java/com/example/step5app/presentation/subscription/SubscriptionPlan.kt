@@ -122,7 +122,7 @@ fun SubscriptionCard(plan: Plan, duration : String, price: Double) {
 
             Spacer(Modifier.height(16.dp))
 
-            var features = plan.description.split(",")  // Split the description into features
+            val features = plan.description?.split(",") ?: emptyList()  // Split the description into features
             // Features
             features.forEach {
                 Row(

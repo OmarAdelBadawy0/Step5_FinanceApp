@@ -142,7 +142,7 @@ fun ProfileScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = stringResource(R.string.person),
+                            text = uiState.firstName,
                             fontSize = 34.sp
                         )
                     }

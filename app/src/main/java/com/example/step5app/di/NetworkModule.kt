@@ -1,5 +1,6 @@
 package com.example.step5app.di
 
+import com.example.step5app.data.remote.AffiliateService
 import com.example.step5app.data.remote.AuthService
 import com.example.step5app.data.remote.FeedService
 import com.example.step5app.data.remote.PlanService
@@ -40,6 +41,12 @@ object NetworkModule {
     @Singleton
     fun provideFeedService(retrofit: Retrofit): FeedService {
         return retrofit.create(FeedService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAffiliateService(retrofit: Retrofit): AffiliateService {
+        return retrofit.create(AffiliateService::class.java)
     }
 
 }

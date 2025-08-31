@@ -147,6 +147,7 @@
     <string name="invalid_otp">رمز التحقق غير صالح</string>
     <string name="unexpected_error_happened">حدث خطأ غير متوقع</string>
     <string name="password_reset_request_expired">انتهت صلاحية طلب إعادة تعيين كلمة المرور!</string>
+    <string name="generate_code">إنشاء رمز</string>
 
 
 </resources>

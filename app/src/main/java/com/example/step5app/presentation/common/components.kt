@@ -48,19 +48,21 @@ import com.example.step5app.R
 
 @Composable
 fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.padding(vertical = 4.dp),
-        fontSize = 18.sp
-    )
-    HorizontalDivider(
-        modifier = Modifier.width((title.length.toFloat() * 13f - 3 * kotlin.math.sqrt(title.length.toFloat())).dp),
-        thickness = 3.dp,
-        color = MaterialTheme.colorScheme.tertiary
-    )
+    Column {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(vertical = 4.dp),
+            fontSize = 18.sp
+        )
+        HorizontalDivider(
+            modifier = Modifier.width((title.length.toFloat() * 13f - 3 * kotlin.math.sqrt(title.length.toFloat())).dp),
+            thickness = 3.dp,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+    }
 }
 
 @Composable

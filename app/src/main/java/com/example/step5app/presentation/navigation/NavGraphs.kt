@@ -35,7 +35,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         }
 
         composable(Screen.Network.route) {
-            ConnectionsScreen(navController, onSettingsClick = { navController.navigate(Screen.Settings.route) })
+            ConnectionsScreen(navController = navController, onSettingsClick = { navController.navigate(Screen.Settings.route) })
         }
 
         composable(Screen.Profile.route) {

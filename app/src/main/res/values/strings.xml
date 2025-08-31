@@ -149,4 +149,5 @@
     <string name="invalid_otp">Invalid OTP</string>
     <string name="unexpected_error_happened">unexpected error happened</string>
     <string name="password_reset_request_expired">Password reset request expired!</string>
+    <string name="generate_code">Generate Code</string>
 </resources>

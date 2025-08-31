@@ -13,13 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +29,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -36,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.step5app.R
 import com.example.step5app.domain.model.ConnectionData
@@ -45,9 +50,22 @@ import com.example.step5app.presentation.topBar.TopBar
 
 @Composable
 fun ConnectionsScreen(
+    connectionsViewModel: ConnectionsViewModel = hiltViewModel(),
     navController: NavController,
     onSettingsClick: () -> Unit
 ) {
+
+    val uiState by connectionsViewModel.uiState.collectAsState()
+
+    when {
+        uiState.isLoading -> CircularProgressIndicator()
+        uiState.errorMessage != null -> Text("Error: ${uiState.errorMessage}")
+        else -> {
+            uiState.user?.let { Text("User: ${it.firstName}") }
+            uiState.inviteCode?.let { Text("Invite Code: $it") }
+        }
+    }
+
     val connectionsList = listOf(
         ConnectionData(
             name = "Ahmed Ali",
@@ -87,7 +105,7 @@ fun ConnectionsScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    stringResource(R.string.person_name),
+                    text = uiState.user?.firstName ?: stringResource(R.string.person_name),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 24.sp
@@ -104,14 +122,45 @@ fun ConnectionsScreen(
                             .padding(horizontal = 12.dp)
                             .minimumInteractiveComponentSize()
                     ) {
-                        Text(stringResource(R.string.xx_le), color = MaterialTheme.colorScheme.onSurface)
+                        Text(
+                            uiState.user?.UserWallets?.firstOrNull()?.balance?.toString() ?: "0",
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SectionTitle(stringResource(R.string.my_connections))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                SectionTitle(stringResource(R.string.my_connections))
+
+                Box(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clickable(
+                            enabled = uiState.inviteCode == null,
+                            onClick = {
+                                connectionsViewModel.fetchInviteCode()
+                            }
+                        ),
+                ){
+                    Text(
+                        text = (if (uiState.inviteCode.isNullOrEmpty()) stringResource(R.string.generate_code)
+                                else uiState.inviteCode).toString(),
+                        Modifier.padding(8.dp),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
 
             Spacer(modifier = Modifier.height(14.dp))
 

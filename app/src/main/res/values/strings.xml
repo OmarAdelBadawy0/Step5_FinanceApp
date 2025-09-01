@@ -150,4 +150,9 @@
     <string name="unexpected_error_happened">unexpected error happened</string>
     <string name="password_reset_request_expired">Password reset request expired!</string>
     <string name="generate_code">Generate Code</string>
+    <string name="enter_the_invite_code">Enter the invite code</string>
+    <string name="confirm">Confirm</string>
+    <string name="connections_added_successfully">Connections Added Successfully</string>
+    <string name="invitecode_must_be_8_characters">inviteCode must be 8 characters</string>
+    <string name="invalid_or_expired_invite_code">Invalid or expired invite code</string>
 </resources>

@@ -148,6 +148,12 @@
     <string name="unexpected_error_happened">حدث خطأ غير متوقع</string>
     <string name="password_reset_request_expired">انتهت صلاحية طلب إعادة تعيين كلمة المرور!</string>
     <string name="generate_code">إنشاء رمز</string>
+    <string name="enter_the_invite_code">أدخل رمز الدعوة</string>
+    <string name="confirm">تأكيد</string>
+    <string name="connections_added_successfully">تمت إضافة الاتصالات بنجاح</string>
+    <string name="invitecode_must_be_8_characters">يجب أن يكون رمز الدعوة يساوي 8 أحرف</string>
+    <string name="invalid_or_expired_invite_code">رمز الدعوة غير صالح أو منتهي الصلاحية</string>
+
 
 
 </resources>

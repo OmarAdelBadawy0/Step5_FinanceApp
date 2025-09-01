@@ -1,6 +1,8 @@
 package com.example.step5app.presentation.network
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,22 +21,29 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,17 +61,20 @@ import com.example.step5app.presentation.topBar.TopBar
 fun ConnectionsScreen(
     connectionsViewModel: ConnectionsViewModel = hiltViewModel(),
     navController: NavController,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
 ) {
 
     val uiState by connectionsViewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
-    when {
-        uiState.isLoading -> CircularProgressIndicator()
-        uiState.errorMessage != null -> Text("Error: ${uiState.errorMessage}")
-        else -> {
-            uiState.user?.let { Text("User: ${it.firstName}") }
-            uiState.inviteCode?.let { Text("Invite Code: $it") }
+    LaunchedEffect(uiState.message, uiState.errorMessage) {
+        uiState.message?.let { message ->
+            Toast.makeText(context, message.asString(context), Toast.LENGTH_SHORT).show()
+            connectionsViewModel.onMessageShown()
+        }
+        uiState.errorMessage?.let { errorMessage ->
+            Toast.makeText(context, errorMessage.asString(context), Toast.LENGTH_SHORT).show()
+            connectionsViewModel.onErrorMessageShown()
         }
     }
 
@@ -155,6 +167,7 @@ fun ConnectionsScreen(
                         text = (if (uiState.inviteCode.isNullOrEmpty()) stringResource(R.string.generate_code)
                                 else uiState.inviteCode).toString(),
                         Modifier.padding(8.dp),
+                        fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                         fontWeight = FontWeight.Bold
                     )
@@ -181,30 +194,36 @@ fun ConnectionsScreen(
 
                 // Add Connection Box inside the list
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .background(MaterialTheme.colorScheme.primary)
-                            .clickable { /* Add connection logic */ },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                stringResource(R.string.add_connection),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                fontWeight = FontWeight.Bold)
-                            Icon(
-                                painterResource(R.drawable.plus_circle),
-                                contentDescription = stringResource(R.string.add_icon),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier
-                                    .scale(1.3f)
-                                    .padding(4.dp)
-                            )
-                        }
+                    if (uiState.isAddingConnection) {
+                        ConnectionCodeInputRow(
+                            code = uiState.connectionAddingCode,
+                            onCodeChange = { connectionsViewModel.onConnectionAddingCodeChange(it) },
+                            onConfirm = {
+                                connectionsViewModel.addConnection()
+                                connectionsViewModel.onIsAddingConnectionChange(false)
+                                connectionsViewModel.onConnectionAddingCodeChange("")
+                            }
+                        )
+                    } else {
+                        AddConnectionBox(
+                            onClick = { connectionsViewModel.onIsAddingConnectionChange(true) }
+                        )
                     }
                 }
+            }
+        }
+
+        if (uiState.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f))
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp)
+                )
             }
         }
     }
@@ -291,5 +310,91 @@ fun LabeledItem(label: String, value: String) {
             thickness = 2.dp
         )
         Text(value, color = MaterialTheme.colorScheme.onSurface, fontSize = 14.sp)
+    }
+}
+
+
+@Composable
+fun AddConnectionBox(
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .background(MaterialTheme.colorScheme.primary)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = stringResource(R.string.add_connection),
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Bold
+            )
+            Icon(
+                painter = painterResource(R.drawable.plus_circle),
+                contentDescription = stringResource(R.string.add_icon),
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .scale(1.3f)
+                    .padding(4.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun ConnectionCodeInputRow(
+    code: String,
+    onCodeChange: (String) -> Unit,
+    onConfirm: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = code,
+            onValueChange = onCodeChange,
+            label = { Text(stringResource(R.string.enter_the_invite_code)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                cursorColor = MaterialTheme.colorScheme.tertiary
+            ),
+            singleLine = true,
+            modifier = Modifier
+                .border(1.dp, MaterialTheme.colorScheme.tertiary)
+                .weight(2f)
+        )
+
+        Button(
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .weight(1f)
+                .height(56.dp),
+            shape = RoundedCornerShape(0.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            onClick = onConfirm
+        ) {
+            Text(
+                stringResource(R.string.confirm),
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
     }
 }

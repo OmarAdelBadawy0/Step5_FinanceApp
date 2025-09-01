@@ -1,10 +1,14 @@
 package com.example.step5app.data.remote
 
 import com.example.step5app.data.model.AffiliateUserInfoResponse
+import com.example.step5app.data.model.ApiResponse
+import com.example.step5app.data.model.InviteCodeRequest
 import com.example.step5app.data.model.InviteCodeResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface AffiliateService {
@@ -24,4 +28,10 @@ interface AffiliateService {
         @Header("Authorization") token: String
     ): Response<InviteCodeResponse>
 
+    @POST("connections")
+    suspend fun addConnection(
+        @Body body: InviteCodeRequest,
+        @Header("Accept-Language") language: String = "en",
+        @Header("Authorization") token: String
+    ): Response<ApiResponse>
 }

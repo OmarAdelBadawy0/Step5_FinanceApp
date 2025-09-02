@@ -69,7 +69,9 @@ class ConnectionsViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     inviteCode = response?.data?.inviteCode,
-                    errorMessage = null
+                    errorMessage = if (response?.data?.inviteCode == null){
+                        UiText.StringResource(R.string.user_already_has_a_parent_connection_cannot_create_another_invite_code)
+                    }else{ null }
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(

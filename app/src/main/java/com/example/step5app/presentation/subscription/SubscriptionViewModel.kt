@@ -6,7 +6,6 @@ import com.example.step5app.R
 import com.example.step5app.data.local.SubscriptionRequest
 import com.example.step5app.data.local.UiText
 import com.example.step5app.data.repositories.PlanRepository
-import com.example.step5app.domain.model.Plan
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -280,10 +280,12 @@ fun PostCard(post: Post, imageUrl: String, isSubscribed: Boolean = false) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable(enabled = !post.isLocked) {
+
+        },
         elevation = CardDefaults.cardElevation(2.dp),
         shape = RoundedCornerShape(0.dp),
-        onClick = {}
     ) {
         Box {
             Column(Modifier.background(MaterialTheme.colorScheme.surface)) {

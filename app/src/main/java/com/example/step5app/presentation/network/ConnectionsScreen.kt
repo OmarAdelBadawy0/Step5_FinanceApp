@@ -29,7 +29,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -63,7 +62,6 @@ fun ConnectionsScreen(
     navController: NavController,
     onSettingsClick: () -> Unit,
 ) {
-
     val uiState by connectionsViewModel.uiState.collectAsState()
     val context = LocalContext.current
 

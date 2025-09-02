@@ -155,4 +155,7 @@
     <string name="connections_added_successfully">Connections Added Successfully</string>
     <string name="invitecode_must_be_8_characters">inviteCode must be 8 characters</string>
     <string name="invalid_or_expired_invite_code">Invalid or expired invite code</string>
+    <string name="user_already_has_a_parent_connection_cannot_create_another_invite_code">User already has a parent connection. Cannot create another invite code</string>
+    <string name="you_have_to_add_a_phone_number_to_your_profile_first">You have to add a phone number to your profile first</string>
+    <string name="subscription_subscriped_successful">Subscription subscribed successful</string>
 </resources>

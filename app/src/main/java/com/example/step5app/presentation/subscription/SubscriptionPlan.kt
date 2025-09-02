@@ -1,6 +1,8 @@
 package com.example.step5app.presentation.subscription
 
+import android.content.Intent
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,57 +35,121 @@ import androidx.compose.ui.unit.sp
 import com.example.step5app.R
 import com.example.step5app.presentation.common.SectionTitle
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.step5app.domain.model.Plan
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.core.net.toUri
 
 
 @Composable
 fun SubscriptionPlan(
     viewModel: SubscriptionViewModel = hiltViewModel()
 ) {
-    val plans = viewModel.plans.collectAsState()
-    val error = viewModel.error.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(error) {
-        error.value?.let {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            Toast.makeText(context, it.asString(context), Toast.LENGTH_SHORT).show()
+            viewModel.clearError()
         }
     }
 
-    SectionTitle(stringResource(R.string.my_plan))
-    Text(
-        stringResource(R.string.you_don_t_have_any_subscription_yet),
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
+    LaunchedEffect(uiState.message) {
+        uiState.message?.let {
+            Toast.makeText(context, it.asString(context), Toast.LENGTH_SHORT).show()
+            viewModel.clearMessage()
+        }
+    }
 
-    Spacer(modifier = Modifier.height(25.dp))
+    LaunchedEffect(uiState.subscribeRequestData) {
+        if (uiState.subscribeRequestData != null) {
+            uiState.subscribeRequestData?.let { url ->
+                try {
+                    val customTabsIntent = CustomTabsIntent.Builder().build()
+                    customTabsIntent.launchUrl(context, url.paymentUrl.toUri())
+                } catch (e: Exception) {
+                    // Fallback: open with default browser
+                    val intent = Intent(Intent.ACTION_VIEW, url.paymentUrl.toUri())
+                    context.startActivity(intent)
+                }
+            }
+        }
+    }
 
-    SectionTitle(stringResource(R.string.subscription_plans))
-    Spacer(modifier = Modifier.height(25.dp))
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        items(plans.value) { plan ->
-            SubscriptionCard(plan, stringResource(R.string.per_month), plan.price)
-            Spacer(modifier = Modifier.width(16.dp))
-            SubscriptionCard(plan, stringResource(R.string.per_year), plan.price * 12 * (1 - plan.annualDiscount/100))
+    Column(modifier = Modifier.fillMaxSize()) {
+        SectionTitle(stringResource(R.string.my_plan))
+        Text(
+            stringResource(R.string.you_don_t_have_any_subscription_yet),
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        SectionTitle(stringResource(R.string.subscription_plans))
+        Spacer(modifier = Modifier.height(25.dp))
+
+        when {
+            uiState.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.3f))
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp)
+                    )
+                }
+            }
+
+            else -> {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    items(uiState.plans) { plan ->
+                        SubscriptionCard(
+                            plan,
+                            stringResource(R.string.per_month),
+                            plan.price
+                        ) {
+                            viewModel.makeSubscription(plan.id, false)
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        SubscriptionCard(
+                            plan,
+                            stringResource(R.string.per_year),
+                            plan.price * 12 * (1 - plan.annualDiscount / 100)
+                        ) {
+                            viewModel.makeSubscription(plan.id, true)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 
-
 @Composable
-fun SubscriptionCard(plan: Plan, duration : String, price: Double) {
+fun SubscriptionCard(
+    plan: Plan, duration: String,
+    price: Double,
+    onSubscribeClicked: () -> Unit
+) {
     Card(
         modifier = Modifier
             .width(250.dp)
@@ -107,22 +173,26 @@ fun SubscriptionCard(plan: Plan, duration : String, price: Double) {
                         plan.name,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = 22.sp)
+                        fontSize = 22.sp
+                    )
                     Text(
                         text = duration,
                         fontSize = 10.sp,
-                        color = MaterialTheme.colorScheme.onPrimary)
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                     Spacer(Modifier.height(8.dp))
                     Text(
                         stringResource(R.string.le, price),
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary)
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
             }
 
             Spacer(Modifier.height(16.dp))
 
-            val features = plan.description?.split(",") ?: emptyList()  // Split the description into features
+            val features =
+                plan.description?.split(",") ?: emptyList()  // Split the description into features
             // Features
             features.forEach {
                 Row(
@@ -143,8 +213,8 @@ fun SubscriptionCard(plan: Plan, duration : String, price: Double) {
 
             // Subscribe Button
             Button(
-                onClick = { /* handle subscribe */ },
-                colors = ButtonDefaults.buttonColors(containerColor =MaterialTheme.colorScheme.primary),
+                onClick = { onSubscribeClicked() },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp),

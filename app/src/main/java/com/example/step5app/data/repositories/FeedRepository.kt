@@ -1,6 +1,7 @@
 package com.example.step5app.data.repositories
 
 import com.example.step5app.data.local.UserPreferences
+import com.example.step5app.data.model.FeedDataDto
 import com.example.step5app.data.model.PostResponse
 import com.example.step5app.data.remote.FeedService
 import com.example.step5app.domain.model.Category
@@ -21,6 +22,13 @@ class FeedRepository @Inject constructor(
         return feedServiceApi.getCategories(language = locale ,token = "Bearer $token").data
     }
 
+    suspend fun getCategory(categoryId: Int): Category{
+        val locale = Locale.getDefault().language // "ar" or "en"
+        val token = userPreferences.getAccessTokenOnce() ?: ""
+
+        return feedServiceApi.getCategories(categoryId = categoryId, language = locale ,token = "Bearer $token").data
+    }
+
     suspend fun fetchPosts(
         categoryId: Int? = null,
         search: String? = null,
@@ -32,4 +40,9 @@ class FeedRepository @Inject constructor(
     }
 
     fun getBaseImagesUrl(): String = BASE_URL_IMAGES
+
+    suspend fun getFeedDetails(feedId: Int): FeedDataDto {
+        val response = feedServiceApi.getFeedDetails(feedId)
+        return response.data
+    }
 }

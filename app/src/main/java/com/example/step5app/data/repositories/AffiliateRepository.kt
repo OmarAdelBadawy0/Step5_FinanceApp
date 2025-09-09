@@ -63,4 +63,18 @@ class AffiliateRepository @Inject constructor(
         }
 
     }
+
+    suspend fun deleteConnection(childId: String, language: String = "en"): Result<Unit> {
+        val token = userPreferences.getAccessTokenOnce()
+        return try {
+            val response = affiliateService.deleteConnection(childId, language, token = "Bearer $token")
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error: ${response.code()} ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

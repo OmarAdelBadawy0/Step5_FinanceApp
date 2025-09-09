@@ -156,7 +156,7 @@
     <string name="user_already_has_a_parent_connection_cannot_create_another_invite_code">المستخدم لديه بالفعل متصل بأحد اخر. لا يمكن إنشاء رمز دعوة آخر</string>
     <string name="you_have_to_add_a_phone_number_to_your_profile_first">يجب عليك إضافة رقم هاتف إلى ملفك الشخصي أولاً</string>
     <string name="subscription_subscriped_successful">تم الاشتراك بنجاح</string>
-
+    <string name="feed_details">تفاصيل المنشور</string>
 
 
 </resources>

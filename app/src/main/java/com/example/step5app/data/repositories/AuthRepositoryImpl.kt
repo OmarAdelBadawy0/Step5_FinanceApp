@@ -70,7 +70,8 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getProfile(token: String): Result<ProfileResponse> {
+    override suspend fun getProfile(): Result<ProfileResponse> {
+        val token = userPreferences.getAccessTokenOnce()
         return try {
             val bearer = "Bearer $token"
             val response = authService.getProfile(bearer)

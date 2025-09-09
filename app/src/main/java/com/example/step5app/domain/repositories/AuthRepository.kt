@@ -22,7 +22,7 @@ interface AuthRepository {
     suspend fun signOut()
     fun isUserLoggedIn(): Boolean
 
-    suspend fun getProfile(token: String): Result<ProfileResponse>
+    suspend fun getProfile(): Result<ProfileResponse>
 
     suspend fun updateProfile(request: UpdateProfileRequest, token: String): Result<ProfileResponse>
 

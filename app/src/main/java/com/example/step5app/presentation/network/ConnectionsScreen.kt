@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.step5app.R
-import com.example.step5app.domain.model.ConnectionData
+import com.example.step5app.data.model.ChildConnection
 import com.example.step5app.presentation.bottomBar.BottomBar
 import com.example.step5app.presentation.common.SectionTitle
 import com.example.step5app.presentation.topBar.TopBar
@@ -76,27 +76,6 @@ fun ConnectionsScreen(
         }
     }
 
-    val connectionsList = listOf(
-        ConnectionData(
-            name = "Ahmed Ali",
-            profit = 150.0,
-            numOfPlans = 3,
-            connections = listOf("Youssef Kamal", "Nour Mohamed", "Omar Adel", "Layla Samir", "Kareem Nabil")
-        ),
-        ConnectionData(
-            name = "Sara Mostafa",
-            profit = 220.0,
-            numOfPlans = 5,
-            connections = listOf("Ali Hamdy", "Samir Hany", "Nada Khaled", "Hossam Gamal")
-        ),
-        ConnectionData(
-            name = "Mahmoud Hassan",
-            profit = 310.0,
-            numOfPlans = 4,
-            connections = listOf("Dina Adel", "Yara Ayman", "Tamer Farid")
-        )
-    )
-
     Scaffold(
         topBar = { TopBar(onSettingsClick = onSettingsClick) },
         bottomBar = {BottomBar(navController = navController)}
@@ -115,7 +94,7 @@ fun ConnectionsScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = uiState.user?.firstName ?: stringResource(R.string.person_name),
+                    text = uiState.firstName,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 24.sp
@@ -133,7 +112,7 @@ fun ConnectionsScreen(
                             .minimumInteractiveComponentSize()
                     ) {
                         Text(
-                            uiState.user?.UserWallets?.firstOrNull()?.balance?.toString() ?: "0",
+                            uiState.balance.toString(),
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -181,12 +160,12 @@ fun ConnectionsScreen(
                 contentPadding = PaddingValues(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(connectionsList) { connection ->
+                items(uiState.connections) { connection ->
                     ConnectionCard(
-                        name = connection.name,
-                        profit = connection.profit,
-                        plans = connection.numOfPlans,
-                        connections = connection.connections
+                        name = connection.firstName + " " + connection.lastName,
+                        profit = connection.UserWallets.firstOrNull()?.balance ?: 0.0,
+                        plans = connection.email,
+                        connections = connection.ChildrenConnections
                     )
                 }
 
@@ -231,8 +210,8 @@ fun ConnectionsScreen(
 fun ConnectionCard(
     name: String,
     profit: Double,
-    plans: Int,
-    connections: List<String>
+    plans: String,
+    connections: List<ChildConnection>
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -287,7 +266,7 @@ fun ConnectionCard(
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     connections.forEachIndexed { index, person ->
-                        Text("${index + 1}. $person", color = MaterialTheme.colorScheme.onSurface, fontSize = 12.sp)
+                        Text("${index + 1}. ${person.firstName} ${person.lastName}", color = MaterialTheme.colorScheme.onSurface, fontSize = 12.sp)
                     }
                 }
             }

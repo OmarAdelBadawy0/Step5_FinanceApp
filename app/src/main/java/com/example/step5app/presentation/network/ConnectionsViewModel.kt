@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.step5app.R
 import com.example.step5app.data.local.UiText
 import com.example.step5app.data.repositories.AffiliateRepository
+import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ConnectionsViewModel @Inject constructor(
     private val affiliateRepository: AffiliateRepository,
+    private val profileRepository: AuthRepository
 ) : ViewModel()  {
 
     private val _uiState = MutableStateFlow(ConnectionsUiState())
@@ -22,6 +24,7 @@ class ConnectionsViewModel @Inject constructor(
 
     init {
         getUserInfo()
+        getConnections()
     }
 
     fun onConnectionAddingCodeChange(code: String) {
@@ -44,11 +47,12 @@ class ConnectionsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
 
-            val result = affiliateRepository.getUserAffiliateInfo()
+            val result = profileRepository.getProfile()
             result.onSuccess {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    user = it.data.firstOrNull(),
+                    firstName = it.data.firstName,
+                    balance = it.data.userWallets?.firstOrNull()?.balance ?: 0.0,
                     errorMessage = null
                 )
             }.onFailure {
@@ -78,6 +82,30 @@ class ConnectionsViewModel @Inject constructor(
                     isLoading = false,
                     errorMessage = UiText.DynamicString(e.message ?: "Unknown error")
                 )
+            }
+        }
+    }
+
+    fun getConnections() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+
+            val result = affiliateRepository.getConnections()
+            result.onSuccess { response ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        connections = response,
+                        errorMessage = null
+                    )
+                }
+            }.onFailure { throwable ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = UiText.DynamicString(throwable.message ?: "Unknown error")
+                    )
+                }
             }
         }
     }

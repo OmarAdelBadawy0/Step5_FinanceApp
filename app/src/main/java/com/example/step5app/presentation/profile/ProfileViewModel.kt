@@ -206,7 +206,7 @@ class ProfileViewModel @Inject constructor(
                     return@launch
                 }
 
-                val result = authRepository.getProfile(token)
+                val result = authRepository.getProfile()
                 result.fold(
                     onSuccess = { response ->
                         val data = response.data

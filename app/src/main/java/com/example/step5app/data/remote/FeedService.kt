@@ -29,12 +29,14 @@ interface FeedService {
         @Query("search") search: String? = null,
         @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 5,
-        @Header("Accept-Language") language: String = "en"
+        @Header("Accept-Language") language: String = "en",
+        @Header("Authorization") token: String,
     ): PostResponse
 
     @GET("articles/{id}")
     suspend fun getFeedDetails(
         @Path("id") id: Int,
-        @Header("Accept-Language") language: String = "en"
+        @Header("Accept-Language") language: String = "en",
+        @Header("Authorization") token: String,
     ): FeedDetailsResponse
 }

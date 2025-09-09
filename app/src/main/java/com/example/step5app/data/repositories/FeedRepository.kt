@@ -34,15 +34,18 @@ class FeedRepository @Inject constructor(
         search: String? = null,
         page: Int = 1,
         limit: Int = 5,
-        language: String = "en"
+        language: String = Locale.getDefault().language
     ): PostResponse {
-        return feedServiceApi.getPosts(categoryId, search, page, limit, language)
+        val token = userPreferences.getAccessTokenOnce() ?: ""
+        return feedServiceApi.getPosts(categoryId, search, page, limit, language, "Bearer $token")
     }
 
     fun getBaseImagesUrl(): String = BASE_URL_IMAGES
 
     suspend fun getFeedDetails(feedId: Int): FeedDataDto {
-        val response = feedServiceApi.getFeedDetails(feedId)
+        val token = userPreferences.getAccessTokenOnce() ?: ""
+        val locale = Locale.getDefault().language
+        val response = feedServiceApi.getFeedDetails(feedId, language = locale, "Bearer $token")
         return response.data
     }
 }

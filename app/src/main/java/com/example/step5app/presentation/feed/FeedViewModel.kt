@@ -2,6 +2,7 @@ package com.example.step5app.presentation.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.step5app.data.local.UserPreferences
 import com.example.step5app.data.repositories.FeedRepository
 import com.example.step5app.domain.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
     private val _feedUiState = MutableStateFlow(FeedUiState())
     val feedUiState: StateFlow<FeedUiState> = _feedUiState.asStateFlow()
@@ -58,6 +60,7 @@ class FeedViewModel @Inject constructor(
                 _feedUiState.update { currentState ->
                     currentState.copy(errorMessage = e.message)
                 }
+                if (e.message?.contains("401") == true) userPreferences.clearAccessToken()
             } finally {
                 _feedUiState.update { currentState -> currentState.copy(isLoadingMorePosts = false) }
             }

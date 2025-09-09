@@ -60,6 +60,7 @@ import com.example.step5app.domain.model.Post
 import com.example.step5app.presentation.bottomBar.BottomBar
 import com.example.step5app.presentation.feed.FeedUiState
 import com.example.step5app.presentation.feed.FeedViewModel
+import com.example.step5app.presentation.navigation.Screen
 import com.example.step5app.presentation.topBar.TopBar
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
@@ -115,7 +116,10 @@ fun FeedScreen(
             onFilterClick = { viewModel.toggleFilterDropdown() },
             onFilterSelect = { viewModel.selectFilter(it) },
             onCategorySelect = { viewModel.selectCategory(it) },
-            getImageUrl = { viewModel.getImageUrl(it) }
+            getImageUrl = { viewModel.getImageUrl(it) },
+            onPostClick = { feedId ->
+                navController.navigate(Screen.FeedDetails.createRoute(feedId))
+            }
         )
     }
 }
@@ -130,7 +134,8 @@ fun FeedContent(
     onFilterClick: () -> Unit,
     onFilterSelect: (String) -> Unit,
     onCategorySelect: (Category) -> Unit,
-    getImageUrl: (Int) -> String
+    getImageUrl: (Int) -> String,
+    onPostClick: (Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -155,7 +160,8 @@ fun FeedContent(
                     posts = uiState.posts,
                     hasMorePosts = uiState.hasMorePosts,
                     listState = listState,
-                    getImageUrl = getImageUrl
+                    getImageUrl = getImageUrl,
+                    onPostClick = onPostClick
                 )
             }
         }
@@ -254,11 +260,16 @@ fun PostList(
     posts: List<Post>,
     hasMorePosts: Boolean,
     listState: LazyListState,
-    getImageUrl: (Int) -> String
+    getImageUrl: (Int) -> String,
+    onPostClick: (Int) -> Unit
 ) {
     LazyColumn(state = listState) {
         items(posts) { post ->
-            PostCard(post = post, imageUrl = getImageUrl(post.id))
+            PostCard(
+                post = post,
+                imageUrl = getImageUrl(post.id),
+                onPostClick = onPostClick
+            )
         }
         if (hasMorePosts) {
             item {
@@ -276,13 +287,18 @@ fun PostList(
 }
 
 @Composable
-fun PostCard(post: Post, imageUrl: String, isSubscribed: Boolean = false) {
+fun PostCard(
+    post: Post,
+    imageUrl: String,
+    isSubscribed: Boolean = false,
+    onPostClick: (Int) -> Unit
+    ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable(enabled = !post.isLocked) {
-
+                onPostClick(post.id)
         },
         elevation = CardDefaults.cardElevation(2.dp),
         shape = RoundedCornerShape(0.dp),

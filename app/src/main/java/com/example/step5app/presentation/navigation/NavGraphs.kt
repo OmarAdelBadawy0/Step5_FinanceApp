@@ -5,12 +5,15 @@ import SettingsScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.step5app.presentation.auth.AuthScreen
 import com.example.step5app.presentation.auth.forgot_password.ForgotPasswordScreen
 import com.example.step5app.presentation.courses.CoursesScreen
 import com.example.step5app.presentation.feed.FeedViewModel
+import com.example.step5app.presentation.feedDetails.FeedDetailsScreen
 import com.example.step5app.presentation.network.ConnectionsScreen
 import com.example.step5app.presentation.profile.ProfileScreen
 import com.example.step5app.presentation.profile.ProfileViewModel
@@ -27,6 +30,18 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
                 viewModel = viewModel,
                 onSettingsClick = { navController.navigate(Screen.Settings.route) },
                 navController = navController
+            )
+        }
+
+        composable(
+            route = Screen.FeedDetails.route,
+            arguments = listOf(navArgument("feedId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val feedId = backStackEntry.arguments?.getInt("feedId") ?: 0
+            FeedDetailsScreen(
+                feedId = feedId,
+                navController = navController,
+                onBackClick = { navController.popBackStack() }
             )
         }
 

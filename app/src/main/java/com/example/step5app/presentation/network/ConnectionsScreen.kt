@@ -165,7 +165,8 @@ fun ConnectionsScreen(
                         name = connection.firstName + " " + connection.lastName,
                         profit = connection.UserWallets.firstOrNull()?.balance ?: 0.0,
                         plans = connection.email,
-                        connections = connection.ChildrenConnections
+                        connections = connection.ChildrenConnections,
+                        onDeleteClicked = { connectionsViewModel.deleteConnection(connection.id) }
                     )
                 }
 
@@ -211,7 +212,8 @@ fun ConnectionCard(
     name: String,
     profit: Double,
     plans: String,
-    connections: List<ChildConnection>
+    connections: List<ChildConnection>,
+    onDeleteClicked: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -238,9 +240,8 @@ fun ConnectionCard(
                     Icons.Default.Delete,
                     contentDescription = stringResource(R.string.rubbish_delete_icon),
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
-                    // Delete action
-                })
+                    modifier = Modifier.clickable { onDeleteClicked() }
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))

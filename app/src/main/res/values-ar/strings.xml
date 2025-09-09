@@ -157,6 +157,7 @@
     <string name="you_have_to_add_a_phone_number_to_your_profile_first">يجب عليك إضافة رقم هاتف إلى ملفك الشخصي أولاً</string>
     <string name="subscription_subscriped_successful">تم الاشتراك بنجاح</string>
     <string name="feed_details">تفاصيل المنشور</string>
+    <string name="connection_deleted_successfully">تم حذف الاتصال بنجاح</string>
 
 
 </resources>

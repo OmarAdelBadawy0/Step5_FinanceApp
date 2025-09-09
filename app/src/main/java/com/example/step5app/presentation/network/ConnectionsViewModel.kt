@@ -152,4 +152,26 @@ class ConnectionsViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteConnection(childId: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            val result = affiliateRepository.deleteConnection(childId)
+            result.onSuccess {
+                _uiState.update {
+                    it.copy(
+                        message = UiText.StringResource(R.string.connection_deleted_successfully),
+                        isLoading = false
+                    )
+                }
+                getConnections()
+            }.onFailure {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = UiText.DynamicString((it.message ?: "Unknown error").toString())
+                    )
+                }
+            }
+        }
+    }
 }

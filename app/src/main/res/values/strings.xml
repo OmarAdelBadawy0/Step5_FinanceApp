@@ -159,4 +159,5 @@
     <string name="you_have_to_add_a_phone_number_to_your_profile_first">You have to add a phone number to your profile first</string>
     <string name="subscription_subscriped_successful">Subscription subscribed successful</string>
     <string name="feed_details">Feed Details</string>
+    <string name="connection_deleted_successfully">Connection deleted successfully</string>
 </resources>

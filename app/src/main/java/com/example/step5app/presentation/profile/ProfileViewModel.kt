@@ -237,6 +237,20 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun deleteUser() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+
+            val result = authRepository.deleteUser()
+            result.onSuccess {
+                _uiState.update { it.copy(isLoading = false) }
+                userPreferences.clearAccessToken()
+            }.onFailure { e ->
+                _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
+            }
+        }
+    }
+
 
     fun clearError() {
         _uiState.update { it.copy(errorMessage = null) }

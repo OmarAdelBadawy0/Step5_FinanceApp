@@ -335,10 +335,7 @@ fun ProfileScreen(
                 } else if (uiState.selectedTabIndex == 3) {
                     NotificationScreen()
                 } else if (uiState.selectedTabIndex == 4) {
-                    DeleteAccountSection(
-                        onDeleteClick = { /*TODO*/ },
-                        onSendCodeClick = { /*TODO*/ },
-                    )
+                    DeleteAccountSection(onDeleteClick = { viewModel.deleteUser() })
                 }
             }
         }

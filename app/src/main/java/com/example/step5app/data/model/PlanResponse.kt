@@ -6,3 +6,8 @@ data class PlanResponse(
     val message: String,
     val data: List<Plan>
 )
+
+data class PlanDetailsResponse(
+    val message: String,
+    val data: Plan
+)

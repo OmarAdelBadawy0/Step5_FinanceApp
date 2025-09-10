@@ -164,7 +164,7 @@ fun ConnectionsScreen(
                     ConnectionCard(
                         name = connection.firstName + " " + connection.lastName,
                         profit = connection.UserWallets.firstOrNull()?.balance ?: 0.0,
-                        plans = connection.email,
+                        email = connection.email,
                         connections = connection.ChildrenConnections,
                         onDeleteClicked = { connectionsViewModel.deleteConnection(connection.id) }
                     )
@@ -211,7 +211,7 @@ fun ConnectionsScreen(
 fun ConnectionCard(
     name: String,
     profit: Double,
-    plans: String,
+    email: String,
     connections: List<ChildConnection>,
     onDeleteClicked: () -> Unit
 ) {
@@ -250,7 +250,7 @@ fun ConnectionCard(
                 Column(modifier = Modifier.weight(1f)) {
                     LabeledItem(label = stringResource(R.string.profit), value = profit.toString())
                     Spacer(modifier = Modifier.height(8.dp))
-                    LabeledItem(label = stringResource(R.string.no_of_plans_sold), value = plans.toString())
+                    LabeledItem(label = stringResource(R.string.email), value = email.toString())
                 }
 
                 Column(modifier = Modifier.weight(1f)) {

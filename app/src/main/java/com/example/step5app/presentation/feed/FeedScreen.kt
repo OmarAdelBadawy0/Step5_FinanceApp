@@ -179,7 +179,8 @@ fun FilterSection(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(vertical = 6.dp)
-                .clickable { onFilterClick() },
+//                .clickable { onFilterClick() }
+                ,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -290,7 +291,6 @@ fun PostList(
 fun PostCard(
     post: Post,
     imageUrl: String,
-    isSubscribed: Boolean = false,
     onPostClick: (Int) -> Unit
     ) {
     Card(
@@ -338,7 +338,7 @@ fun PostCard(
             }
 
             // Lock overlay
-            if (post.isLocked && !isSubscribed) {
+            if (post.isLocked) {
                 Box(
                     modifier = Modifier
                         .matchParentSize()

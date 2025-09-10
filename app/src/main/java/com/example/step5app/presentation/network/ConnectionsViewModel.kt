@@ -128,6 +128,7 @@ class ConnectionsViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+                getConnections()
             }.onFailure { e ->
                 if (e.message?.contains("400") == true){
                     _uiState.update {
@@ -141,7 +142,13 @@ class ConnectionsViewModel @Inject constructor(
                             message = UiText.StringResource(R.string.invalid_or_expired_invite_code)
                         )
                     }
-                }else{
+                }else if (e.message?.contains("409") == true){
+                    _uiState.update {
+                        it.copy(
+                            message = UiText.StringResource(R.string.can_t_add_your_parent_as_a_connection)
+                        )
+                    }
+                } else{
                     _uiState.update {
                         it.copy(
                             errorMessage = UiText.DynamicString(e.message ?: "Unknown error")

@@ -160,4 +160,7 @@
     <string name="subscription_subscriped_successful">Subscription subscribed successful</string>
     <string name="feed_details">Feed Details</string>
     <string name="connection_deleted_successfully">Connection deleted successfully</string>
+    <string name="expire_at">Expire at</string>
+    <string name="failed_to_load_my_plan_details">Failed to load my plan details</string>
+    <string name="can_t_add_your_parent_as_a_connection">Can\'t add your parent as a connection</string>
 </resources>

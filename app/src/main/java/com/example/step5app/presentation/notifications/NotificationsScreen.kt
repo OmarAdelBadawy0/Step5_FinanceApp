@@ -2,8 +2,6 @@ package com.example.step5app.presentation.notifications
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import com.example.step5app.presentation.common.SectionTitle
-import com.example.step5app.presentation.common.ToggleRow
 
 @Composable
 fun NotificationScreen() {

@@ -14,6 +14,7 @@ import com.example.step5app.data.model.UpdateProfileRequest
 import com.example.step5app.data.model.VerifyForgetPasswordRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -74,5 +75,11 @@ interface AuthService {
     suspend fun changeForgetPassword(
         @Body request: ChangeForgetPasswordRequest,
         @Header("Accept-Language") language: String = "en"
+    ): Response<Unit>
+
+    @DELETE("users")
+    suspend fun deleteUser(
+        @Header("Accept-Language") language: String = "en",
+        @Header("Authorization") token: String
     ): Response<Unit>
 }

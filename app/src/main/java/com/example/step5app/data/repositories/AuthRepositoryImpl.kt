@@ -153,6 +153,20 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteUser(): Result<Unit> {
+        val token = userPreferences.getAccessTokenOnce()
+        return try {
+            val response = authService.deleteUser(token = "Bearer $token")
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to delete user: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 
     override suspend fun signOut() {

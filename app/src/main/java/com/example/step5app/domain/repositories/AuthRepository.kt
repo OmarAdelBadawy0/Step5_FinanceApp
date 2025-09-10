@@ -33,4 +33,6 @@ interface AuthRepository {
     suspend fun verifyForgetPassword(request: VerifyForgetPasswordRequest): Result<Unit>
 
     suspend fun changeForgetPassword(request: ChangeForgetPasswordRequest): Result<Unit>
+
+    suspend fun deleteUser(): Result<Unit>
 }

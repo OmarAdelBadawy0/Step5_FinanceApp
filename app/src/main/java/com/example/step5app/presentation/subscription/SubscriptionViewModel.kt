@@ -6,6 +6,7 @@ import com.example.step5app.R
 import com.example.step5app.data.local.SubscriptionRequest
 import com.example.step5app.data.local.UiText
 import com.example.step5app.data.repositories.PlanRepository
+import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SubscriptionViewModel @Inject constructor(
-    private val planRepository: PlanRepository
+    private val planRepository: PlanRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SubscriptionUiState())
@@ -23,6 +25,7 @@ class SubscriptionViewModel @Inject constructor(
 
     init {
         loadPlans()
+        getMyPlan()
     }
 
     fun loadPlans() {
@@ -96,6 +99,42 @@ class SubscriptionViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getMyPlan(){
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+
+            val profileResult = authRepository.getProfile()
+
+            profileResult.onSuccess { profile ->
+                val planId =
+                    profile.data.userSubscriptions?.firstOrNull()?.planId
+
+                if (planId != null) {
+                    val planResult = planRepository.getPlanDetails(planId)
+
+                    planResult.onSuccess { plan ->
+                        _uiState.update {
+                            it.copy(isLoading = false, myPlan = plan, myPlanExpireAt = profile.data.userSubscriptions.firstOrNull()?.expireAt)
+                        }
+                    }.onFailure { e ->
+                        _uiState.update {
+                            it.copy(isLoading = false, errorMessage = UiText.StringResource(R.string.failed_to_load_my_plan_details))
+                        }
+                    }
+                }
+            }.onFailure { e ->
+                _uiState.update {
+                    it.copy(isLoading = false, errorMessage = UiText.DynamicString(e.message ?: "Failed to load profile"))
+                }
+            }
+        }
+    }
+
+    fun onSubscribeActionEnd(){
+        getMyPlan()
+        loadPlans()
     }
 
     fun clearMessage() {

@@ -10,29 +10,29 @@ fun NotificationScreen() {
 
 
     Column {
-        SectionTitle("PREFERENCES")
+//        SectionTitle("PREFERENCES")
 
 
-        ToggleRow(
-            text = "Gold Feeds",
-            icon = null,
-            selected = false,
-            onClick = { }
-        )
-
-        ToggleRow(
-            text = "Egyptian Stocks Feeds",
-            icon = null,
-            selected = false,
-            onClick = { }
-        )
-
-        ToggleRow(
-            text = "Bitcoin Feeds",
-            icon = null,
-            selected = true,
-            onClick = { }
-        )
+//        ToggleRow(
+//            text = "Gold Feeds",
+//            icon = null,
+//            selected = false,
+//            onClick = { }
+//        )
+//
+//        ToggleRow(
+//            text = "Egyptian Stocks Feeds",
+//            icon = null,
+//            selected = false,
+//            onClick = { }
+//        )
+//
+//        ToggleRow(
+//            text = "Bitcoin Feeds",
+//            icon = null,
+//            selected = true,
+//            onClick = { }
+//        )
     }
 
 }

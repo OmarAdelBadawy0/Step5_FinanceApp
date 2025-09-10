@@ -163,4 +163,5 @@
     <string name="expire_at">Expire at</string>
     <string name="failed_to_load_my_plan_details">Failed to load my plan details</string>
     <string name="can_t_add_your_parent_as_a_connection">Can\'t add your parent as a connection</string>
+    <string name="click_5_times_to_enable_delete">Click 5 times to enable Delete</string>
 </resources>

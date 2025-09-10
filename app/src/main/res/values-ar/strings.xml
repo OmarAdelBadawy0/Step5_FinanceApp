@@ -161,6 +161,6 @@
     <string name="expire_at">ينتهي في</string>
     <string name="failed_to_load_my_plan_details">فشل في تحميل تفاصيل خطتي</string>
     <string name="can_t_add_your_parent_as_a_connection">لا يمكنك إضافة من اضافك كاتصال</string>
-
+    <string name="click_5_times_to_enable_delete">اضغط 5 مرات لتفعيل الحذف</string>
 
 </resources>

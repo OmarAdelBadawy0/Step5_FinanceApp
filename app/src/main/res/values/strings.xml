@@ -58,8 +58,8 @@
     <string name="english">ENGLISH</string>
     <string name="contact_us">CONTACT US</string>
     <string name="about_us">ABOUT US</string>
-    <string name="contact_us_email" translatable="false">company@example.com</string>
-    <string name="contact_us_number" translatable="false">+20 123 456 7890</string>
+    <string name="contact_us_email" translatable="false">info@support.step5th.com</string>
+    <string name="contact_us_number" translatable="false">+20 109 506 1032</string>
     <string name="about_us_description">App focus on finance thing and recommendations to help you be an expert in finance</string>
     <string name="whatsapp">WhatsApp</string>
     <string name="telegram">Telegram</string>
@@ -164,4 +164,27 @@
     <string name="failed_to_load_my_plan_details">Failed to load my plan details</string>
     <string name="can_t_add_your_parent_as_a_connection">Can\'t add your parent as a connection</string>
     <string name="click_5_times_to_enable_delete">Click 5 times to enable Delete</string>
+    <string name="terms_title">📜 Terms and Conditions</string>
+    <string name="terms_intro">By using our services, you agree to the following terms:</string>
+    <string name="terms_point1">• You must be at least 18 years old or have parental consent.</string>
+    <string name="terms_point2">• You agree not to misuse the platform or break any applicable laws.</string>
+    <string name="terms_point3">• We may update these terms at any time. Continued use means you accept the changes.</string>
+    <string name="terms_point4">• Violation of terms may lead to account suspension or termination.</string>
+
+    <string name="refund_title">❌ Refund Policy</string>
+    <string name="refund_point1">• We do not offer refunds once a purchase or subscription is made.</string>
+    <string name="refund_point2">• All payments are final and non-refundable, except where required by law.</string>
+
+    <string name="privacy_title">🔒 Privacy Policy</string>
+    <string name="privacy_point1">• We are committed to protecting your personal information.</string>
+    <string name="privacy_point2">• We only collect data necessary to provide and improve our services.</string>
+    <string name="privacy_point3">• Your data is stored securely and is never sold to third parties.</string>
+    <string name="privacy_point4">• You have the right to request deletion or correction of your data at any time.</string>
+    <string name="privacy_point5">• By using the app, you consent to this policy.</string>
+
+    <string name="shopping_title">🛍 Shopping Policy</string>
+    <string name="shopping_point1">• No shopping policy.</string>
+
+    <string name="close">Close</string>
+
 </resources>

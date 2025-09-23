@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
@@ -342,5 +345,48 @@ fun OtpDialog(
     )
 }
 
+@Composable
+fun TermsDialog(
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.terms_title), color = MaterialTheme.colorScheme.onSurface) },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .padding(4.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(stringResource(R.string.terms_intro), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.terms_point1), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.terms_point2), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.terms_point3), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.terms_point4), color = MaterialTheme.colorScheme.onSurface)
 
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(stringResource(R.string.refund_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.refund_point1), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.refund_point2), color = MaterialTheme.colorScheme.onSurface)
 
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(stringResource(R.string.privacy_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.privacy_point1), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.privacy_point2), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.privacy_point3), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.privacy_point4), color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.privacy_point5), color = MaterialTheme.colorScheme.onSurface)
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(stringResource(R.string.shopping_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(stringResource(R.string.shopping_point1), color = MaterialTheme.colorScheme.onSurface)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.close))
+            }
+        }
+    )
+}

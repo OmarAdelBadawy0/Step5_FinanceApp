@@ -13,7 +13,7 @@ class FeedRepository @Inject constructor(
     private val userPreferences: UserPreferences
 ) {
 
-    private val BASE_URL_IMAGES = "https://dev.step5th.com/files/images/"
+    private val BASE_URL_IMAGES = "https://api.step5th.com/files/images/"
 
     suspend fun fetchCategories(): List<Category> {
         val locale = Locale.getDefault().language // "ar" or "en"

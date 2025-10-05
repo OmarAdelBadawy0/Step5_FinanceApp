@@ -186,5 +186,8 @@
     <string name="shopping_point1">• No shopping policy.</string>
 
     <string name="close">Close</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="make_money">Make Money</string>
+    <string name="collect">Collect</string>
 
 </resources>

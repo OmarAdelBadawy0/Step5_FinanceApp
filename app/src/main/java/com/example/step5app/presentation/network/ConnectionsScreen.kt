@@ -19,8 +19,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -33,7 +31,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -97,29 +94,51 @@ fun ConnectionsScreen(
                     text = uiState.firstName,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 24.sp
+                    fontSize = 26.sp
                 )
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(
-                        R.string.profit),
+
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        stringResource(R.string.profit),
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold)
-                    Box(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.surface)
-                            .padding(horizontal = 12.dp)
-                            .minimumInteractiveComponentSize()
+                        fontWeight = FontWeight.Bold
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            uiState.balance.toString(),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        Button(
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            shape = RoundedCornerShape(0.dp),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.collect),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.surface)
+                                .padding(horizontal = 15.dp)
+                                .height(40.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                uiState.balance.toString(),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -236,12 +255,12 @@ fun ConnectionCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(name, color = MaterialTheme.colorScheme.onSurface)
                 }
-                Icon(
-                    Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.rubbish_delete_icon),
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable { onDeleteClicked() }
-                )
+//                Icon(
+//                    Icons.Default.Delete,
+//                    contentDescription = stringResource(R.string.rubbish_delete_icon),
+//                    tint = MaterialTheme.colorScheme.primary,
+//                    modifier = Modifier.clickable { onDeleteClicked() }
+//                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))

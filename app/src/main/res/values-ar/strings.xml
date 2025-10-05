@@ -184,4 +184,7 @@
     <string name="shopping_point1">• لا توجد سياسة تسوق.</string>
 
     <string name="close">إغلاق</string>
+    <string name="recommendations">توصيات</string>
+    <string name="make_money">اكسب مال</string>
+    <string name="collect">اسحب</string>
 </resources>

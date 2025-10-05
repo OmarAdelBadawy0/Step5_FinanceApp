@@ -1,6 +1,5 @@
 package com.example.step5app.presentation.bottomBar
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -15,9 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.step5app.R
 import com.example.step5app.presentation.navigation.Screen
@@ -31,9 +31,9 @@ fun BottomBar(
 ) {
     val selectedTab = viewModel.selectedTab.intValue
     val tabs = listOf(
-        stringResource(R.string.feed),
+        stringResource(R.string.recommendations),
         stringResource(R.string.courses),
-        stringResource(R.string.network),
+        stringResource(R.string.make_money),
         stringResource(R.string.profile))
 
     val isDarkTheme = isSystemInDarkTheme()
@@ -84,7 +84,14 @@ fun BottomBar(
                         else -> Icon(Icons.Default.Search, title)
                     }
                 },
-                label = { Text(title, color = MaterialTheme.colorScheme.onSurface) },
+                label = {
+                    Text(
+                        title,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     selectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,

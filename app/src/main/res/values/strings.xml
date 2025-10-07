@@ -189,5 +189,9 @@
     <string name="recommendations">Recommendations</string>
     <string name="make_money">Make Money</string>
     <string name="collect">Collect</string>
+    <string name="collect_money">Collect Money</string>
+    <string name="how_you_want_the_money_to_be_send_to_you">How you want the money to be send to you</string>
+    <string name="max_80_characters">Max 80 characters</string>
+    <string name="send">Send</string>
 
 </resources>

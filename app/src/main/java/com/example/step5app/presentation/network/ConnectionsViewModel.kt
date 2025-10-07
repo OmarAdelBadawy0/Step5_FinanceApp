@@ -35,6 +35,10 @@ class ConnectionsViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(isAddingConnection = isAdding)
     }
 
+    fun toggleShowGetMoneyInfo() {
+        _uiState.value = _uiState.value.copy(showCollectMoneyInfo = !_uiState.value.showCollectMoneyInfo)
+    }
+
     fun onMessageShown() {
         _uiState.value = _uiState.value.copy(message = null)
     }

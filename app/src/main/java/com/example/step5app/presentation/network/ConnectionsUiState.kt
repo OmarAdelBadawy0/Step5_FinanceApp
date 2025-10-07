@@ -12,5 +12,6 @@ data class ConnectionsUiState(
     val connections: List<ConnectionData> = emptyList(),
     val isAddingConnection: Boolean = false,
     val connectionAddingCode: String = "",
+    val showCollectMoneyInfo: Boolean = false,
     val errorMessage: UiText? = null
 )

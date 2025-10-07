@@ -187,4 +187,10 @@
     <string name="recommendations">توصيات</string>
     <string name="make_money">اكسب مال</string>
     <string name="collect">اسحب</string>
+    <string name="collect_money">تحصيل الأموال</string>
+    <string name="how_you_want_the_money_to_be_send_to_you">كيف ترغب أن يتم إرسال الأموال إليك</string>
+    <string name="max_80_characters">بحد أقصى 80 حرفًا</string>
+    <string name="send">إرسال</string>
+    ``` ✅
+
 </resources>

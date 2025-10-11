@@ -119,6 +119,9 @@ fun FeedScreen(
             getImageUrl = { viewModel.getImageUrl(it) },
             onPostClick = { feedId ->
                 navController.navigate(Screen.FeedDetails.createRoute(feedId))
+            },
+            onLockClick = {
+                navController.navigate(Screen.Profile.createRoute(2))
             }
         )
     }
@@ -135,7 +138,8 @@ fun FeedContent(
     onFilterSelect: (String) -> Unit,
     onCategorySelect: (Category) -> Unit,
     getImageUrl: (Int) -> String,
-    onPostClick: (Int) -> Unit
+    onPostClick: (Int) -> Unit,
+    onLockClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -161,7 +165,8 @@ fun FeedContent(
                     hasMorePosts = uiState.hasMorePosts,
                     listState = listState,
                     getImageUrl = getImageUrl,
-                    onPostClick = onPostClick
+                    onPostClick = onPostClick,
+                    onLockClick = onLockClick
                 )
             }
         }
@@ -262,14 +267,16 @@ fun PostList(
     hasMorePosts: Boolean,
     listState: LazyListState,
     getImageUrl: (Int) -> String,
-    onPostClick: (Int) -> Unit
+    onPostClick: (Int) -> Unit,
+    onLockClick: () -> Unit
 ) {
     LazyColumn(state = listState) {
         items(posts) { post ->
             PostCard(
                 post = post,
-                imageUrl = getImageUrl(post.id),
-                onPostClick = onPostClick
+                imageUrl = getImageUrl(post.id - 1),
+                onPostClick = onPostClick,
+                onLockClick = onLockClick
             )
         }
         if (hasMorePosts) {
@@ -291,14 +298,19 @@ fun PostList(
 fun PostCard(
     post: Post,
     imageUrl: String,
-    onPostClick: (Int) -> Unit
+    onPostClick: (Int) -> Unit,
+    onLockClick: () -> Unit
     ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable(enabled = !post.isLocked) {
-                onPostClick(post.id)
+                if (!post.isLocked){
+                    onPostClick(post.id)
+                }else{
+                    onLockClick()
+                }
         },
         elevation = CardDefaults.cardElevation(2.dp),
         shape = RoundedCornerShape(0.dp),

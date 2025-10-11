@@ -16,5 +16,7 @@ sealed class Screen(val route: String) {
     object Settings : Screen("settings")
     object Courses : Screen("courses")
     object Network : Screen("network")
-    object Profile : Screen("profile")
+    object Profile : Screen("profile?tabIndex={tabIndex}") {
+        fun createRoute(tabIndex: Int) = "profile?tabIndex=$tabIndex"
+    }
 }

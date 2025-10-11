@@ -70,11 +70,13 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    initialTabIndex: Int = 0
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(initialTabIndex) {
+        viewModel.updateSelectedTabIndex(initialTabIndex)
         viewModel.loadProfile()
     }
 

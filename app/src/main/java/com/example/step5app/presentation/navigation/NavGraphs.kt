@@ -29,7 +29,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
             FeedScreen(
                 viewModel = viewModel,
                 onSettingsClick = { navController.navigate(Screen.Settings.route) },
-                navController = navController
+                navController = navController,
             )
         }
 
@@ -53,13 +53,24 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
             ConnectionsScreen(navController = navController, onSettingsClick = { navController.navigate(Screen.Settings.route) })
         }
 
-        composable(Screen.Profile.route) {
+        composable(
+            route = "profile?tabIndex={tabIndex}",
+            arguments = listOf(
+                navArgument("tabIndex") {
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            )
+        ) { backStackEntry ->
             val viewModel = hiltViewModel<ProfileViewModel>()
+            val tabIndex = backStackEntry.arguments?.getInt("tabIndex") ?: 0
+
             ProfileScreen(
                 viewModel = viewModel,
                 onBackClick = { navController.navigate(Screen.Feed.route) },
                 onSettingsClick = { navController.navigate(Screen.Settings.route) },
-                navController = navController
+                navController = navController,
+                initialTabIndex = tabIndex
             )
         }
 

@@ -2,10 +2,14 @@ package com.example.step5app.data.repositories
 
 import com.example.step5app.data.local.UserPreferences
 import com.example.step5app.data.model.ApiResponse
+import com.example.step5app.data.model.CashoutRequest
+import com.example.step5app.data.model.CashoutResponse
 import com.example.step5app.data.model.ConnectionData
 import com.example.step5app.data.model.InviteCodeRequest
 import com.example.step5app.data.model.InviteCodeResponse
 import com.example.step5app.data.remote.AffiliateService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AffiliateRepository @Inject constructor(
@@ -75,6 +79,24 @@ class AffiliateRepository @Inject constructor(
             }
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    suspend fun createCashout(request: CashoutRequest): Result<CashoutResponse> {
+        val token = userPreferences.getAccessTokenOnce()
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = affiliateService.createCashout(request = request, token = "Bearer $token")
+                if (response.isSuccessful) {
+                    response.body()?.let { Result.success(it) }
+                        ?: Result.failure(Exception("Empty response"))
+                } else {
+                    Result.failure(Exception("Error: ${response.code()} - ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.step5app.data.remote
 
 import com.example.step5app.data.model.ApiResponse
+import com.example.step5app.data.model.CashoutRequest
+import com.example.step5app.data.model.CashoutResponse
 import com.example.step5app.data.model.ConnectionsResponse
 import com.example.step5app.data.model.InviteCodeRequest
 import com.example.step5app.data.model.InviteCodeResponse
@@ -38,4 +40,11 @@ interface AffiliateService {
         @Header("Accept-Language") language: String = "en",
         @Header("Authorization") token: String
     ): Response<Unit>
+
+    @POST("cashout")
+    suspend fun createCashout(
+        @Header("Accept-Language") language: String = "en",
+        @Header("Authorization") token: String,
+        @Body request: CashoutRequest
+    ): Response<CashoutResponse>
 }

@@ -193,5 +193,8 @@
     <string name="how_you_want_the_money_to_be_send_to_you">How you want the money to be send to you</string>
     <string name="max_80_characters">Max 80 characters</string>
     <string name="send">Send</string>
+    <string name="max_20_characters">Max 20 characters</string>
+    <string name="provider_name">Provider name</string>
+    <string name="cashout_request_created_successfully">Cashout request created successfully</string>
 
 </resources>

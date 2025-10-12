@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.step5app.R
 import com.example.step5app.data.local.UiText
+import com.example.step5app.data.model.CashoutRequest
 import com.example.step5app.data.repositories.AffiliateRepository
 import com.example.step5app.domain.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -183,6 +184,31 @@ class ConnectionsViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun createCashout(provider: String, handle: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, message = null, errorMessage = null)
+
+            val result = affiliateRepository.createCashout(
+                CashoutRequest(provider = provider, handle = handle)
+            )
+
+            _uiState.value = result.fold(
+                onSuccess = {
+                    _uiState.value.copy(
+                        isLoading = false,
+                        message = UiText.StringResource(R.string.cashout_request_created_successfully)
+                    )
+                },
+                onFailure = {
+                    _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = UiText.DynamicString(it.message ?: "Unknown error")
+                    )
+                }
+            )
         }
     }
 }

@@ -219,7 +219,12 @@ fun ConnectionsScreen(
         }
 
         if (uiState.showCollectMoneyInfo)
-            CollectMoneyInfo(onDismiss = { connectionsViewModel.toggleShowGetMoneyInfo() })
+            CollectMoneyInfo(
+                onDismiss = { connectionsViewModel.toggleShowGetMoneyInfo() },
+                onSend = { provider, body ->
+                    connectionsViewModel.createCashout(provider, body)
+                }
+            )
 
         if (uiState.isLoading) {
             Box(
@@ -409,9 +414,10 @@ fun ConnectionCodeInputRow(
 
 @Composable
 fun CollectMoneyInfo(
-    onDismiss: () -> Unit = {},
+    onDismiss: () -> Unit,
+    onSend: (provider: String, body: String) -> Unit
 ){
-    var name by rememberSaveable {
+    var providerName by rememberSaveable {
         mutableStateOf("")
     }
     var howToSend by rememberSaveable {
@@ -424,6 +430,26 @@ fun CollectMoneyInfo(
         title = { Text(stringResource(R.string.collect_money)) },
         text = {
             Column {
+                Text(
+                    stringResource(R.string.provider_name),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                OutlinedTextField(
+                    value = providerName,
+                    onValueChange = { if (it.length <= 20) { providerName = it } },
+                    label = { Text(stringResource(R.string.max_20_characters), color = MaterialTheme.colorScheme.tertiaryContainer) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurface,
+                        focusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                        cursorColor = MaterialTheme.colorScheme.onSurface,
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
                     stringResource(R.string.how_you_want_the_money_to_be_send_to_you),
                     color = MaterialTheme.colorScheme.onSurface
@@ -446,7 +472,7 @@ fun CollectMoneyInfo(
         confirmButton = {
             Button(
                 onClick = {
-//                    viewModel.confirmOtp(uiState.email, uiState.otpCode)
+                    onSend(providerName, howToSend)
                 }
             ) {
                 Text(stringResource(R.string.send))
